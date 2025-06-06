@@ -3,19 +3,19 @@
   line-height: 1.5;
   font-weight: 400;
 
-  --color-primary: #76ABAE ;
+  --color-primary: #087E8B ;
   --color-secondary: #31363F;
   --color-background: #222831;
   --color-text-primary: #EEEEEE;
-  --color-text-secondary: #6B7280;
+  --color-text-secondary: #7e8697;
   --color-accent: #F59E0B;
   --color-error: #DC2626;
   --color-success: #52be20;
 
-  --hover-primary: #6a9fa2  ;
+  --hover-primary: #15727c  ;
   --hover-secondary: #3f4652;
   --hover-background:#393E46;
-  --hover-accent: #e3a008;
+  --hover-accent: #d97706;
   --hover-error: #b91c1c;
   --hover-success: #409a1a; 
 
@@ -36,6 +36,10 @@ a {
 }
 a:hover {
   color: var(--hover-secondary);
+}
+
+*{
+  box-sizing: border-box;
 }
 
 body {

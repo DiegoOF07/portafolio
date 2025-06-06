@@ -14,4 +14,11 @@ import Navbar from './components/Navbar.vue'
   width: 100dvw;
   height: 100dvh;
 }
+
+@media (max-width: 895px) {
+  #app{
+    width: 98dvw;
+    height: 100dvh;
+  }
+}
 </style>
