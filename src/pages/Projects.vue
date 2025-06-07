@@ -19,18 +19,19 @@ import ormProject from '@/assets/img/orm-project.svg'
 import conjProject from '@/assets/img/conj-project.svg'
 import pacmanProject from '@/assets/img/pacman-project.svg'
 import javaProject from '@/assets/img/java-project.svg'
+import porfolioProject from '@/assets/img/portfolio-project.png'
 
 const projects = [
   {
     title: 'Portfolio Web',
     description: 'Mi portafolio personal donde expongo mis habilidades.',
-    image: 'https://placehold.co/600x400?text=Portafolio',
+    image: porfolioProject,
     techs: [
       { name: 'Vue', icon: vueLogo },
       { name: 'TypeScript', icon: tsLogo },
       { name: 'Vite', icon: viteLogo },
     ],
-    link: 'https://tuportfolio.com',
+    link: 'https://diego-o-flores-portfolio.netlify.app',
     github: 'https://github.com/DiegoOF07/portafolio.git'
   },
   {
@@ -126,10 +127,11 @@ const projects = [
 
 <style scoped>
 .projects-wrapper {
-  padding: 2rem 0;
+  padding: 2rem 1rem;
   display: flex;
   flex-direction: column;
   align-items: center;
+  padding-bottom: 16rem;
 }
 .title {
   font-size: 2.5rem;
@@ -142,7 +144,16 @@ const projects = [
   gap: 4rem;
 }
 
-.cards:nth-last-child() {
-  padding-bottom: 10rem;
+@media (max-width: 768px) {
+  .title{
+    margin-top: 0;
+    margin-bottom: 1rem;
+  }
+
+  .projects-wrapper{
+    padding-bottom: 2rem;
+  }
 }
+
+
 </style>

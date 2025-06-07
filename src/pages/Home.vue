@@ -12,7 +12,7 @@ import pythonLogo from '@/assets/logos/python.svg'
 import cplusLogo from '@/assets/logos/cplusplus.svg'
 import javaLogo from '@/assets/logos/java.svg'
 import dockerLogo from '@/assets/logos/docker.svg'
-import 'swiper/css';
+
 
 const technologies = [
   { name: 'Vue 3', logo: vueLogo },

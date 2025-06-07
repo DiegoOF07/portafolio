@@ -1,6 +1,6 @@
 import { createApp } from 'vue'
 import './style.css'
-import 'swiper/css'
+import 'swiper/swiper-bundle.css'
 import App from './App.vue'
 import router from './router'
 

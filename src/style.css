@@ -21,7 +21,6 @@
   --hover-error: #b91c1c;
   --hover-success: #409a1a; 
 
-  color-scheme: light dark;
   color: rgba(255, 255, 255, 0.87);
   background-color: var(--color-background);
 
@@ -77,15 +76,3 @@ button:focus-visible {
   outline: 4px auto -webkit-focus-ring-color;
 }
 
-@media (prefers-color-scheme: light) {
-  :root {
-    color: var(--color-text-primary);
-    background-color: #ffffff;
-  }
-  a:hover {
-    color: var(--hover-secondary);
-  }
-  button {
-    background-color: #f9f9f9;
-  }
-}

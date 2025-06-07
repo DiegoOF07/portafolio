@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { ref } from 'vue'
-import { Home, Phone, BookOpen, User2, Menu, X } from 'lucide-vue-next'
+import { Home, Phone, BookOpen, Menu, X } from 'lucide-vue-next'
 
 const isOpen = ref(false)
 
@@ -19,7 +19,6 @@ const toggleMenu = () => {
 
     <ul :class="['nav-links', { open: isOpen }]">
       <li><RouterLink to="/" exact-active-class="active" class="nav-link" @click="isOpen = false"><Home /> <span>Principal</span></RouterLink></li>
-      <li><RouterLink to="/about" exact-active-class="active" class="nav-link" @click="isOpen = false"><User2 /> <span>Sobre mí</span></RouterLink></li>
       <li><RouterLink to="/projects" exact-active-class="active" class="nav-link" @click="isOpen = false"><BookOpen /> <span>Proyectos</span></RouterLink></li>
       <li><RouterLink to="/contact" exact-active-class="active" class="nav-link" @click="isOpen = false"><Phone /> <span>Contacto</span></RouterLink></li>
     </ul>

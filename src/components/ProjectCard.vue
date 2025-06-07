@@ -65,7 +65,6 @@ const variants = (i: number) => ({
   display: flex;
   flex-direction: column;
   width: 100%;
-  max-height: 400px;
 }
 
 .project-card-glass:hover {
@@ -82,12 +81,13 @@ const variants = (i: number) => ({
   padding: 1.5rem;
   display: flex;
   flex-direction: column;
-  gap: 1rem;
+  gap: 0.3rem;
 }
 
 h3 {
   font-size: 2rem;
   color: var(--color-accent);
+  margin: 0.2rem 0;
 }
 
 .description {
@@ -100,14 +100,14 @@ h3 {
   display: flex;
   flex-wrap: wrap;
   gap: 0.5rem;
-  margin-top: 1rem;
+  margin-top: 0.5rem;
 }
 
 .buttons {
   display: flex;
   gap: 1rem;
   flex-wrap: wrap;
-  margin-top: 1rem;
+  margin-top: 0.5rem;
 }
 
 .project-btn {
@@ -131,6 +131,7 @@ h3 {
 @media (min-width: 768px) {
   .project-card-glass {
     flex-direction: row;
+    max-height: 405px;
   }
 
   .project-image {
@@ -140,6 +141,15 @@ h3 {
 
   .project-content {
     width: 60%;
+    gap: 1rem;
+  }
+
+  .techs, .buttons{
+    margin-top: 1rem;
+  }
+
+  h3{
+    margin: 1rem 0;
   }
 }
 </style>
