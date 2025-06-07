@@ -6,8 +6,10 @@
   --color-primary: #087E8B ;
   --color-secondary: #31363F;
   --color-background: #222831;
+  --color-background-secondary: #324A5F;
   --color-text-primary: #EEEEEE;
   --color-text-secondary: #7e8697;
+  --color-text-on-dark: #282e30;
   --color-accent: #F59E0B;
   --color-error: #DC2626;
   --color-success: #52be20;
@@ -48,6 +50,7 @@ body {
   place-items: center;
   min-width: 320px;
   min-height: 100vh;
+  overflow-x: hidden;
 }
 
 h1 {

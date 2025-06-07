@@ -4,24 +4,28 @@ import { Autoplay, Pagination } from 'swiper/modules'
 import vueLogo from '@/assets/logos/vue.svg'
 import tsLogo from '@/assets/logos/typescript.svg'
 import viteLogo from '@/assets/logos/vite.svg'
-import nodeLogo from '@/assets/logos/nodejs.svg'
+import jsLogo from '@/assets/logos/javascript.svg'
 import reactLogo from '@/assets/logos/react.svg'
 import goLogo from '@/assets/logos/go.svg'
-import kotlinLogo from '@/assets/logos/kotlin.svg'
 import postgresLogo from '@/assets/logos/postgresql.svg'
 import pythonLogo from '@/assets/logos/python.svg'
+import cplusLogo from '@/assets/logos/cplusplus.svg'
+import javaLogo from '@/assets/logos/java.svg'
+import dockerLogo from '@/assets/logos/docker.svg'
 import 'swiper/css';
 
 const technologies = [
   { name: 'Vue 3', logo: vueLogo },
   { name: 'TypeScript', logo: tsLogo },
   { name: 'Vite', logo: viteLogo },
-  { name: 'Node.js', logo: nodeLogo },
+  { name: 'Javascript', logo: jsLogo },
   { name: 'React', logo: reactLogo },
   { name: 'Go', logo: goLogo },
-  { name: 'Kotlin', logo: kotlinLogo },
   { name: 'PostgreSQL', logo: postgresLogo },
   { name: 'Python', logo: pythonLogo },
+  { name: 'C++', logo: cplusLogo },
+  { name: 'Java', logo: javaLogo},
+  { name: 'Docker', logo: dockerLogo}
 ];
 </script>
 
@@ -29,9 +33,12 @@ const technologies = [
   <section class="home">
     <div class="hero">
       <div class="hero-content">
-        <h1>Hola, soy <span class="highlight">Diego</span></h1>
-        <h2>Desarrollador <span class="highlight2">Frontend</span> | <span class="highlight2">Backend</span> | <span class="highlight2">Mobile</span></h2>
-        <p>Me gusta la tecnología y ofrecer soluciones a partir de ella</p>
+        <h1>Hola, soy <span class="highlight">Diego Flores</span></h1>
+        <h2>Desarrollador <span class="highlight2">Frontend</span> | <span class="highlight2">Backend</span></h2>
+        <p>
+          Familiarizado con el uso <span class="highlight3">Vue</span>, <span class="highlight3">React</span> y <span class="highlight3">Go</span>
+          para la creación de proyectos.
+        </p>
         <div class="hero-actions">
           <RouterLink to="/projects" class="btn-primary">Ver proyectos</RouterLink>
           <RouterLink to="/contact" class="btn-secondary">Contáctame</RouterLink>
@@ -152,6 +159,18 @@ const technologies = [
   background: var(--color-primary);
   padding: 0.5rem;
   border-radius: 8px;
+  line-height: 3;
+  opacity: 0.9;
+  box-shadow: 0 12px 32px rgba(0,0,0,0.4);
+  transition: background 0.3s ease, transform 0.2s ease;
+}
+
+.highlight2:hover{
+  cursor: pointer;
+}
+
+.highlight3{
+  color: var(--color-primary);
 }
 
 .carousel {
@@ -170,7 +189,7 @@ const technologies = [
 }
 
 .slide-content {
-  background: var(--color-secondary);
+  background: var(--color-background-secondary);
   border-radius: 12px;
   padding: 1rem;
   display: flex;
