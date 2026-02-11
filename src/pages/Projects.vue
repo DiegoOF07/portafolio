@@ -23,6 +23,19 @@ import porfolioProject from '@/assets/img/portfolio-project.png'
 
 const projects = [
   {
+    title: 'Invitado especial',
+    description: 'Juego creado en la Global Game Jam 2026, donde debemos encontrar quién es el invitado especial y desenmascararlo antes de que sea demasiado tarde.',
+    image: 'https://ggjv4.s3.us-west-1.amazonaws.com/files/styles/flexslider_full/s3/games/2026/812398/screenshot/In%20Game.png?VersionId=3ov4AS_izQgNgThRogihS5dtasifW4z8&itok=LtAWOLCa',
+    techs: [
+      { name: 'Typescript', icon: tsLogo },
+      { name: 'vue', icon: vueLogo },
+      { name: 'Vite', icon: viteLogo },
+      { name: 'Phaser', icon: 'https://cdn.phaser.io/images/logo/phaser-planet-print.png' },
+    ],
+    link: 'https://invitado-especial-game.netlify.app/',
+    github: 'https://github.com/DiegoOF07/ggj-2026.git'
+  },
+  {
     title: 'Portfolio Web',
     description: 'Mi portafolio personal donde expongo mis habilidades.',
     image: porfolioProject,

@@ -24,8 +24,8 @@ const technologies = [
   { name: 'PostgreSQL', logo: postgresLogo },
   { name: 'Python', logo: pythonLogo },
   { name: 'C++', logo: cplusLogo },
-  { name: 'Java', logo: javaLogo},
-  { name: 'Docker', logo: dockerLogo}
+  { name: 'Java', logo: javaLogo },
+  { name: 'Docker', logo: dockerLogo }
 ];
 </script>
 
@@ -36,7 +36,8 @@ const technologies = [
         <h1>Hola, soy <span class="highlight">Diego Flores</span></h1>
         <h2>Desarrollador <span class="highlight2">Frontend</span> | <span class="highlight2">Backend</span></h2>
         <p>
-          Familiarizado con el uso <span class="highlight3">Vue</span>, <span class="highlight3">React</span> y <span class="highlight3">Go</span>
+          Familiarizado con el uso <span class="highlight3">Vue</span>, <span class="highlight3">React</span> y <span
+            class="highlight3">Go</span>
           para la creación de proyectos.
         </p>
         <div class="hero-actions">
@@ -49,20 +50,10 @@ const technologies = [
 
     <div class="carousel">
       <h3>Tecnologías que uso</h3>
-      <Swiper
-        :modules="[Autoplay, Pagination]"
-        :slides-per-view="2"
-        :space-between="20"
-        :loop="true"
+      <Swiper :modules="[Autoplay, Pagination]" :slides-per-view="2" :space-between="20" :loop="true"
         :autoplay="{ delay: 2500, disableOnInteraction: false }"
-        :breakpoints="{ 640: { slidesPerView: 3 }, 1024: { slidesPerView: 5 } }"
-        class="tech-swiper"
-      >
-        <SwiperSlide
-          v-for="tech in technologies"
-          :key="tech.name"
-          class="slide"
-        >
+        :breakpoints="{ 640: { slidesPerView: 3 }, 1024: { slidesPerView: 5 } }" class="tech-swiper">
+        <SwiperSlide v-for="tech in technologies" :key="tech.name" class="slide">
           <div class="slide-content">
             <img :src="tech.logo" :alt="tech.name" class="tech-logo" />
             <p>{{ tech.name }}</p>
@@ -154,22 +145,22 @@ const technologies = [
   color: var(--color-accent);
 }
 
-.highlight2{
+.highlight2 {
   color: var(--color-text-primary);
   background: var(--color-primary);
   padding: 0.5rem;
   border-radius: 8px;
   line-height: 3;
   opacity: 0.9;
-  box-shadow: 0 12px 32px rgba(0,0,0,0.4);
+  box-shadow: 0 12px 32px rgba(0, 0, 0, 0.4);
   transition: background 0.3s ease, transform 0.2s ease;
 }
 
-.highlight2:hover{
+.highlight2:hover {
   cursor: pointer;
 }
 
-.highlight3{
+.highlight3 {
   color: var(--color-primary);
 }
 
@@ -197,7 +188,7 @@ const technologies = [
   align-items: center;
   gap: 0.75rem;
   transition: transform 0.3s ease;
-  box-shadow: 0 4px 12px rgba(0,0,0,0.2);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
 }
 
 .slide-content:hover {
@@ -217,16 +208,16 @@ const technologies = [
 
 
 @media (max-width: 895px) {
-    .hero, .hero-actions{
-        justify-content: center;
-    }
 
-    .hero-content{
-        text-align: center;
-    }
+  .hero,
+  .hero-actions {
+    justify-content: center;
+  }
+
+  .hero-content {
+    text-align: center;
+  }
 
 
 }
-
 </style>
-
