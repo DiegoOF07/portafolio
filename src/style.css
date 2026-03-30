@@ -3,7 +3,8 @@
   line-height: 1.5;
   font-weight: 400;
 
-  --color-primary: #087E8B ;
+  /* Colores principales */
+  --color-primary: #087E8B;
   --color-secondary: #31363F;
   --color-background: #222831;
   --color-background-secondary: #324A5F;
@@ -14,12 +15,55 @@
   --color-error: #DC2626;
   --color-success: #52be20;
 
-  --hover-primary: #15727c  ;
+  --hover-primary: #15727c;
   --hover-secondary: #3f4652;
-  --hover-background:#393E46;
+  --hover-background: #393E46;
   --hover-accent: #d97706;
   --hover-error: #b91c1c;
-  --hover-success: #409a1a; 
+  --hover-success: #409a1a;
+
+  /* Colores para fondos  */
+  --color-gradient-1: #087E8B;
+  --color-gradient-2: #0F4C75;      
+  --color-gradient-3: #3282B8;      
+  --color-gradient-4: #8338EC;      
+  --color-gradient-5: #5F3DC4;      
+  --color-gradient-6: #2E86AB;      
+
+  /* Colores secundarios */
+  --color-accent-cold: #06FFA5;     
+  --color-accent-purple: #A371F7;
+
+  /* Glassmorphism */
+  --glass-blur: 12px;
+  --glass-opacity: 0.08;
+  --glass-border: 1px solid rgba(255, 255, 255, 0.12);
+  --glass-bg: rgba(255, 255, 255, 0.05);
+  --glass-bg-hover: rgba(255, 255, 255, 0.09);
+
+  /* Sombras para profundidad */
+  --shadow-sm: 0 2px 4px rgba(0, 0, 0, 0.1);
+  --shadow-md: 0 4px 12px rgba(0, 0, 0, 0.2);
+  --shadow-lg: 0 12px 32px rgba(0, 0, 0, 0.4);
+  --shadow-glow-primary: 0 0 60px rgba(8, 126, 139, 0.35);
+  --shadow-glow-purple: 0 0 60px rgba(131, 56, 236, 0.35);
+
+  /* Sistema de fondos animados */
+  --sphere-opacity: 0.60;            
+  --sphere-specular: 0.55;          
+  --sphere-shadow: 0.30;             
+
+  /* Velocidades de animación */
+  --anim-speed-slow: 0.00018;        
+  --anim-speed-mid: 0.00026;         
+  --anim-speed-fast: 0.00034;        
+
+  /* Parallax */
+  --parallax-scroll-intensity: 0.12; 
+  --parallax-mouse-intensity: 0.022; 
+  --parallax-depth-near: 1.0; 
+  --parallax-depth-mid: 0.55; 
+  --parallax-depth-far: 0.25;
 
   color: rgba(255, 255, 255, 0.87);
   background-color: var(--color-background);
@@ -35,11 +79,12 @@ a {
   color: var(--color-secondary);
   text-decoration: inherit;
 }
+
 a:hover {
   color: var(--hover-secondary);
 }
 
-*{
+* {
   box-sizing: border-box;
 }
 
@@ -68,11 +113,47 @@ button {
   cursor: pointer;
   transition: border-color 0.25s;
 }
+
 button:hover {
   border-color: var(--hover-secondary);
 }
+
 button:focus,
 button:focus-visible {
   outline: 4px auto -webkit-focus-ring-color;
 }
 
+/* Smooth scrolling */
+html {
+  scroll-behavior: smooth;
+}
+
+/* Animaciones globales */
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+@keyframes slideIn {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes float {
+  0%, 100% {
+    transform: translateY(0px);
+  }
+  50% {
+    transform: translateY(-10px);
+  }
+}

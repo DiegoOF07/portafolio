@@ -28,7 +28,7 @@ const variants = (i: number) => ({
     class="project-card-glass"
     :initial="'offscreen'"
     :while-in-view="'onscreen'"
-    :in-view-options="{ amount: 0.9 }"
+    :in-view-options="{ amount: 0.15, once: true }"
     :variants="variants(i)"
   >
     <img :src="image" :alt="title" class="project-image" />

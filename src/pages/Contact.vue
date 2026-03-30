@@ -56,7 +56,7 @@ import { Mail, Github, Linkedin, MapPin } from "lucide-vue-next";
   display: flex;
   justify-content: center;
   padding: 4rem 1rem;
-  background: var(--color-background);
+  background: transparent;
 }
 
 .glass-box {

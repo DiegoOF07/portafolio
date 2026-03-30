@@ -1,17 +1,43 @@
 <script setup lang="ts">
+import { computed } from 'vue'
+import { useRoute } from 'vue-router'
 import Navbar from './components/Navbar.vue'
+import BackgroundSystem from './components/BackgroundSystem.vue'
+
+const route = useRoute()
+
+// Determinar qué tipo de fondo mostrar basado en la ruta
+const backgroundType = computed(() => {
+  if (route.path === '/') return 'home'
+  if (route.path === '/projects') return 'projects'
+  if (route.path === '/contact') return 'contact'
+  return 'home'
+})
 </script>
 
 <template>
   <div id="app">
+    <!-- Fondos dinámicos basado en la ruta -->
+    <BackgroundSystem :type="backgroundType" />
+
     <Navbar />
-    <RouterView />
+
+    <div class="router-view-content">
+      <RouterView />
+    </div>
   </div>
 </template>
 
 <style scoped>
-#app{
+#app {
   width: 100dvw;
-  height: 100dvh;
+  min-height: 100dvh;
+  position: relative;
+  overflow-x: hidden;
+}
+
+:deep(.router-view-content) {
+  position: relative;
+  z-index: 10;
 }
 </style>

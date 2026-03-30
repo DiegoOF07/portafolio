@@ -35,7 +35,7 @@ const toggleMenu = () => {
   justify-content: space-between;
   align-items: center;
   background-color: var(--hover-background);
-  padding: 1rem 2rem;
+  padding: 0.5rem 2rem;
   position: relative;
   z-index: 50;
 }
