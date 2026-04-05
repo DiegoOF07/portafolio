@@ -17,7 +17,7 @@ const backgroundType = computed(() => {
 
 <template>
   <div id="app">
-    <!-- Fondos dinámicos basado en la ruta -->
+    <!-- Sistema de fondos dinámico basado en la ruta -->
     <BackgroundSystem :type="backgroundType" />
 
     <Navbar />
@@ -39,5 +39,6 @@ const backgroundType = computed(() => {
 :deep(.router-view-content) {
   position: relative;
   z-index: 10;
+  padding-top: 4.5rem;
 }
 </style>
