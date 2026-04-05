@@ -34,6 +34,30 @@
   --color-accent-cold: #06FFA5;     
   --color-accent-purple: #A371F7;
 
+  /* Backgrounds */
+  --glass-bg-card: rgba(255, 255, 255, 0.05);
+  --glass-bg-card-hover: rgba(255, 255, 255, 0.08);
+  --glass-bg-badge: rgba(255, 255, 255, 0.08);
+  --glass-bg-badge-hover: rgba(255, 255, 255, 0.15);
+  --glass-bg-section: rgba(255, 255, 255, 0.03);
+
+  /* Borders */
+  --glass-border-card: 1px solid rgba(255, 255, 255, 0.1);
+  --glass-border-badge: 1px solid rgba(255, 255, 255, 0.15);
+  --glass-border-section: 1px solid rgba(255, 255, 255, 0.07);
+
+  /* Blur */
+  --glass-blur-card: blur(12px);
+  --glass-blur-badge: blur(6px);
+  --glass-blur-section: blur(16px);
+
+  /* Shadows */
+  --shadow-glass: 0 8px 16px rgba(0, 0, 0, 0.15);
+  --shadow-glass-hover: 0 12px 24px rgba(0, 0, 0, 0.2);
+
+  /* Transitions */
+  --glass-transition: 0.3s ease;
+
   /* Glassmorphism */
   --glass-blur: 12px;
   --glass-opacity: 0.08;
@@ -126,6 +150,70 @@ button:focus-visible {
 /* Smooth scrolling */
 html {
   scroll-behavior: smooth;
+}
+
+.glass-card {
+  backdrop-filter: var(--glass-blur-card);
+  -webkit-backdrop-filter: var(--glass-blur-card);
+  background: var(--glass-bg-card);
+  border: var(--glass-border-card);
+  border-radius: 1.5rem;
+  box-shadow: var(--shadow-glass);
+  transition: background var(--glass-transition),
+              transform var(--glass-transition),
+              box-shadow var(--glass-transition);
+}
+
+.glass-card.hoverable:hover {
+  background: var(--glass-bg-card-hover);
+  transform: translateY(-4px);
+  box-shadow: var(--shadow-glass-hover);
+}
+
+.glass-badge {
+  backdrop-filter: var(--glass-blur-badge);
+  -webkit-backdrop-filter: var(--glass-blur-badge);
+  background: var(--glass-bg-badge);
+  border: var(--glass-border-badge);
+  border-radius: 12px;
+  transition: background var(--glass-transition),
+              transform var(--glass-transition);
+}
+
+.glass-badge.hoverable:hover {
+  background: var(--glass-bg-badge-hover);
+  transform: scale(1.05);
+}
+
+.glass-section {
+  backdrop-filter: var(--glass-blur-section);
+  -webkit-backdrop-filter: var(--glass-blur-section);
+  background: var(--glass-bg-section);
+  border: var(--glass-border-section);
+  border-radius: 2rem;
+  box-shadow: var(--shadow-glass);
+}
+
+::-webkit-scrollbar {
+  width: 6px;
+}
+
+::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+::-webkit-scrollbar-thumb {
+  background: var(--color-primary);
+  border-radius: 999px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: var(--hover-primary);
+}
+
+* {
+  scrollbar-width: thin;
+  scrollbar-color: var(--color-primary) transparent;;
 }
 
 /* Animaciones globales */

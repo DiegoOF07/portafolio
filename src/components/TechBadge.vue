@@ -19,17 +19,19 @@ defineProps<{
   gap: 6px;
   padding: 6px 10px;
   border-radius: 12px;
-  backdrop-filter: blur(6px);
-  background: rgba(255, 255, 255, 0.08);
-  border: 1px solid rgba(255, 255, 255, 0.15);
+  backdrop-filter: var(--glass-blur-badge);
+  -webkit-backdrop-filter: var(--glass-blur-badge);
+  background: var(--glass-bg-badge);
+  border: var(--glass-border-badge);
   color: var(--color-text-primary);
   font-size: 0.85rem;
   font-weight: 500;
-  transition: background 0.3s ease, transform 0.2s ease;
+  transition: background var(--glass-transition),
+    transform var(--glass-transition);
 }
 
 .tech-badge:hover {
-  background: rgba(255, 255, 255, 0.15);
+  background: var(--glass-bg-badge-hover);
   transform: scale(1.05);
 }
 

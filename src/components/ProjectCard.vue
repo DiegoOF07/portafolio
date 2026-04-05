@@ -2,6 +2,7 @@
 import { motion } from 'motion-v'
 import { Link, Github } from 'lucide-vue-next'
 import TechBadge from './TechBadge.vue'
+import GlassCard from '@/components/GlassCard.vue'
 
 defineProps<{
   title: string
@@ -25,50 +26,41 @@ const variants = (i: number) => ({
 
 <template>
   <motion.div
-    class="project-card-glass"
     :initial="'offscreen'"
     :while-in-view="'onscreen'"
     :in-view-options="{ amount: 0.15, once: true }"
     :variants="variants(i)"
   >
-    <img :src="image" :alt="title" class="project-image" />
-    <div class="project-content">
-      <header>
-        <h3>{{ title }}</h3>
-        <p class="description">{{ description }}</p>
-      </header>
+    <GlassCard variant="project" hoverable class="project-card">
+      <img :src="image" :alt="title" class="project-image" />
+      <div class="project-content">
+        <header>
+          <h3>{{ title }}</h3>
+          <p class="description">{{ description }}</p>
+        </header>
 
-      <div class="techs">
-        <TechBadge v-for="(tech, idx) in techs" :key="idx" :name="tech.name" :icon="tech.icon" />
+        <div class="techs">
+          <TechBadge v-for="(tech, idx) in techs" :key="idx" :name="tech.name" :icon="tech.icon" />
+        </div>
+
+        <footer class="buttons">
+          <a v-if="link" class="project-btn" :href="link" target="_blank"><Link :size="18" /> Ver proyecto</a>
+          <a v-if="github" class="project-btn" :href="github" target="_blank"><Github :size="18" /> GitHub</a>
+        </footer>
       </div>
-
-      <footer class="buttons">
-        <a v-if="link" class="project-btn" :href="link" target="_blank"><Link :size="18" /> Ver proyecto</a>
-        <a v-if="github" class="project-btn" :href="github" target="_blank"><Github :size="18" /> GitHub</a>
-      </footer>
-    </div>
+    </GlassCard>
   </motion.div>
 </template>
 
 <style scoped>
-.project-card-glass {
-  backdrop-filter: blur(12px);
-  background: rgba(255, 255, 255, 0.05);
-  border: 1px solid rgba(255, 255, 255, 0.08);
-  border-radius: 1.5rem;
+.project-card {
   overflow: hidden;
   color: var(--color-text-primary);
-  box-shadow: 0 12px 32px rgba(0,0,0,0.4);
-  transition: transform 0.3s ease;
   max-width: 950px;
   margin: auto;
   display: flex;
   flex-direction: column;
   width: 100%;
-}
-
-.project-card-glass:hover {
-  transform: translateY(-6px);
 }
 
 .project-image {
@@ -129,7 +121,7 @@ h3 {
 }
 
 @media (min-width: 768px) {
-  .project-card-glass {
+  .project-card {
     flex-direction: row;
     max-height: 405px;
   }
@@ -144,11 +136,11 @@ h3 {
     gap: 1rem;
   }
 
-  .techs, .buttons{
+  .techs, .buttons {
     margin-top: 1rem;
   }
 
-  h3{
+  h3 {
     margin: 1rem 0;
   }
 }

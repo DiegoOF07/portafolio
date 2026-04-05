@@ -180,7 +180,10 @@ const technologies = [
 }
 
 .slide-content {
-  background: var(--color-background-secondary);
+  background: var(--glass-bg-badge);
+  border: var(--glass-border-badge);
+  backdrop-filter: var(--glass-blur-badge);
+  -webkit-backdrop-filter: var(--glass-blur-badge);
   border-radius: 12px;
   padding: 1rem;
   display: flex;

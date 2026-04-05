@@ -1,10 +1,11 @@
 <script setup lang="ts">
 import { Mail, Github, Linkedin, MapPin } from "lucide-vue-next";
+import GlassCard from "@/components/GlassCard.vue";
 </script>
 
 <template>
-  <section class="contact-card">
-    <div class="glass-box">
+  <section class="container">
+    <GlassCard variant="section" class="contact-box">
       <div class="profile">
         <img src="@/assets/img/profile.jpg" alt="Diego Flores" class="avatar" />
         <div class="text">
@@ -20,54 +21,39 @@ import { Mail, Github, Linkedin, MapPin } from "lucide-vue-next";
       <ul class="info-list">
         <li>
           <Mail class="icon" />
-          <span
-            ><a href="mailto:floresdiego041@gmail.com"
-              >floresdiego041@gmail.com</a
-            ></span
-          >
+          <span><a href="mailto:floresdiego041@gmail.com">floresdiego041@gmail.com</a></span>
         </li>
         <li>
           <Github class="icon" />
-          <span
-            ><a href="https://github.com/DiegoOF07" target="_blank"
-              >github.com/DiegoOF07</a
-            ></span
-          >
+          <span><a href="https://github.com/DiegoOF07" target="_blank">github.com/DiegoOF07</a></span>
         </li>
         <li>
           <Linkedin class="icon" />
-          <span
-            ><a href="https://linkedin.com/in/diego-flores-gt" target="_blank"
-              >linkedin.com/in/diego-flores-gt</a
-            ></span
-          >
+          <span><a href="https://linkedin.com/in/diego-flores-gt" target="_blank">linkedin.com/in/diego-flores-gt</a></span>
         </li>
         <li>
           <MapPin class="icon" />
           <span>Guatemala</span>
         </li>
       </ul>
-    </div>
+    </GlassCard>
   </section>
 </template>
 
 <style scoped>
-.contact-card {
+.container {
+  height: calc(100dvh - 4.5rem);
   display: flex;
   justify-content: center;
-  padding: 4rem 1rem;
+  align-items: center;
   background: transparent;
 }
 
-.glass-box {
-  background: rgba(49, 54, 63, 0.5);
-  backdrop-filter: blur(12px);
-  border-radius: 1.5rem;
+.contact-box {
   padding: 2.5rem;
   max-width: 700px;
   width: 100%;
   color: var(--color-text-primary);
-  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.25);
 }
 
 .profile {
