@@ -24,14 +24,14 @@
 
   /* Colores para fondos  */
   --color-gradient-1: #087E8B;
-  --color-gradient-2: #0F4C75;      
-  --color-gradient-3: #3282B8;      
-  --color-gradient-4: #8338EC;      
-  --color-gradient-5: #5F3DC4;      
-  --color-gradient-6: #2E86AB;      
+  --color-gradient-2: #0F4C75;
+  --color-gradient-3: #3282B8;
+  --color-gradient-4: #8338EC;
+  --color-gradient-5: #5F3DC4;
+  --color-gradient-6: #2E86AB;
 
   /* Colores secundarios */
-  --color-accent-cold: #06FFA5;     
+  --color-accent-cold: #06FFA5;
   --color-accent-purple: #A371F7;
 
   /* Backgrounds */
@@ -45,6 +45,22 @@
   --glass-border-card: 1px solid rgba(255, 255, 255, 0.1);
   --glass-border-badge: 1px solid rgba(255, 255, 255, 0.15);
   --glass-border-section: 1px solid rgba(255, 255, 255, 0.07);
+
+  /* Botones glass */
+  --btn-glass-bg: rgba(255, 255, 255, 0.08);
+  --btn-glass-border: 1px solid rgba(255, 255, 255, 0.2);
+  --btn-glass-hover-bg: rgba(255, 255, 255, 0.12);
+  --btn-glass-shadow: 0 8px 16px rgba(4, 126, 139, 0.4);
+
+  /* Hero */
+  --hero-glass-bg: rgba(255, 255, 255, 0.05);
+  --hero-glass-border: 1px solid rgba(255, 255, 255, 0.1);
+  --hero-glass-shadow: 0 12px 24px rgba(0, 0, 0, 0.15);
+
+  /* Carrusel */
+  --carousel-glass-bg: rgba(255, 255, 255, 0.03);
+  --carousel-glass-border: 1px solid rgba(255, 255, 255, 0.05);
+  --slide-glass-hover-bg: rgba(255, 255, 255, 0.12);
 
   /* Blur */
   --glass-blur-card: blur(12px);
@@ -73,20 +89,20 @@
   --shadow-glow-purple: 0 0 60px rgba(131, 56, 236, 0.35);
 
   /* Sistema de fondos animados */
-  --sphere-opacity: 0.60;            
-  --sphere-specular: 0.55;          
-  --sphere-shadow: 0.30;             
+  --sphere-opacity: 0.60;
+  --sphere-specular: 0.55;
+  --sphere-shadow: 0.30;
 
   /* Velocidades de animación */
-  --anim-speed-slow: 0.00018;        
-  --anim-speed-mid: 0.00026;         
-  --anim-speed-fast: 0.00034;        
+  --anim-speed-slow: 0.00018;
+  --anim-speed-mid: 0.00026;
+  --anim-speed-fast: 0.00034;
 
   /* Parallax */
-  --parallax-scroll-intensity: 0.12; 
-  --parallax-mouse-intensity: 0.022; 
-  --parallax-depth-near: 1.0; 
-  --parallax-depth-mid: 0.55; 
+  --parallax-scroll-intensity: 0.12;
+  --parallax-mouse-intensity: 0.022;
+  --parallax-depth-near: 1.0;
+  --parallax-depth-mid: 0.55;
   --parallax-depth-far: 0.25;
 
   color: rgba(255, 255, 255, 0.87);
@@ -160,8 +176,8 @@ html {
   border-radius: 1.5rem;
   box-shadow: var(--shadow-glass);
   transition: background var(--glass-transition),
-              transform var(--glass-transition),
-              box-shadow var(--glass-transition);
+    transform var(--glass-transition),
+    box-shadow var(--glass-transition);
 }
 
 .glass-card.hoverable:hover {
@@ -177,7 +193,7 @@ html {
   border: var(--glass-border-badge);
   border-radius: 12px;
   transition: background var(--glass-transition),
-              transform var(--glass-transition);
+    transform var(--glass-transition);
 }
 
 .glass-badge.hoverable:hover {
@@ -213,7 +229,8 @@ html {
 
 * {
   scrollbar-width: thin;
-  scrollbar-color: var(--color-primary) transparent;;
+  scrollbar-color: var(--color-primary) transparent;
+  ;
 }
 
 /* Animaciones globales */
@@ -221,6 +238,7 @@ html {
   from {
     opacity: 0;
   }
+
   to {
     opacity: 1;
   }
@@ -231,6 +249,7 @@ html {
     opacity: 0;
     transform: translateY(20px);
   }
+
   to {
     opacity: 1;
     transform: translateY(0);
@@ -238,9 +257,12 @@ html {
 }
 
 @keyframes float {
-  0%, 100% {
+
+  0%,
+  100% {
     transform: translateY(0px);
   }
+
   50% {
     transform: translateY(-10px);
   }

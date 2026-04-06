@@ -42,10 +42,11 @@ import GlassCard from "@/components/GlassCard.vue";
 
 <style scoped>
 .container {
-  height: calc(100dvh - 4.5rem);
+  min-height: calc(100dvh - 5rem);
   display: flex;
   justify-content: center;
   align-items: center;
+  padding: 2rem 1rem;
   background: transparent;
 }
 
@@ -61,12 +62,12 @@ import GlassCard from "@/components/GlassCard.vue";
   align-items: center;
   gap: 1.5rem;
   margin-bottom: 2rem;
-  flex-wrap: wrap;
 }
 
 .avatar {
   width: 200px;
   height: 200px;
+  flex-shrink: 0;
   object-fit: cover;
   border-radius: 50%;
   border: 3px solid var(--color-primary);
@@ -85,7 +86,7 @@ import GlassCard from "@/components/GlassCard.vue";
 
 .description {
   font-size: 1rem;
-  color: var(--color-text-secondary);
+  color: var(--color-text-primary);
 }
 
 .info-list {
@@ -105,6 +106,7 @@ import GlassCard from "@/components/GlassCard.vue";
 
 .icon {
   color: var(--color-primary);
+  flex-shrink: 0;
   width: 20px;
   height: 20px;
 }
@@ -114,10 +116,53 @@ a {
   text-decoration: none;
   border-bottom: 1px solid transparent;
   transition: all 0.2s;
+  word-break: break-all;
 }
 
 a:hover {
   color: var(--color-accent);
   border-bottom: 1px solid var(--color-accent);
+}
+
+/* Tablet */
+@media (max-width: 600px) {
+  .contact-box {
+    padding: 2rem 1.5rem;
+  }
+
+  .profile {
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+  }
+
+  .avatar {
+    width: 150px;
+    height: 150px;
+  }
+
+  .text h2 {
+    font-size: 1.5rem;
+  }
+}
+
+/* Móvil pequeño */
+@media (max-width: 380px) {
+  .contact-box {
+    padding: 1.5rem 1rem;
+  }
+
+  .avatar {
+    width: 120px;
+    height: 120px;
+  }
+
+  .text h2 {
+    font-size: 1.25rem;
+  }
+
+  .info-list li {
+    font-size: 0.9rem;
+  }
 }
 </style>

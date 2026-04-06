@@ -83,7 +83,7 @@ h3 {
 }
 
 .description {
-  color: var(--color-text-secondary);
+  color: var(--color-text-primary);
   font-size: 1rem;
   margin-top: 0.5rem;
 }
@@ -108,16 +108,19 @@ h3 {
   gap: 8px;
   padding: 10px 16px;
   border-radius: 12px;
-  background-color: var(--color-primary);
+  backdrop-filter: blur(10px);
+  background: var(--btn-glass-bg);
+  border: var(--btn-glass-border);
   color: var(--color-text-primary);
   text-decoration: none;
   font-weight: 600;
-  transition: background 0.3s ease, transform 0.2s ease;
+  transition: background 0.3s ease, transform 0.2s ease, box-shadow 0.3s ease;
 }
 
 .project-btn:hover {
-  background-color: var(--hover-primary);
-  transform: scale(1.05);
+  background: var(--btn-glass-hover-bg);
+  transform: translateY(-2px);
+  box-shadow: var(--btn-glass-shadow);
 }
 
 @media (min-width: 768px) {
