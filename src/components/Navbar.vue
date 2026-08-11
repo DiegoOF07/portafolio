@@ -18,7 +18,18 @@ const navItems = [
 
 // El scroll-spy solo tiene sentido en la home (donde viven las secciones).
 const isHome = computed(() => route.path === '/')
-const { activeId } = useScrollSpy(navItems.map((i) => i.id))
+const { activeId, setActiveId } = useScrollSpy(navItems.map((i) => i.id))
+
+const isItemActive = (itemId: string) => {
+  // En el detalle de un proyecto, la sección "Proyectos" se mantiene activa.
+  if (itemId === 'proyectos' && route.name === 'ProjectDetail') return true
+  return isHome.value && activeId.value === itemId
+}
+
+const handleClick = (itemId: string) => {
+  setActiveId(itemId)
+  closeMenu()
+}
 
 const toggleMenu = () => {
   isOpen.value = !isOpen.value
@@ -42,8 +53,8 @@ const closeMenu = () => {
         <RouterLink
           :to="{ path: '/', hash: `#${item.id}` }"
           class="nav-link"
-          :class="{ active: isHome && activeId === item.id }"
-          @click="closeMenu"
+          :class="{ active: isItemActive(item.id) }"
+          @click="handleClick(item.id)"
         >
           <component :is="item.icon" :size="18" />
           <span>{{ item.label }}</span>

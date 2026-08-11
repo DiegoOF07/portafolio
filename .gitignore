@@ -25,3 +25,5 @@ dist-ssr
 
 #extra
 *.zip
+/.agents
+skills-lock.json
