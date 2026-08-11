@@ -1,16 +1,13 @@
 <script setup lang="ts">
 import { motion } from 'motion-v'
-import { Link, Github } from 'lucide-vue-next'
+import { Link, Github, ArrowRight, Lock } from 'lucide-vue-next'
 import TechBadge from './TechBadge.vue'
 import GlassCard from '@/components/GlassCard.vue'
+import MediaSlot from '@/components/MediaSlot.vue'
+import type { FeaturedProject } from '@/data/projects'
 
 defineProps<{
-  title: string
-  description: string
-  image: string
-  techs: { name: string; icon?: string }[]
-  link?: string
-  github?: string
+  project: FeaturedProject
   i: number
 }>()
 
@@ -32,20 +29,40 @@ const variants = (i: number) => ({
     :variants="variants(i)"
   >
     <GlassCard variant="project" hoverable class="project-card">
-      <img :src="image" :alt="title" class="project-image" />
+      <MediaSlot :media="project.media" class="project-image" />
       <div class="project-content">
         <header>
-          <h3>{{ title }}</h3>
-          <p class="description">{{ description }}</p>
+          <h3>{{ project.title }}</h3>
+          <p class="tagline">{{ project.tagline }}</p>
+          <p class="meta"><strong>Contexto:</strong> {{ project.context }}</p>
+          <p class="meta"><strong>Reto técnico:</strong> {{ project.challenge }}</p>
         </header>
 
         <div class="techs">
-          <TechBadge v-for="(tech, idx) in techs" :key="idx" :name="tech.name" :icon="tech.icon" />
+          <TechBadge v-for="(tech, idx) in project.techs" :key="idx" :name="tech.name" :icon="tech.icon" />
         </div>
 
+        <p class="status">{{ project.status }}</p>
+
         <footer class="buttons">
-          <a v-if="link" class="project-btn" :href="link" target="_blank"><Link :size="18" /> Ver proyecto</a>
-          <a v-if="github" class="project-btn" :href="github" target="_blank"><Github :size="18" /> GitHub</a>
+          <a v-if="project.links.demo" class="project-btn" :href="project.links.demo" target="_blank">
+            <Link :size="18" /> Ver demo
+          </a>
+          <a v-if="project.links.repo" class="project-btn" :href="project.links.repo" target="_blank">
+            <Github :size="18" /> Repositorio
+          </a>
+          <a v-if="project.links.repoFrontend" class="project-btn" :href="project.links.repoFrontend" target="_blank">
+            <Github :size="18" /> Repo frontend
+          </a>
+          <a v-if="project.links.repoBackend" class="project-btn" :href="project.links.repoBackend" target="_blank">
+            <Github :size="18" /> Repo backend
+          </a>
+          <span v-if="project.links.privacyNote" class="privacy-note">
+            <Lock :size="16" /> {{ project.links.privacyNote }}
+          </span>
+          <RouterLink v-if="project.hasDetail" :to="`/proyectos/${project.slug}`" class="project-btn project-btn-primary">
+            Ver más <ArrowRight :size="18" />
+          </RouterLink>
         </footer>
       </div>
     </GlassCard>
@@ -66,7 +83,6 @@ const variants = (i: number) => ({
 .project-image {
   width: 100%;
   height: 240px;
-  object-fit: cover;
 }
 
 .project-content {
@@ -82,9 +98,22 @@ h3 {
   margin: 0.2rem 0;
 }
 
-.description {
+.tagline {
   color: var(--color-text-primary);
   font-size: 1rem;
+  margin-top: 0.5rem;
+}
+
+.meta {
+  color: var(--color-text-secondary, rgba(255,255,255,0.75));
+  font-size: 0.9rem;
+  margin-top: 0.35rem;
+}
+
+.status {
+  font-size: 0.85rem;
+  font-style: italic;
+  color: var(--color-text-secondary, rgba(255,255,255,0.7));
   margin-top: 0.5rem;
 }
 
@@ -99,7 +128,17 @@ h3 {
   display: flex;
   gap: 1rem;
   flex-wrap: wrap;
+  align-items: center;
   margin-top: 0.5rem;
+}
+
+.privacy-note {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 0.85rem;
+  font-style: italic;
+  color: var(--color-text-secondary, rgba(255,255,255,0.7));
 }
 
 .project-btn {
@@ -123,10 +162,15 @@ h3 {
   box-shadow: var(--btn-glass-shadow);
 }
 
+.project-btn-primary {
+  background: var(--color-accent);
+  color: #0d1b2a;
+}
+
 @media (min-width: 768px) {
   .project-card {
     flex-direction: row;
-    max-height: 405px;
+    max-height: none;
   }
 
   .project-image {
@@ -136,7 +180,7 @@ h3 {
 
   .project-content {
     width: 60%;
-    gap: 1rem;
+    gap: 0.5rem;
   }
 
   .techs, .buttons {
@@ -144,7 +188,7 @@ h3 {
   }
 
   h3 {
-    margin: 1rem 0;
+    margin: 1rem 0 0.25rem;
   }
 }
 </style>

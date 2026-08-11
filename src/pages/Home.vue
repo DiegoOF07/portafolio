@@ -1,106 +1,154 @@
 <script setup lang="ts">
-import { Swiper, SwiperSlide } from 'swiper/vue'
-import { Autoplay, Pagination } from 'swiper/modules'
-import vueLogo from '@/assets/logos/vue.svg'
-import tsLogo from '@/assets/logos/typescript.svg'
-import viteLogo from '@/assets/logos/vite.svg'
-import jsLogo from '@/assets/logos/javascript.svg'
-import reactLogo from '@/assets/logos/react.svg'
-import goLogo from '@/assets/logos/go.svg'
-import postgresLogo from '@/assets/logos/postgresql.svg'
-import pythonLogo from '@/assets/logos/python.svg'
-import cplusLogo from '@/assets/logos/cplusplus.svg'
-import javaLogo from '@/assets/logos/java.svg'
-import dockerLogo from '@/assets/logos/docker.svg'
-
-const technologies = [
-  { name: 'Vue 3', logo: vueLogo },
-  { name: 'TypeScript', logo: tsLogo },
-  { name: 'Vite', logo: viteLogo },
-  { name: 'Javascript', logo: jsLogo },
-  { name: 'React', logo: reactLogo },
-  { name: 'Go', logo: goLogo },
-  { name: 'PostgreSQL', logo: postgresLogo },
-  { name: 'Python', logo: pythonLogo },
-  { name: 'C++', logo: cplusLogo },
-  { name: 'Java', logo: javaLogo },
-  { name: 'Docker', logo: dockerLogo },
-]
+import { Mail, Github, Linkedin, MapPin, GraduationCap } from 'lucide-vue-next'
+import GlassCard from '@/components/GlassCard.vue'
+import ProjectCard from '@/components/ProjectCard.vue'
+import ExperimentCard from '@/components/ExperimentCard.vue'
+import TechBadge from '@/components/TechBadge.vue'
+import { featuredProjects, experimentProjects } from '@/data/projects'
+import { stackGroups } from '@/data/stack'
 </script>
 
 <template>
-  <section class="home">
-    <div class="hero">
-
+  <div class="home">
+    <!-- ============ HERO ============ -->
+    <section id="inicio" class="section hero-section">
       <div class="hero-glass-card">
-        <h1>Soy <span class="highlight">Diego Flores</span></h1>
-        <h2>Desarrollador <span class="highlight2">Frontend</span> & <span class="highlight2">Backend</span></h2>
+        <h1>Diego Flores <span class="highlight">— Full-Stack Developer</span></h1>
         <p class="description">
-          Desarrollo aplicaciones completas usando
-          <span class="highlight3">Vue</span>,
-          <span class="highlight3">React</span>,
-          <span class="highlight3">Go</span> y
-          <span class="highlight3">PostgreSQL</span>.
-          Enfocado en rendimiento, escalabilidad y buena UX.
+          Construyo productos completos, del backend a la base de datos,
+          con curiosidad por entender cómo funcionan los sistemas por dentro.
         </p>
-
-        <div class="hero-stats">
-          <div class="stat">
-            <div class="number">8+</div>
-            <div class="label">Proyectos</div>
-          </div>
-          <div class="stat">
-            <div class="number">3+</div>
-            <div class="label">Años Experiencia</div>
-          </div>
-          <div class="stat">
-            <div class="number">100%</div>
-            <div class="label">Fiable</div>
-          </div>
-        </div>
-
         <div class="hero-actions">
-          <RouterLink to="/projects" class="btn-hero-primary">Ver proyectos</RouterLink>
-          <RouterLink to="/contact" class="btn-hero-secondary">Contáctame</RouterLink>
+          <a href="#proyectos" class="btn-hero-primary">Ver proyectos</a>
+          <a href="#contacto" class="btn-hero-secondary">Contacto</a>
         </div>
       </div>
-
       <img src="../assets/Developer activity-bro.svg" alt="Developer" class="hero-img" />
-    </div>
+    </section>
 
-    <div class="carousel">
-      <h3>Tecnologías que uso</h3>
-      <Swiper :modules="[Autoplay, Pagination]" :slides-per-view="2" :space-between="20" :loop="true"
-        :autoplay="{ delay: 2500, disableOnInteraction: false }"
-        :breakpoints="{ 640: { slidesPerView: 3 }, 1024: { slidesPerView: 5 } }" class="tech-swiper">
-        <SwiperSlide v-for="tech in technologies" :key="tech.name" class="slide">
-          <div class="slide-content">
-            <img :src="tech.logo" :alt="tech.name" class="tech-logo" />
-            <p>{{ tech.name }}</p>
+    <!-- ============ SOBRE MÍ ============ -->
+    <section id="sobre-mi" class="section">
+      <GlassCard variant="section" class="about-card">
+        <h2 class="section-title">Sobre mí</h2>
+        <div class="about-body">
+          <img src="@/assets/img/profile.jpg" alt="Diego Flores" class="avatar" />
+          <p>
+            Soy estudiante de Ingeniería en Ciencias de la Computación —llevo más de
+            3 años en la carrera— y desarrollador full-stack, principalmente con Go,
+            Vue y bases de datos relacionales y en grafos. Disfruto llevar proyectos
+            de principio a fin, desde entender el problema de un cliente real hasta
+            el despliegue, y complementar eso con curiosidad técnica hacia temas
+            menos comunes: he construido un compilador básico, trabajado con
+            sistemas operativos a bajo nivel y experimentado con gráficos 3D y
+            raytracing. Creo que entender los fundamentos, no solo los frameworks,
+            es lo que hace la diferencia a largo plazo.
+          </p>
+        </div>
+      </GlassCard>
+    </section>
+
+    <!-- ============ PROYECTOS DESTACADOS ============ -->
+    <section id="proyectos" class="section">
+      <h2 class="section-title centered">Proyectos destacados</h2>
+      <div class="projects-list">
+        <ProjectCard
+          v-for="(p, i) in featuredProjects"
+          :key="p.slug"
+          :project="p"
+          :i="i"
+        />
+      </div>
+    </section>
+
+    <!-- ============ STACK TÉCNICO ============ -->
+    <section id="stack" class="section">
+      <GlassCard variant="section" class="stack-card">
+        <h2 class="section-title centered">Stack técnico</h2>
+        <div class="stack-groups">
+          <div v-for="group in stackGroups" :key="group.label" class="stack-group">
+            <h3>{{ group.label }}</h3>
+            <div class="stack-badges">
+              <TechBadge v-for="tech in group.items" :key="tech.name" :name="tech.name" :icon="tech.icon" />
+            </div>
           </div>
-        </SwiperSlide>
-      </Swiper>
-    </div>
-  </section>
+        </div>
+      </GlassCard>
+    </section>
+
+    <!-- ============ EXPERIMENTALES ============ -->
+    <section id="experimentos" class="section">
+      <h2 class="section-title centered">Proyectos experimentales</h2>
+      <div class="experiments-grid">
+        <ExperimentCard v-for="p in experimentProjects" :key="p.slug" :project="p" />
+      </div>
+    </section>
+
+    <!-- ============ CONTACTO ============ -->
+    <section id="contacto" class="section">
+      <GlassCard variant="section" class="contact-card">
+        <h2 class="section-title centered">Contacto</h2>
+        <p class="contact-cta">
+          Escríbeme, estoy buscando oportunidades remotas.
+        </p>
+        <ul class="info-list">
+          <li>
+            <Mail class="icon" />
+            <span><a href="mailto:floresdiego041@gmail.com">floresdiego041@gmail.com</a></span>
+          </li>
+          <li>
+            <Github class="icon" />
+            <span><a href="https://github.com/DiegoOF07" target="_blank">github.com/DiegoOF07</a></span>
+          </li>
+          <li>
+            <Linkedin class="icon" />
+            <span><a href="https://linkedin.com/in/diego-flores-gt" target="_blank">linkedin.com/in/diego-flores-gt</a></span>
+          </li>
+          <li>
+            <MapPin class="icon" />
+            <span>Guatemala</span>
+          </li>
+          <li>
+            <GraduationCap class="icon" />
+            <span>Ingeniería en Ciencias de la Computación</span>
+          </li>
+        </ul>
+      </GlassCard>
+    </section>
+  </div>
 </template>
 
 <style scoped>
 .home {
-  padding: 2rem;
   display: flex;
   flex-direction: column;
-  gap: 3rem;
+}
+
+.section {
+  padding: 4rem 2rem;
   max-width: 1200px;
   margin: 0 auto;
+  width: 100%;
+  scroll-margin-top: 4.5rem;
+}
+
+.section-title {
+  font-size: 2.25rem;
+  color: var(--color-text-primary);
+  margin-bottom: 2rem;
+}
+
+.section-title.centered {
+  text-align: center;
 }
 
 /* Hero */
-.hero {
+.hero-section {
   display: flex;
   flex-wrap: wrap;
   align-items: center;
   justify-content: space-between;
   gap: 2rem;
+  min-height: 70vh;
 }
 
 .hero-glass-card {
@@ -113,61 +161,26 @@ const technologies = [
   box-shadow: var(--hero-glass-shadow);
 }
 
-.hero-img {
-  max-width: 400px;
-  width: 100%;
-  flex-shrink: 0;
-}
-
 .hero-glass-card h1 {
-  font-size: 2.5rem;
-  margin: 0;
-  margin-bottom: 1.5rem;
+  font-size: 2.25rem;
+  margin: 0 0 1.5rem;
   color: var(--color-text-primary);
 }
 
-.hero-glass-card h2 {
-  font-size: 1.5rem;
-  color: var(--color-text-primary);
-  margin-bottom: 1rem;
-}
-
-.hero-glass-card p {
-  color: var(--color-text-primary);
-  margin-bottom: 1.5rem;
-}
-
-/* Stats */
-.hero-stats {
-  display: grid;
-  grid-template-columns: repeat(3, 1fr);
-  gap: 1.5rem;
-  margin: 1.5rem 0;
-  padding: 1.5rem 0;
-  border-top: 1px solid rgba(255, 255, 255, 0.1);
-  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
-}
-
-.stat {
-  text-align: center;
-}
-
-.stat .number {
-  font-size: 1.75rem;
+.highlight {
   color: var(--color-accent);
-  font-weight: bold;
 }
 
-.stat .label {
+.hero-glass-card .description {
   color: var(--color-text-primary);
-  font-size: 0.9rem;
-  margin-top: 0.5rem;
+  margin-bottom: 1.5rem;
+  font-size: 1.1rem;
 }
 
-/* Botones hero */
 .hero-actions {
   display: flex;
   gap: 1rem;
+  flex-wrap: wrap;
 }
 
 .btn-hero-primary,
@@ -205,99 +218,148 @@ const technologies = [
   box-shadow: var(--btn-glass-shadow);
 }
 
-/* Highlights */
-.highlight {
-  color: var(--color-accent);
+.hero-img {
+  max-width: 380px;
+  width: 100%;
+  flex-shrink: 0;
 }
 
-.highlight2 {
-  color: var(--color-accent-purple);
+/* Sobre mí */
+.about-card {
+  padding: 2.5rem;
 }
 
-.highlight2:hover {
-  cursor: pointer;
+.about-body {
+  display: flex;
+  align-items: center;
+  gap: 2rem;
 }
 
-.highlight3 {
-  color: var(--color-accent-purple);
+.avatar {
+  width: 160px;
+  height: 160px;
+  flex-shrink: 0;
+  object-fit: cover;
+  border-radius: 50%;
+  border: 3px solid var(--color-primary);
+  box-shadow: 0 0 12px rgba(0, 0, 0, 0.3);
 }
 
-/* Carrusel */
-.carousel {
-  backdrop-filter: blur(8px);
-  background: var(--carousel-glass-bg);
-  border: var(--carousel-glass-border);
-  border-radius: 2rem;
-  padding: 1.5rem;
-  text-align: center;
-}
-
-.carousel h3 {
-  font-size: 1.75rem;
-  margin: 0;
-  margin-bottom: 1rem;
+.about-body p {
   color: var(--color-text-primary);
+  font-size: 1rem;
+  line-height: 1.6;
 }
 
-.tech-swiper {
-  padding: 6px 0;
-}
-
-.slide-content {
-  background: var(--glass-bg-badge);
-  border: var(--glass-border-badge);
-  backdrop-filter: var(--glass-blur-badge);
-  -webkit-backdrop-filter: var(--glass-blur-badge);
-  border-radius: 12px;
-  padding: 1rem;
+/* Proyectos */
+.projects-list {
   display: flex;
   flex-direction: column;
   align-items: center;
-  gap: 0.75rem;
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
-  transition: background 0.3s ease, transform 0.3s ease, box-shadow 0.3s ease;
+  gap: 3rem;
 }
 
-.slide-content:hover {
-  background: var(--slide-glass-hover-bg);
-  transform: translateY(-6px) scale(1.05);
-  box-shadow: 0 12px 24px rgba(0, 0, 0, 0.2);
+/* Stack */
+.stack-card {
+  padding: 2.5rem;
 }
 
-.tech-logo {
-  width: 50px;
-  height: 50px;
-  object-fit: contain;
+.stack-groups {
+  display: flex;
+  flex-direction: column;
+  gap: 1.75rem;
 }
 
-.slide p {
+.stack-group h3 {
+  color: var(--color-accent);
+  font-size: 1.1rem;
+  margin-bottom: 0.75rem;
+}
+
+.stack-badges {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.6rem;
+}
+
+/* Experimentales */
+.experiments-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  gap: 1.5rem;
+}
+
+/* Contacto */
+.contact-card {
+  padding: 2.5rem;
+  max-width: 700px;
+  margin: 0 auto;
+  text-align: center;
+}
+
+.contact-cta {
   color: var(--color-text-primary);
-  font-weight: 600;
+  margin-bottom: 1.5rem;
+}
+
+.info-list {
+  list-style: none;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+  text-align: left;
+  max-width: 400px;
+  margin: 0 auto;
+}
+
+.info-list li {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  font-size: 1rem;
+}
+
+.icon {
+  color: var(--color-primary);
+  flex-shrink: 0;
+  width: 20px;
+  height: 20px;
+}
+
+a {
+  color: var(--color-text-primary);
+  text-decoration: none;
+  border-bottom: 1px solid transparent;
+  transition: all 0.2s;
+  word-break: break-all;
+}
+
+a:hover {
+  color: var(--color-accent);
+  border-bottom: 1px solid var(--color-accent);
 }
 
 /* Responsive */
 @media (max-width: 895px) {
-  .hero {
+  .hero-section {
     justify-content: center;
-  }
-
-  .hero-glass-card {
     text-align: center;
-  }
-
-  .hero-stats {
-    grid-template-columns: repeat(3, 1fr);
-    gap: 1rem;
   }
 
   .hero-actions {
     justify-content: center;
   }
+
+  .about-body {
+    flex-direction: column;
+    text-align: center;
+  }
 }
 
-@media (max-width: 480px) {
-  .hero-stats {
-    grid-template-columns: 1fr;
+@media (max-width: 600px) {
+  .section {
+    padding: 3rem 1rem;
   }
 }
 </style>

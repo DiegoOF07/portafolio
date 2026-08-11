@@ -6,11 +6,11 @@ import BackgroundSystem from './components/BackgroundSystem.vue'
 
 const route = useRoute()
 
-// Determinar qué tipo de fondo mostrar basado en la ruta
+// Determinar qué tipo de fondo mostrar basado en la ruta.
+// La home es una SPA de una sola sección de fondo; el detalle de proyecto
+// usa una variante propia.
 const backgroundType = computed(() => {
-  if (route.path === '/') return 'home'
-  if (route.path === '/projects') return 'projects'
-  if (route.path === '/contact') return 'contact'
+  if (route.name === 'ProjectDetail') return 'projects'
   return 'home'
 })
 </script>

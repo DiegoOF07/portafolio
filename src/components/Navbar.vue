@@ -1,33 +1,57 @@
 <script setup lang="ts">
-import { ref } from 'vue'
-import { Home, Phone, BookOpen, Menu, X } from 'lucide-vue-next'
+import { ref, computed } from 'vue'
+import { useRoute } from 'vue-router'
+import { Home, User, FolderGit2, Layers, FlaskConical, Phone, Menu, X } from 'lucide-vue-next'
+import { useScrollSpy } from '@/composables/useScrollSpy'
 
 const isOpen = ref(false)
+const route = useRoute()
+
+const navItems = [
+  { id: 'inicio', label: 'Inicio', icon: Home },
+  { id: 'sobre-mi', label: 'Sobre mí', icon: User },
+  { id: 'proyectos', label: 'Proyectos', icon: FolderGit2 },
+  { id: 'stack', label: 'Stack', icon: Layers },
+  { id: 'experimentos', label: 'Experimentos', icon: FlaskConical },
+  { id: 'contacto', label: 'Contacto', icon: Phone },
+]
+
+// El scroll-spy solo tiene sentido en la home (donde viven las secciones).
+const isHome = computed(() => route.path === '/')
+const { activeId } = useScrollSpy(navItems.map((i) => i.id))
 
 const toggleMenu = () => {
   isOpen.value = !isOpen.value
+}
+
+const closeMenu = () => {
+  isOpen.value = false
 }
 </script>
 
 <template>
   <nav class="navbar">
-    <div class="logo">Diego Flores</div>
+    <RouterLink to="/#inicio" class="logo">Diego Flores</RouterLink>
 
     <button class="menu-btn" @click="toggleMenu">
       <component :is="isOpen ? X : Menu" :size="28" />
     </button>
 
     <ul :class="['nav-links', { open: isOpen }]">
-      <li><RouterLink to="/" exact-active-class="active" class="nav-link" @click="isOpen = false"><Home /> <span>Principal</span></RouterLink></li>
-      <li><RouterLink to="/projects" exact-active-class="active" class="nav-link" @click="isOpen = false"><BookOpen /> <span>Proyectos</span></RouterLink></li>
-      <li><RouterLink to="/contact" exact-active-class="active" class="nav-link" @click="isOpen = false"><Phone /> <span>Contacto</span></RouterLink></li>
+      <li v-for="item in navItems" :key="item.id">
+        <RouterLink
+          :to="{ path: '/', hash: `#${item.id}` }"
+          class="nav-link"
+          :class="{ active: isHome && activeId === item.id }"
+          @click="closeMenu"
+        >
+          <component :is="item.icon" :size="18" />
+          <span>{{ item.label }}</span>
+        </RouterLink>
+      </li>
     </ul>
   </nav>
 </template>
-
-
-<script lang="ts" setup>
-</script>
 
 <style scoped>
 .navbar {
@@ -52,6 +76,7 @@ const toggleMenu = () => {
   font-weight: bold;
   color: var(--color-text-primary);
   letter-spacing: 0.02em;
+  text-decoration: none;
 }
 
 .menu-btn {
@@ -112,7 +137,6 @@ const toggleMenu = () => {
     padding: 0;
     margin: 0;
 
-    /* Glassmorphism en el desplegable móvil */
     background: rgba(13, 27, 42, 0.75);
     backdrop-filter: blur(var(--glass-blur));
     -webkit-backdrop-filter: blur(var(--glass-blur));
