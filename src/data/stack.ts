@@ -9,6 +9,10 @@ import pythonLogo from '@/assets/logos/python.svg'
 import cplusLogo from '@/assets/logos/cplusplus.svg'
 import javaLogo from '@/assets/logos/java.svg'
 import dockerLogo from '@/assets/logos/docker.svg'
+import rustLogo from '@/assets/logos/rust.svg'
+import neo4jLogo from '@/assets/logos/neo4j.svg'
+import supabaseLogo from '@/assets/logos/supabase.svg'
+import gcpLogo from '@/assets/logos/gcp.svg'
 import type { TechRef } from './projects'
 
 export interface StackGroup {
@@ -27,7 +31,7 @@ export const stackGroups: StackGroup[] = [
       { name: 'Python', icon: pythonLogo },
       { name: 'C++', icon: cplusLogo },
       { name: 'Java', icon: javaLogo },
-      { name: 'Rust' }, // TODO: agregar logo de Rust
+      { name: 'Rust', icon: rustLogo },
     ],
   },
   {
@@ -48,15 +52,15 @@ export const stackGroups: StackGroup[] = [
     label: 'Bases de datos',
     items: [
       { name: 'PostgreSQL', icon: postgresLogo },
-      { name: 'Neo4j' }, // TODO: agregar logo de Neo4j
-      { name: 'Supabase' }, // TODO: agregar logo de Supabase
+      { name: 'Neo4j', icon: neo4jLogo },
+      { name: 'Supabase', icon: supabaseLogo },
     ],
   },
   {
     label: 'Herramientas',
     items: [
       { name: 'Docker', icon: dockerLogo },
-      { name: 'Google Cloud Platform' }, // TODO: agregar logo de GCP
+      { name: 'Google Cloud Platform', icon: gcpLogo },
     ],
   },
 ]

@@ -1,7 +1,9 @@
 <script setup lang="ts">
-import { computed } from 'vue'
+import { ref, computed } from 'vue'
 import { useRoute } from 'vue-router'
-import { ArrowLeft, Link, Github, Lock } from 'lucide-vue-next'
+import { ArrowLeft, Link, Github, Lock, Expand } from 'lucide-vue-next'
+import { Swiper, SwiperSlide } from 'swiper/vue'
+import { Navigation, Pagination, Keyboard, A11y } from 'swiper/modules'
 import GlassCard from '@/components/GlassCard.vue'
 import MediaSlot from '@/components/MediaSlot.vue'
 import TechBadge from '@/components/TechBadge.vue'
@@ -9,6 +11,29 @@ import { getFeaturedProjectBySlug } from '@/data/projects'
 
 const route = useRoute()
 const project = computed(() => getFeaturedProjectBySlug(route.params.slug as string))
+
+const swiperRef = ref()
+const activeIndex = ref(0)
+
+const goToSlide = (index: number) => {
+  swiperRef.value?.swiper?.slideTo(index)
+}
+
+const openFullscreen = (index: number) => {
+  const gallery = project.value?.detail?.gallery || []
+  const media = gallery[index]
+  if (!media) return
+  const url = typeof media.src === 'string' ? media.src : ''
+  window.open(url, '_blank')
+}
+
+const onSwiperReady = (swiper: any) => {
+  swiperRef.value = swiper
+}
+
+const onSlideChange = (swiper: any) => {
+  activeIndex.value = swiper.realIndex
+}
 </script>
 
 <template>
@@ -41,7 +66,6 @@ const project = computed(() => getFeaturedProjectBySlug(route.params.slug as str
         <p>{{ project.detail.extendedDescription }}</p>
       </div>
       <div v-else class="extended placeholder-note">
-        <!-- TODO: agregar descripción extendida en src/data/projects.ts -->
         <p>Descripción extendida pendiente de agregar.</p>
       </div>
 
@@ -49,8 +73,55 @@ const project = computed(() => getFeaturedProjectBySlug(route.params.slug as str
         <TechBadge v-for="(tech, idx) in project.techs" :key="idx" :name="tech.name" :icon="tech.icon" />
       </div>
 
-      <div v-if="project.detail?.gallery?.length" class="gallery">
-        <MediaSlot v-for="(m, idx) in project.detail.gallery" :key="idx" :media="m" aspect="4/3" />
+      <!-- Carrusel de galería estilo glassmorphism -->
+      <div v-if="project.detail?.gallery?.length" class="gallery-section">
+        <h3 class="gallery-title">Galería del proyecto</h3>
+
+        <Swiper
+          ref="swiperRef"
+          :modules="[Navigation, Pagination, Keyboard, A11y]"
+          :slides-per-view="1"
+          :space-between="0"
+          :loop="true"
+          :navigation="true"
+          :pagination="{ clickable: true, dynamicBullets: true }"
+          :keyboard="{ enabled: true }"
+          :a11y="true"
+          :speed="500"
+          :allow-touch-move="true"
+          @swiper="onSwiperReady"
+          @slide-change="onSlideChange"
+          class="gallery-swiper"
+        >
+          <SwiperSlide v-for="(m, idx) in project.detail.gallery" :key="idx">
+            <div class="slide-wrapper">
+              <MediaSlot :media="m" aspect="16/9" class="slide-media" />
+              <button
+                class="fullscreen-btn"
+                @click="openFullscreen(idx)"
+                :aria-label="`Ver imagen ${idx + 1} en pantalla completa`"
+                :title="`Ver imagen ${idx + 1} en pantalla completa`"
+              >
+                <Expand :size="18" />
+                <span class="fullscreen-label">Pantalla completa</span>
+              </button>
+            </div>
+          </SwiperSlide>
+        </Swiper>
+
+        <!-- Miniaturas (thumbnails) -->
+        <div class="thumbnails" v-if="project.detail.gallery.length > 1">
+          <button
+            v-for="(m, idx) in project.detail.gallery"
+            :key="idx"
+            :class="['thumb-btn', { active: activeIndex === idx }]"
+            @click="goToSlide(idx)"
+            :aria-label="`Ir a imagen ${idx + 1}`"
+            :aria-current="activeIndex === idx ? 'true' : 'false'"
+          >
+            <MediaSlot :media="m" aspect="4/3" class="thumb-media" />
+          </button>
+        </div>
       </div>
 
       <footer class="buttons">
@@ -155,11 +226,205 @@ h1 {
   margin-bottom: 2rem;
 }
 
-.gallery {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
-  gap: 1rem;
+/* ============ GALLERY CAROUSEL GLASSMORPHISM ============ */
+
+.gallery-section {
   margin-bottom: 2rem;
+}
+
+.gallery-title {
+  color: var(--color-accent);
+  font-size: 1.25rem;
+  margin-bottom: 1.5rem;
+}
+
+.gallery-swiper {
+  --swiper-navigation-color: var(--color-text-primary);
+  --swiper-pagination-color: var(--color-text-primary);
+  --swiper-pagination-bullet-inactive-color: rgba(255,255,255,0.35);
+  --swiper-pagination-bullet-inactive-opacity: 1;
+  --swiper-pagination-bullet-opacity: 1;
+  --swiper-pagination-bullet-size: 10px;
+  --swiper-pagination-bullet-horizontal-gap: 8px;
+  border-radius: 1rem;
+  overflow: hidden;
+}
+
+.gallery-swiper :deep(.swiper-slide) {
+  height: auto;
+}
+
+.gallery-swiper :deep(.swiper-button-next),
+.gallery-swiper :deep(.swiper-button-prev) {
+  width: 48px;
+  height: 48px;
+  background: rgba(13, 17, 25, 0.62);
+  border: 1px solid rgba(255, 255, 255, 0.55);
+  border-radius: 50%;
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.45);
+  transition: background 0.2s, border-color 0.2s, transform 0.2s;
+  color: #ffffff;
+  --swiper-navigation-size: 20px;
+}
+
+.gallery-swiper :deep(.swiper-button-next:hover),
+.gallery-swiper :deep(.swiper-button-prev:hover) {
+  background: rgba(13, 17, 25, 0.82);
+  border-color: #ffffff;
+  transform: scale(1.05);
+}
+
+.gallery-swiper :deep(.swiper-button-next:after),
+.gallery-swiper :deep(.swiper-button-prev:after) {
+  font-size: 1.1rem;
+  font-weight: 700;
+}
+
+.gallery-swiper :deep(.swiper-pagination) {
+  bottom: 1rem;
+  left: 50%;
+  transform: translateX(-50%);
+  width: fit-content;
+  padding: 6px 12px;
+  border-radius: 999px;
+  background: rgba(13, 17, 25, 0.62);
+  border: 1px solid rgba(255, 255, 255, 0.4);
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.4);
+}
+
+.gallery-swiper :deep(.swiper-pagination-bullet) {
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.55);
+  border: 1px solid rgba(255, 255, 255, 0.5);
+  opacity: 1;
+  transition: background 0.2s, transform 0.2s, border-color 0.2s;
+}
+
+.gallery-swiper :deep(.swiper-pagination-bullet:hover) {
+  background: rgba(255, 255, 255, 0.9);
+}
+
+.gallery-swiper :deep(.swiper-pagination-bullet-active) {
+  background: var(--color-accent);
+  border-color: #ffffff;
+  transform: scale(1.25);
+  box-shadow: 0 0 12px rgba(245, 158, 11, 0.7);
+}
+
+.slide-wrapper {
+  position: relative;
+  border-radius: 1rem;
+  overflow: hidden;
+}
+
+.slide-media {
+  border-radius: 1rem;
+}
+
+.fullscreen-btn {
+  position: absolute;
+  top: 1rem;
+  right: 1rem;
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  height: 42px;
+  padding: 0 16px;
+  border-radius: 999px;
+  background: rgba(13, 17, 25, 0.62);
+  border: 1px solid rgba(255, 255, 255, 0.55);
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.45);
+  color: #ffffff;
+  font-size: 0.875rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background 0.2s, border-color 0.2s, transform 0.2s, opacity 0.2s;
+  opacity: 0;
+}
+
+.slide-wrapper:hover .fullscreen-btn,
+.fullscreen-btn:focus-visible {
+  opacity: 1;
+}
+
+.fullscreen-btn:hover {
+  background: rgba(13, 17, 25, 0.82);
+  border-color: #ffffff;
+  transform: scale(1.05);
+}
+
+@media (hover: none) {
+  .fullscreen-btn {
+    opacity: 1;
+  }
+}
+
+/* Thumbnails */
+.thumbnails {
+  display: flex;
+  gap: 0.75rem;
+  margin-top: 1.5rem;
+  padding: 0.25rem;
+  overflow-x: auto;
+  scrollbar-width: thin;
+  scrollbar-color: var(--color-accent) transparent;
+}
+
+.thumbnails::-webkit-scrollbar {
+  height: 6px;
+}
+
+.thumbnails::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+.thumbnails::-webkit-scrollbar-thumb {
+  background: var(--color-accent);
+  border-radius: 3px;
+}
+
+.thumb-btn {
+  flex: 0 0 auto;
+  width: 120px;
+  padding: 0;
+  border: 2px solid transparent;
+  border-radius: 0.75rem;
+  background: transparent;
+  cursor: pointer;
+  transition: border-color 0.2s, transform 0.2s;
+  overflow: hidden;
+}
+
+.thumb-btn:hover {
+  border-color: rgba(255, 255, 255, 0.25);
+  transform: translateY(-2px);
+}
+
+.thumb-btn.active {
+  border-color: var(--color-accent);
+  box-shadow: 0 0 16px rgba(245, 158, 11, 0.4);
+}
+
+.thumb-media {
+  border-radius: 0.5rem;
+  display: block;
+}
+
+/* Focus visible for accessibility */
+.gallery-swiper :deep(.swiper-button-next:focus-visible),
+.gallery-swiper :deep(.swiper-button-prev:focus-visible),
+.gallery-swiper :deep(.swiper-pagination-bullet:focus-visible),
+.thumb-btn:focus-visible {
+  outline: 2px solid var(--color-accent);
+  outline-offset: 2px;
 }
 
 .buttons {

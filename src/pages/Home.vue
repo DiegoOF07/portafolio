@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { Mail, Github, Linkedin, MapPin, GraduationCap } from 'lucide-vue-next'
+import { Mail, Github, Linkedin, MapPin, GraduationCap, Download } from 'lucide-vue-next'
 import GlassCard from '@/components/GlassCard.vue'
 import ProjectCard from '@/components/ProjectCard.vue'
 import ExperimentCard from '@/components/ExperimentCard.vue'
@@ -10,9 +10,13 @@ import { stackGroups } from '@/data/stack'
 
 <template>
   <div class="home">
-    <!-- ============ HERO ============ -->
+    <!--  HERO  -->
     <section id="inicio" class="section hero-section">
       <div class="hero-glass-card">
+        <span class="availability-badge">
+          <span class="availability-dot"></span>
+          Disponible para oportunidades remotas
+        </span>
         <h1>Diego Flores <span class="highlight">— Full-Stack Developer</span></h1>
         <p class="description">
           Construyo productos completos, del backend a la base de datos,
@@ -20,13 +24,16 @@ import { stackGroups } from '@/data/stack'
         </p>
         <div class="hero-actions">
           <a href="#proyectos" class="btn-hero-primary">Ver proyectos</a>
-          <a href="#contacto" class="btn-hero-secondary">Contacto</a>
+          <a href="mailto:floresdiego041@gmail.com" class="btn-hero-secondary">Escríbeme</a>
+          <a href="/cv-diego-flores.pdf" download class="btn-hero-secondary">
+            <Download :size="18" /> Descargar CV
+          </a>
         </div>
       </div>
       <img src="../assets/Developer activity-bro.svg" alt="Developer" class="hero-img" />
     </section>
 
-    <!-- ============ SOBRE MÍ ============ -->
+    <!-- SOBRE MÍ  -->
     <section id="sobre-mi" class="section">
       <GlassCard variant="section" class="about-card">
         <h2 class="section-title">Sobre mí</h2>
@@ -47,7 +54,7 @@ import { stackGroups } from '@/data/stack'
       </GlassCard>
     </section>
 
-    <!-- ============ PROYECTOS DESTACADOS ============ -->
+    <!--  PROYECTOS DESTACADOS  -->
     <section id="proyectos" class="section">
       <h2 class="section-title centered">Proyectos destacados</h2>
       <div class="projects-list">
@@ -60,7 +67,7 @@ import { stackGroups } from '@/data/stack'
       </div>
     </section>
 
-    <!-- ============ STACK TÉCNICO ============ -->
+    <!--  STACK TÉCNICO  -->
     <section id="stack" class="section">
       <GlassCard variant="section" class="stack-card">
         <h2 class="section-title centered">Stack técnico</h2>
@@ -75,7 +82,7 @@ import { stackGroups } from '@/data/stack'
       </GlassCard>
     </section>
 
-    <!-- ============ EXPERIMENTALES ============ -->
+    <!--  EXPERIMENTALES  -->
     <section id="experimentos" class="section">
       <h2 class="section-title centered">Proyectos experimentales</h2>
       <div class="experiments-grid">
@@ -83,7 +90,7 @@ import { stackGroups } from '@/data/stack'
       </div>
     </section>
 
-    <!-- ============ CONTACTO ============ -->
+    <!--  CONTACTO  -->
     <section id="contacto" class="section">
       <GlassCard variant="section" class="contact-card">
         <h2 class="section-title centered">Contacto</h2>
@@ -110,6 +117,10 @@ import { stackGroups } from '@/data/stack'
           <li>
             <GraduationCap class="icon" />
             <span>Ingeniería en Ciencias de la Computación</span>
+          </li>
+          <li>
+            <Download class="icon" />
+            <span><a href="/cv-diego-flores.pdf" download>Descargar CV</a></span>
           </li>
         </ul>
       </GlassCard>
@@ -149,6 +160,34 @@ import { stackGroups } from '@/data/stack'
   justify-content: space-between;
   gap: 2rem;
   min-height: 70vh;
+}
+
+.availability-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 6px 14px;
+  border-radius: 999px;
+  font-size: 0.85rem;
+  font-weight: 600;
+  color: var(--color-accent-cold);
+  background: rgba(6, 255, 165, 0.08);
+  border: 1px solid rgba(6, 255, 165, 0.25);
+  margin-bottom: 1.25rem;
+}
+
+.availability-dot {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: var(--color-accent-cold);
+  box-shadow: 0 0 8px rgba(6, 255, 165, 0.8);
+  animation: availability-pulse 2s ease-in-out infinite;
+}
+
+@keyframes availability-pulse {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0.4; }
 }
 
 .hero-glass-card {
@@ -203,9 +242,11 @@ import { stackGroups } from '@/data/stack'
 }
 
 .btn-hero-primary:hover {
-  background: var(--hover-primary);
+  color: white;
+  background: linear-gradient(135deg, var(--hover-primary), var(--color-primary));
+  border: 1px solid rgba(255, 255, 255, 0.25);
   transform: translateY(-2px);
-  box-shadow: var(--btn-glass-shadow);
+  box-shadow: 0 8px 24px rgba(8, 126, 139, 0.35);
 }
 
 .btn-hero-secondary {
@@ -213,9 +254,11 @@ import { stackGroups } from '@/data/stack'
 }
 
 .btn-hero-secondary:hover {
-  background: var(--color-gradient-5);
+  color: white;
+  background: linear-gradient(135deg, var(--color-gradient-5), var(--color-gradient-4));
+  border: 1px solid rgba(255, 255, 255, 0.25);
   transform: translateY(-2px);
-  box-shadow: var(--btn-glass-shadow);
+  box-shadow: 0 8px 24px rgba(131, 56, 236, 0.35);
 }
 
 .hero-img {

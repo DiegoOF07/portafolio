@@ -1,8 +1,4 @@
-// ============================================================================
-// Fuente única de datos para proyectos destacados y experimentales.
-// Agregar un proyecto nuevo = agregar un objeto nuevo a alguno de los arrays.
-// No hay que tocar componentes ni rutas.
-// ============================================================================
+// Fuente de datos para proyectos destacados y experimentales.
 
 import goLogo from '@/assets/logos/go.svg'
 import vueLogo from '@/assets/logos/vue.svg'
@@ -10,9 +6,23 @@ import reactLogo from '@/assets/logos/react.svg'
 import tsLogo from '@/assets/logos/typescript.svg'
 import pythonLogo from '@/assets/logos/python.svg'
 import postgresLogo from '@/assets/logos/postgresql.svg'
+import neo4jLogo from '@/assets/logos/neo4j.svg'
+import supabaseLogo from '@/assets/logos/supabase.svg'
+import gcpLogo from '@/assets/logos/gcp.svg'
+import rustLogo from '@/assets/logos/rust.svg'
+import pyside6Logo from '@/assets/logos/pyside6.svg'
+import phaserLogo from '@/assets/logos/phaser.svg'
+import raylibLogo from '@/assets/logos/raylib.svg'
 
-// TODO: agregar logos reales cuando estén disponibles (Supabase, Neo4j, GCP, Rust)
-// Por ahora se referencian por nombre y el TechBadge se renderiza sin ícono si falta.
+import fundacionMedia from '@/assets/img/proyecto-fundacion.svg'
+import logisticaMedia from '@/assets/img/01_dapa.png'
+import logisticaDashboard from '@/assets/img/05_dapa-quotes.png'
+import logisticaEmpleados from '@/assets/img/04_dapa-vehicle.png'
+import logisticaVehiculos from '@/assets/img/03_dapa-form.png'
+import logisticaCotizador from '@/assets/img/02_dapa-form.png'
+import logisticaRutas from '@/assets/img/06_dapa-financial.png'
+import recomendadorMedia from '@/assets/img/proyecto-recomendador.svg'
+import optimizadorMedia from '@/assets/img/proyecto-optimizador.svg'
 
 export interface TechRef {
   name: string
@@ -20,15 +30,14 @@ export interface TechRef {
 }
 
 export interface ProjectLinks {
-  repo?: string          // repo único (si no está separado en front/back)
-  repoFrontend?: string  // TODO: link al repo de frontend
-  repoBackend?: string   // TODO: link al repo de backend
-  demo?: string          // TODO: link a demo en vivo
-  privacyNote?: string   // usar en vez de repo/demo cuando el proyecto es de un cliente real
+  repo?: string          // repo único
+  repoFrontend?: string  // link al repo de frontend
+  repoBackend?: string   // link al repo de backend
+  demo?: string          // link a demo en vivo
+  privacyNote?: string   // usar cuando el proyecto es de un cliente real
 }
 
 export interface MediaAsset {
-  // Deja src vacío ("") mientras no haya recurso: se muestra un placeholder visual.
   type: 'image' | 'gif' | 'video'
   src: string
   alt: string
@@ -55,7 +64,7 @@ export interface FeaturedProject {
   // Contenido extendido, solo se usa si hasDetail = true.
   detail?: {
     gallery: MediaAsset[]
-    extendedDescription: string // TODO: redactar descripción larga para la página de detalle
+    extendedDescription: string
   }
 }
 
@@ -68,32 +77,28 @@ export interface ExperimentProject {
   links: ProjectLinks
 }
 
-// ----------------------------------------------------------------------------
-// Proyectos destacados (orden = orden del CV, no reordenar sin razón)
-// ----------------------------------------------------------------------------
-
 export const featuredProjects: FeaturedProject[] = [
   {
-    slug: 'fundacion',
-    title: 'Sistema de gestión para fundación',
+    slug: 'Fundacion Hannah',
+    title: 'Sitio web para Fundación Hannah',
     tagline:
-      'Plataforma web para una ONG real: control de pacientes, donaciones, eventos y voluntarios, además de un sitio público para dar visibilidad a la fundación.',
-    context: 'Cliente real (ONG) · proyecto individual · en curso',
+      'Plataforma web para una ONG real con: control de pacientes, donaciones, eventos y voluntarios, además de un sitio público para dar visibilidad a la fundación.',
+    context: 'Cliente real (ONG) · Proyecto grupal · En curso',
     challenge:
-      'Diseñar el sistema completo siguiendo fases formales de ingeniería de software, manteniéndolo usable para personal no técnico de la fundación.',
+      'Diseñar el sistema completo siguiendo fases formales de ingeniería de software, manteniéndolo usable para personal no técnico de la fundación. Resultado: la gestión de pacientes, donaciones, eventos y voluntarios centralizada en una sola plataforma hecha a la medida.',
     techs: [
       { name: 'Go', icon: goLogo },
       { name: 'Vue', icon: vueLogo },
-      { name: 'Supabase' }, // TODO: logo de Supabase
+      { name: 'Supabase', icon: supabaseLogo },
     ],
-    status: 'En curso — despliegue con dominio propio planificado para 2026.',
+    status: 'En curso: despliegue con dominio propio planificado para 2026.',
     links: {
       // Por privacidad del cliente no se comparte el repositorio.
-      privacyNote: 'Repositorio privado por confidencialidad del cliente. Disponible para mostrar en entrevista.',
+      privacyNote: 'Repositorio privado por confidencialidad del cliente. No disponible para mostrar en entrevista.',
       // TODO: demo pública cuando esté disponible
       demo: '',
     },
-    media: { type: 'image', src: '', alt: 'Sistema de gestión para fundación' }, // TODO: agregar imagen/gif
+    media: { type: 'image', src: fundacionMedia, alt: 'Sistema de gestión para fundación' },
     hasDetail: true,
     detail: {
       gallery: [], // TODO: agregar screenshots/gif del dashboard y sitio público
@@ -101,13 +106,13 @@ export const featuredProjects: FeaturedProject[] = [
     },
   },
   {
-    slug: 'logistica',
+    slug: 'DAPA',
     title: 'Sistema administrativo de logística',
     tagline:
       'Plataforma para gestionar empleados, vehículos y cotizaciones de una empresa real de transporte.',
-    context: 'Cliente real (transporte) · en equipo, ~1 año · Scrum/Jira',
+    context: 'Cliente real (Transporte) · Proyecto grupal · ~1 año · Scrum/Jira',
     challenge:
-      'Diseñar un subsistema de formularios dinámicos: el administrador agrega, edita o elimina preguntas sin que un desarrollador toque el código, y esas respuestas generan automáticamente las cotizaciones.',
+      'Diseñar un subsistema de formularios dinámicos, donde el administrador agrega, edita o elimina preguntas sin que un desarrollador toque el código, y esas respuestas generan automáticamente las cotizaciones.',
     techs: [
       { name: 'Go', icon: goLogo },
       { name: 'Vue', icon: vueLogo },
@@ -116,15 +121,22 @@ export const featuredProjects: FeaturedProject[] = [
     status: 'Desplegado en AWS (actualmente fuera de línea).',
     links: {
       // Distintos repos para frontend y backend
-      repoFrontend: '', // TODO: link repo frontend
-      repoBackend: '',  // TODO: link repo backend
-      privacyNote: 'Proyecto para cliente real — repositorios disponibles para mostrar en entrevista.',
+      repoFrontend: 'https://github.com/JuanDsm04/dapa-frontend',
+      repoBackend: 'https://github.com/vicperezch/dapa-backend',
+      privacyNote: 'Proyecto para cliente real, repositorios disponibles para mostrar en entrevista.',
     },
-    media: { type: 'image', src: '', alt: 'Sistema administrativo de logística' }, // TODO: agregar imagen/gif
+    media: { type: 'image', src: logisticaMedia, alt: 'Sistema administrativo de logística' },
     hasDetail: true,
     detail: {
-      gallery: [], // TODO: agregar screenshots del formulario dinámico y cotizador
-      extendedDescription: '', // TODO: redactar
+      gallery: [
+        { type: 'image', src: logisticaDashboard, alt: 'Dashboard general con KPIs y alertas' },
+        { type: 'image', src: logisticaEmpleados, alt: 'Módulo de gestión de empleados y roles' },
+        { type: 'image', src: logisticaVehiculos, alt: 'Módulo de flota, rutas y mantenimiento' },
+        { type: 'image', src: logisticaCotizador, alt: 'Cotizador dinámico con formulario configurable' },
+        { type: 'image', src: logisticaRutas, alt: 'Mapa de rutas con tracking GPS en tiempo real' },
+      ],
+      extendedDescription:
+        'Sistema administrativo completo para una empresa de transporte real, desarrollado en equipo durante ~1 año bajo metodología Scrum/Jira. La arquitectura está basada en microservicios con Go (backend) y Vue (frontend), usando PostgreSQL como base de datos principal.\n\nEl componente más innovador es el cotizador dinámico: un subsistema donde el administrador puede crear, editar o eliminar preguntas de formulario sin tocar código, y las respuestas generan automáticamente cotizaciones con cálculos de costos, tiempos y márgenes.\n\nEl módulo de flota incluye gestión de vehículos, conductores, rutas y mantenimiento preventivo, con integración GPS para tracking en tiempo real y optimización de rutas. El dashboard centralizado muestra KPIs operativos, alertas de mantenimiento y métricas de eficiencia de la flota.',
     },
   },
   {
@@ -134,11 +146,11 @@ export const featuredProjects: FeaturedProject[] = [
       'Motor de recomendación que consume la API de TMDB y aplica un modelo basado en grafos para sugerir películas personalizadas.',
     context: 'Proyecto personal · individual',
     challenge:
-      'Modelar relaciones (usuarios, películas, géneros, actores) como grafo para que las recomendaciones surjan de recorrer conexiones, en vez de reglas fijas.',
+      'Modelar relaciones (usuarios, películas, géneros, actores) como grafo para que las recomendaciones surjan de recorrer conexiones, en vez de reglas fijas. Resultado: recomendaciones explicables por conexiones reales entre el contenido y el usuario.',
     techs: [
       { name: 'Go', icon: goLogo },
       { name: 'Vue', icon: vueLogo },
-      { name: 'Neo4j' }, // TODO: logo de Neo4j
+      { name: 'Neo4j', icon: neo4jLogo },
     ],
     status: 'Demo disponible.',
     links: {
@@ -146,7 +158,7 @@ export const featuredProjects: FeaturedProject[] = [
       repoBackend: '',  // TODO: link repo backend
       demo: '', // TODO: link demo
     },
-    media: { type: 'image', src: '', alt: 'Recomendador de películas' }, // TODO: agregar imagen/gif
+    media: { type: 'image', src: recomendadorMedia, alt: 'Recomendador de películas' },
     hasDetail: false,
   },
   {
@@ -156,11 +168,11 @@ export const featuredProjects: FeaturedProject[] = [
       'Herramienta que optimiza rutas de servicio combinando datos geográficos reales (Google Cloud Platform) con un algoritmo genético para reducir la complejidad del problema de ruteo.',
     context: 'Proyecto personal · individual',
     challenge:
-      'Aplicar un algoritmo genético sobre datos geográficos reales para reducir un problema de ruteo con alta complejidad combinatoria.',
+      'Aplicar un algoritmo genético sobre datos geográficos reales para reducir un problema de ruteo con alta complejidad combinatoria. Resultado: rutas optimizadas a partir de datos reales de Google Cloud Platform.',
     techs: [
       { name: 'Go', icon: goLogo },
       { name: 'React', icon: reactLogo },
-      { name: 'Google Cloud Platform' }, // TODO: logo de GCP
+      { name: 'Google Cloud Platform', icon: gcpLogo },
     ],
     status: 'Demo disponible.',
     links: {
@@ -168,7 +180,7 @@ export const featuredProjects: FeaturedProject[] = [
       repoBackend: '',  // TODO: link repo backend
       demo: '', // TODO: link demo
     },
-    media: { type: 'image', src: '', alt: 'Optimizador de rutas con algoritmos genéticos' }, // TODO: agregar imagen/gif
+    media: { type: 'image', src: optimizadorMedia, alt: 'Optimizador de rutas con algoritmos genéticos' },
     hasDetail: false,
   },
 ]
@@ -184,7 +196,7 @@ export const experimentProjects: ExperimentProject[] = [
     description: 'Generador de compiladores desde archivos .yalex/.yapar, con interfaz estilo IDE.',
     techs: [
       { name: 'Python', icon: pythonLogo },
-      { name: 'PySide6' },
+      { name: 'PySide6', icon: pyside6Logo },
     ],
     media: { type: 'gif', src: '', alt: 'Analizador léxico y sintáctico' }, // TODO: gif de la interfaz estilo IDE
     links: {
@@ -196,8 +208,8 @@ export const experimentProjects: ExperimentProject[] = [
     title: 'Raytracer / escenas 3D en Rust',
     description: 'Renderizado de escenas 3D con raylib. Pieza más vistosa: sistema solar o escena estilo Minecraft.',
     techs: [
-      { name: 'Rust' }, // TODO: logo de Rust
-      { name: 'raylib' },
+      { name: 'Rust', icon: rustLogo },
+      { name: 'raylib', icon: raylibLogo },
     ],
     media: { type: 'video', src: '', alt: 'Raytracer en Rust' }, // TODO: video/gif de la escena
     links: {
@@ -212,7 +224,7 @@ export const experimentProjects: ExperimentProject[] = [
     techs: [
       { name: 'TypeScript', icon: tsLogo },
       { name: 'Vue', icon: vueLogo },
-      { name: 'Phaser' },
+      { name: 'Phaser', icon: phaserLogo },
     ],
     media: {
       type: 'image',

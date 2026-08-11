@@ -215,29 +215,53 @@ const drawGradientBackground = () => {
 
 const animate = () => {
   time = performance.now()
-  drawGradientBackground()
-  animationFrame = requestAnimationFrame(animate)
+  if (!document.hidden) {
+    drawGradientBackground()
+  }
+  if (!reducedMotion) {
+    animationFrame = requestAnimationFrame(animate)
+  }
 }
 
 const handleResize = () => {
   if (canvasRef.value) {
     canvasRef.value.width  = window.innerWidth
     canvasRef.value.height = window.innerHeight
+    drawGradientBackground()
   }
 }
+
+const handleVisibility = () => {
+  if (!document.hidden) {
+    drawGradientBackground()
+  }
+}
+
+const reducedMotion =
+  typeof window.matchMedia === 'function' &&
+  window.matchMedia('(prefers-reduced-motion: reduce)').matches
 
 onMounted(() => {
   if (canvasRef.value) {
     canvasRef.value.width  = window.innerWidth
     canvasRef.value.height = window.innerHeight
   }
-  animate()
+
+  if (reducedMotion) {
+    // Static frame respetando preferencia de movimiento reducido
+    drawGradientBackground()
+  } else {
+    animate()
+  }
+
   window.addEventListener('resize', handleResize)
+  document.addEventListener('visibilitychange', handleVisibility)
 })
 
 onUnmounted(() => {
   cancelAnimationFrame(animationFrame)
   window.removeEventListener('resize', handleResize)
+  document.removeEventListener('visibilitychange', handleVisibility)
 })
 </script>
 
@@ -257,6 +281,6 @@ onUnmounted(() => {
   height: 100dvh;
   z-index: 0;
   pointer-events: none;
-  will-change: contents;
+  will-change: transform;
 }
 </style>

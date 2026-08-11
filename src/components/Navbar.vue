@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { ref, computed } from 'vue'
 import { useRoute } from 'vue-router'
-import { Home, User, FolderGit2, Layers, FlaskConical, Phone, Menu, X } from 'lucide-vue-next'
+import { Home, User, FolderGit2, Layers, FlaskConical, Phone, Menu, X, Download } from 'lucide-vue-next'
 import { useScrollSpy } from '@/composables/useScrollSpy'
 
 const isOpen = ref(false)
@@ -44,10 +44,6 @@ const closeMenu = () => {
   <nav class="navbar">
     <RouterLink to="/#inicio" class="logo">Diego Flores</RouterLink>
 
-    <button class="menu-btn" @click="toggleMenu">
-      <component :is="isOpen ? X : Menu" :size="28" />
-    </button>
-
     <ul :class="['nav-links', { open: isOpen }]">
       <li v-for="item in navItems" :key="item.id">
         <RouterLink
@@ -61,6 +57,16 @@ const closeMenu = () => {
         </RouterLink>
       </li>
     </ul>
+
+    <div class="nav-right">
+      <a href="/cv-diego-flores.pdf" download class="nav-cv" aria-label="Descargar CV">
+        <Download :size="18" />
+        <span>CV</span>
+      </a>
+      <button class="menu-btn" aria-label="Abrir menú" @click="toggleMenu">
+        <component :is="isOpen ? X : Menu" :size="28" />
+      </button>
+    </div>
   </nav>
 </template>
 
@@ -96,6 +102,41 @@ const closeMenu = () => {
   border: none;
   color: var(--color-text-primary);
   cursor: pointer;
+  padding: 8px;
+  border-radius: 8px;
+}
+
+.nav-right {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.nav-cv {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 8px 14px;
+  border-radius: 8px;
+  text-decoration: none;
+  font-weight: 600;
+  color: var(--color-text-primary);
+  background: var(--glass-bg);
+  border: 1px solid rgba(255, 255, 255, 0.14);
+  transition: background 0.2s, border-color 0.2s;
+}
+
+.nav-cv:hover {
+  background: var(--glass-bg-hover);
+  border-color: rgba(255, 255, 255, 0.22);
+}
+
+.nav-link:focus-visible,
+.nav-cv:focus-visible,
+.menu-btn:focus-visible,
+.logo:focus-visible {
+  outline: 2px solid var(--color-accent);
+  outline-offset: 2px;
 }
 
 .nav-links {
