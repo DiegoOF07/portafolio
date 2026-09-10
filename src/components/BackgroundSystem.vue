@@ -1,15 +1,15 @@
 <script setup lang="ts">
 import { ref, watch, onMounted, onUnmounted } from 'vue'
-import { useBackground, type BackgroundConfig } from '@/composables/useBackground'
+import { useBackground } from '@/composables/useBackground'
 
 interface Props {
-  type: 'home' | 'projects' | 'contact'
+  type: 'home' | 'projects'
 }
 
 const props = defineProps<Props>()
 
 const canvasRef = ref<HTMLCanvasElement | null>(null)
-const background = useBackground(props as BackgroundConfig)
+const background = useBackground()
 
 let animationFrame: number
 let time = 0
@@ -40,18 +40,11 @@ const sphereConfigs: Record<string, SphereConfig[]> = {
     { xRatio: 0.62, yRatio: 0.22, radius: 165, solidColor: '#5F3DC4', glowColor: '#8338EC', speed: 0.0000021, amplitude: 28, depth: 0.55 },
     { xRatio: 0.25, yRatio: 0.60, radius: 95,  solidColor: '#0F4C75', glowColor: '#3282B8', speed: 0.0000030, amplitude: 16, depth: 1.0  },
   ],
-  contact: [
-    { xRatio: 0.18, yRatio: 0.22, radius: 255, solidColor: '#2E86AB', glowColor: '#3282B8', speed: 0.0000014, amplitude: 26, depth: 0.25 },
-    { xRatio: 0.80, yRatio: 0.60, radius: 230, solidColor: '#8338EC', glowColor: '#A371F7', speed: 0.0000016, amplitude: 20, depth: 0.25 },
-    { xRatio: 0.50, yRatio: 0.78, radius: 170, solidColor: '#087E8B', glowColor: '#06FFA5', speed: 0.0000022, amplitude: 18, depth: 0.55 },
-    { xRatio: 0.30, yRatio: 0.50, radius: 110, solidColor: '#5F3DC4', glowColor: '#8338EC', speed: 0.0000031, amplitude: 22, depth: 1.0  },
-  ],
 }
 
 const bgColors: Record<string, [string, string, string]> = {
   home: ['#0D1B2A', '#111827', '#1a0f2e'],
   projects: ['#0f1a2e', '#111827', '#1a0a2e'],
-  contact: ['#0a1628', '#0f1f38', '#1a0f2e'],
 }
 
 const FADE_DURATION = 500 // ms
