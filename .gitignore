@@ -27,3 +27,4 @@ dist-ssr
 *.zip
 /.agents
 skills-lock.json
+/.claude

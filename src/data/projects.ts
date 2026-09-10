@@ -13,14 +13,15 @@ import rustLogo from '@/assets/logos/rust.svg'
 import pyside6Logo from '@/assets/logos/pyside6.svg'
 import phaserLogo from '@/assets/logos/phaser.svg'
 import raylibLogo from '@/assets/logos/raylib.svg'
+import dockerLogo from '@/assets/logos/docker.svg'
 
 import fundacionMedia from '@/assets/img/proyecto-fundacion.svg'
 import logisticaMedia from '@/assets/img/01_dapa.png'
-import logisticaDashboard from '@/assets/img/05_dapa-quotes.png'
-import logisticaEmpleados from '@/assets/img/04_dapa-vehicle.png'
-import logisticaVehiculos from '@/assets/img/03_dapa-form.png'
-import logisticaCotizador from '@/assets/img/02_dapa-form.png'
-import logisticaRutas from '@/assets/img/06_dapa-financial.png'
+import logisticaCotizaciones from '@/assets/img/05_dapa-quotes.png'
+import logisticaVehiculos from '@/assets/img/04_dapa-vehicle.png'
+import logisticaFormCreacion from '@/assets/img/03_dapa-form.png'
+import logisticaFormulario from '@/assets/img/02_dapa-form.png'
+import logisticaFinancial from '@/assets/img/06_dapa-financial.png'
 import recomendadorMedia from '@/assets/img/proyecto-recomendador.svg'
 import optimizadorMedia from '@/assets/img/proyecto-optimizador.svg'
 
@@ -106,17 +107,18 @@ export const featuredProjects: FeaturedProject[] = [
     },
   },
   {
-    slug: 'DAPA',
+    slug: 'dapa-logistica',
     title: 'Sistema administrativo de logística',
     tagline:
       'Plataforma para gestionar empleados, vehículos y cotizaciones de una empresa real de transporte.',
-    context: 'Cliente real (Transporte) · Proyecto grupal · ~1 año · Scrum/Jira',
+    context: 'Cliente real (Transporte) · Proyecto grupal · Duración 1 año · Scrum/Jira',
     challenge:
       'Diseñar un subsistema de formularios dinámicos, donde el administrador agrega, edita o elimina preguntas sin que un desarrollador toque el código, y esas respuestas generan automáticamente las cotizaciones.',
     techs: [
       { name: 'Go', icon: goLogo },
       { name: 'Vue', icon: vueLogo },
       { name: 'PostgreSQL', icon: postgresLogo },
+      { name: 'Docker', icon: dockerLogo },
     ],
     status: 'Desplegado en AWS (actualmente fuera de línea).',
     links: {
@@ -129,14 +131,14 @@ export const featuredProjects: FeaturedProject[] = [
     hasDetail: true,
     detail: {
       gallery: [
-        { type: 'image', src: logisticaDashboard, alt: 'Dashboard general con KPIs y alertas' },
-        { type: 'image', src: logisticaEmpleados, alt: 'Módulo de gestión de empleados y roles' },
-        { type: 'image', src: logisticaVehiculos, alt: 'Módulo de flota, rutas y mantenimiento' },
-        { type: 'image', src: logisticaCotizador, alt: 'Cotizador dinámico con formulario configurable' },
-        { type: 'image', src: logisticaRutas, alt: 'Mapa de rutas con tracking GPS en tiempo real' },
+        { type: 'image', src: logisticaCotizaciones, alt: 'Cotizaciones de los clientes' },
+        { type: 'image', src: logisticaVehiculos, alt: 'Módulo de gestión de vehículos' },
+        { type: 'image', src: logisticaFormulario, alt: 'Formulario para los clientes' },
+        { type: 'image', src: logisticaFormCreacion, alt: 'Módulo para la gestión del formulario' },
+        { type: 'image', src: logisticaFinancial, alt: 'Dashboard general con KPIs y alertas' },
       ],
       extendedDescription:
-        'Sistema administrativo completo para una empresa de transporte real, desarrollado en equipo durante ~1 año bajo metodología Scrum/Jira. La arquitectura está basada en microservicios con Go (backend) y Vue (frontend), usando PostgreSQL como base de datos principal.\n\nEl componente más innovador es el cotizador dinámico: un subsistema donde el administrador puede crear, editar o eliminar preguntas de formulario sin tocar código, y las respuestas generan automáticamente cotizaciones con cálculos de costos, tiempos y márgenes.\n\nEl módulo de flota incluye gestión de vehículos, conductores, rutas y mantenimiento preventivo, con integración GPS para tracking en tiempo real y optimización de rutas. El dashboard centralizado muestra KPIs operativos, alertas de mantenimiento y métricas de eficiencia de la flota.',
+        'Sistema administrativo completo para una empresa de transporte real, desarrollado en equipo durante aproximadamente 1 año bajo metodología Scrum por medio de Jira. La arquitectura está basada en un backend con Go y un frontend con Vue, usando PostgreSQL como base de datos principal.\n\nEl componente más innovador es el cotizador dinámico: un subsistema donde el administrador puede crear, editar o eliminar preguntas de formulario sin tocar código y las respuestas generan automáticamente cotizaciones para que el administrador las vea y decida qué hacer.\n\nEl sistema incluye gestión de vehículos, conductores, cotizaciones, pedidos y mantenimiento preventivo. El dashboard centralizado muestra KPIs operativos, alertas de mantenimiento y métricas de eficiencia de la flota.\n\nTodo se orquesta con Docker para mejorar la portabilidad.',
     },
   },
   {

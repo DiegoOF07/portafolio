@@ -270,6 +270,8 @@ import { stackGroups } from '@/data/stack'
 /* Sobre mí */
 .about-card {
   padding: 2.5rem;
+  max-width: 950px;
+  margin: 0 auto;
 }
 
 .about-body {
@@ -305,6 +307,8 @@ import { stackGroups } from '@/data/stack'
 /* Stack */
 .stack-card {
   padding: 2.5rem;
+  max-width: 950px;
+  margin: 0 auto;
 }
 
 .stack-groups {
