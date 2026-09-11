@@ -6,12 +6,26 @@ import ExperimentCard from '@/components/ExperimentCard.vue'
 import TechBadge from '@/components/TechBadge.vue'
 import { featuredProjects, experimentProjects } from '@/data/projects'
 import { stackGroups } from '@/data/stack'
+import formPng from '@/assets/img/03_dapa-form.png'
+import formAvif800 from '@/assets/img/hero/hero-form-800.avif'
+import formAvif1340 from '@/assets/img/hero/hero-form-1340.avif'
+import formWebp800 from '@/assets/img/hero/hero-form-800.webp'
+import formWebp1340 from '@/assets/img/hero/hero-form-1340.webp'
 
 const year = new Date().getFullYear()
 
+// Captura del hero (constructor del formulario dinámico) en AVIF/WebP,
+// con el PNG original como respaldo.
+const heroSrcset = {
+  avif: `${formAvif800} 800w, ${formAvif1340} 1340w`,
+  webp: `${formWebp800} 800w, ${formWebp1340} 1340w`,
+}
+// Ocupa el ancho de la columna de contenido (máx. 1136px)
+const HERO_SIZES = '(max-width: 600px) calc(100vw - 2rem), (max-width: 1200px) calc(100vw - 4rem), 1136px'
+
 // La línea de traza arranca en el nodo del H1 del hero, no en el borde
-// superior. Esa altura depende del centrado del hero y de la carga de
-// fuentes, así que se mide al montar y cada vez que cambia el layout.
+// superior. Esa altura depende de la tipografía y de la carga de fuentes,
+// así que se mide al montar y cada vez que cambia el layout.
 const tracedEl = ref<HTMLElement | null>(null)
 const traceStartEl = ref<HTMLElement | null>(null)
 const traceStart = ref(0)
@@ -20,13 +34,26 @@ let layoutObserver: ResizeObserver | undefined
 // Mismo valor que `top` de .trace-node::before (0.55em)
 const NODE_OFFSET_EM = 0.55
 
+// Distancia vertical de `el` al borde superior de `ancestor` según el layout
+// (offsetTop). Ignora transforms, así que la animación de entrada del hero
+// no altera la medición.
+const offsetWithin = (el: HTMLElement, ancestor: HTMLElement) => {
+  let y = 0
+  let node: HTMLElement | null = el
+  while (node && node !== ancestor) {
+    y += node.offsetTop
+    node = node.offsetParent as HTMLElement | null
+  }
+  return y
+}
+
 const measureTraceStart = () => {
   const traced = tracedEl.value
   const start = traceStartEl.value
   if (!traced || !start) return
-  const nodeY =
-    start.getBoundingClientRect().top + parseFloat(getComputedStyle(start).fontSize) * NODE_OFFSET_EM
-  traceStart.value = Math.round(nodeY - traced.getBoundingClientRect().top)
+  traceStart.value = Math.round(
+    offsetWithin(start, traced) + parseFloat(getComputedStyle(start).fontSize) * NODE_OFFSET_EM,
+  )
 }
 
 onMounted(() => {
@@ -48,9 +75,9 @@ onBeforeUnmount(() => layoutObserver?.disconnect())
         <span class="throughline-fill"></span>
       </div>
 
-      <!--  HERO  -->
-      <section id="inicio" class="section hero-section">
-        <div class="hero-glass-card">
+      <!--  HERO: bloque tipográfico + evidencia real de trabajo  -->
+      <section id="inicio" class="section hero">
+        <div class="hero-copy">
           <span class="availability-badge">
             <span class="availability-dot"></span>
             Disponible para oportunidades remotas
@@ -58,19 +85,41 @@ onBeforeUnmount(() => layoutObserver?.disconnect())
           <h1 ref="traceStartEl" class="trace-node">
             Diego Flores <span class="role">Full-Stack Developer</span>
           </h1>
-          <p class="description">
-            Construyo productos completos, del backend a la base de datos,
-            con curiosidad por entender cómo funcionan los sistemas por dentro.
+          <p class="hero-lead">
+            Construyo software completo para clientes reales, del modelo de datos a
+            la interfaz y el despliegue, con curiosidad por entender cómo funcionan
+            los sistemas por dentro.
           </p>
           <div class="hero-actions">
-            <a href="#proyectos" class="btn-hero-primary">Ver proyectos</a>
-            <a href="mailto:floresdiego041@gmail.com" class="btn-hero-secondary">Escríbeme</a>
-            <a href="/cv-diego-flores.pdf" download class="btn-hero-secondary">
-              <Download :size="18" /> Descargar CV
+            <a href="#proyectos" class="btn-primary">Ver proyectos</a>
+            <a href="mailto:floresdiego041@gmail.com" class="hero-link">Escríbeme</a>
+            <a href="/cv-diego-flores.pdf" download class="hero-link">
+              <Download :size="18" aria-hidden="true" /> Descargar CV
             </a>
           </div>
         </div>
-        <img src="../assets/Developer activity-bro.svg" alt="Developer" class="hero-img" />
+
+        <figure class="hero-shot">
+          <figcaption>
+            En pantalla: el constructor de formularios dinámicos que desarrollé en equipo
+            para una empresa de transporte. Las preguntas se crean sin tocar código y las
+            respuestas generan las cotizaciones.
+            <RouterLink to="/proyectos/dapa-logistica">Ver el proyecto</RouterLink>
+          </figcaption>
+          <div class="hero-shot-frame">
+            <picture>
+              <source type="image/avif" :srcset="heroSrcset.avif" :sizes="HERO_SIZES" />
+              <source type="image/webp" :srcset="heroSrcset.webp" :sizes="HERO_SIZES" />
+              <img
+                :src="formPng"
+                alt="Constructor del formulario dinámico: ventana para agregar una pregunta con su tipo, sus opciones y si es obligatoria"
+                width="1340"
+                height="949"
+                fetchpriority="high"
+              />
+            </picture>
+          </div>
+        </figure>
       </section>
 
       <!-- SOBRE MÍ  -->
@@ -240,15 +289,10 @@ onBeforeUnmount(() => layoutObserver?.disconnect())
   z-index: 1;
 }
 
-/* Nodo sobre la línea. Por defecto se alinea con un título de sección;
-   en el hero se corre además el padding y el borde de la tarjeta. */
+/* Nodo sobre la línea, alineado con el título que lo lleva */
 .trace-node {
   --node-x: calc(var(--trace-inset) - var(--section-pad) + 0.5px);
   position: relative;
-}
-
-.hero-glass-card .trace-node {
-  --node-x: calc(var(--trace-inset) - var(--section-pad) - 2.5rem - 1px + 0.5px);
 }
 
 .trace-node::before {
@@ -310,14 +354,18 @@ onBeforeUnmount(() => layoutObserver?.disconnect())
   }
 }
 
-/* Hero */
-.hero-section {
-  display: flex;
-  flex-wrap: wrap;
-  align-items: center;
-  justify-content: space-between;
-  gap: 2rem;
-  min-height: 70vh;
+/* ------------------------------------------------------------------
+   Hero: bloque tipográfico arriba y captura real abajo, que se
+   desvanece hacia la siguiente sección. Un solo momento de movimiento
+   orquestado al cargar; fuera de eso, nada se mueve solo.
+   ------------------------------------------------------------------ */
+.hero {
+  padding-top: var(--s-8);
+  padding-bottom: var(--s-6);
+}
+
+.hero-copy {
+  max-width: 50rem;
 }
 
 .availability-badge {
@@ -354,83 +402,147 @@ onBeforeUnmount(() => layoutObserver?.disconnect())
   }
 }
 
-.hero-glass-card {
-  flex: 1 1 400px;
-  backdrop-filter: blur(12px);
-  background: var(--hero-glass-bg);
-  border: var(--hero-glass-border);
-  border-radius: 2rem;
-  padding: 2.5rem;
-  box-shadow: var(--hero-glass-shadow);
-}
-
-.hero-glass-card h1 {
-  font-size: clamp(2.25rem, 1.4rem + 3vw, 3.25rem);
+.hero h1 {
+  font-size: var(--step-5);
+  line-height: 1;
   margin: 0 0 var(--s-5);
 }
 
 .role {
   display: block;
-  margin-top: 0.35em;
-  font-size: 0.5em;
+  margin-top: 0.3em;
+  font-size: clamp(1.25rem, 0.95rem + 1.2vw, 1.75rem);
   font-weight: 500;
-  letter-spacing: -0.005em;
+  font-stretch: 100%;
+  letter-spacing: -0.01em;
+  line-height: 1.2;
   color: var(--ink-dim);
 }
 
-.hero-glass-card .description {
-  max-width: var(--measure);
-  margin-bottom: var(--s-5);
-  font-size: var(--step-1);
+.hero-lead {
+  max-width: 56ch;
+  margin: 0 0 var(--s-6);
+  font-size: clamp(1.125rem, 1rem + 0.5vw, 1.3125rem);
+  line-height: 1.55;
 }
 
+/* Una sola acción sólida; las otras dos son enlaces discretos */
 .hero-actions {
   display: flex;
-  gap: 1rem;
   flex-wrap: wrap;
+  align-items: center;
+  gap: var(--s-4) var(--s-6);
 }
 
-.btn-hero-primary,
-.btn-hero-secondary {
-  padding: 0.75rem 1.5rem;
-  border-radius: var(--r-control);
-  font-weight: 600;
-  text-decoration: none;
+.btn-primary {
   display: inline-flex;
   align-items: center;
-  gap: 8px;
-  transition: background 0.2s ease, border-color 0.2s ease;
-}
-
-.btn-hero-primary {
+  gap: var(--s-2);
+  padding: 0.8rem 1.5rem;
+  border-radius: var(--r-control);
+  font-weight: 600;
   color: var(--signal-ink);
   background: var(--signal);
-  border: 1px solid var(--signal);
+  transition: background 0.2s ease;
 }
 
-.btn-hero-primary:hover {
+.btn-primary:hover {
   color: var(--signal-ink);
   background: color-mix(in srgb, var(--signal) 80%, white);
-  border-color: color-mix(in srgb, var(--signal) 80%, white);
 }
 
-.btn-hero-secondary {
+.hero-link {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--s-2);
   color: var(--ink);
-  background: var(--btn-glass-bg);
-  border: var(--btn-glass-border);
-  backdrop-filter: blur(8px);
+  font-weight: 600;
+  text-decoration: underline;
+  text-decoration-color: color-mix(in srgb, var(--ink) 30%, transparent);
+  text-underline-offset: 0.3em;
+  transition: color 0.2s ease, text-decoration-color 0.2s ease;
 }
 
-.btn-hero-secondary:hover {
+.hero-link:hover {
+  color: var(--signal);
+  text-decoration-color: currentColor;
+}
+
+/* Captura: evidencia real del trabajo. Se corta con un desvanecido
+   hacia abajo para invitar a seguir bajando. */
+.hero-shot {
+  margin: var(--s-8) 0 0;
+}
+
+.hero-shot figcaption {
+  max-width: 62ch;
+  margin-bottom: var(--s-3);
+  font-size: var(--step--1);
+  color: var(--ink-dim);
+}
+
+.hero-shot figcaption a {
+  color: var(--signal);
+  font-weight: 600;
+  white-space: nowrap;
+}
+
+.hero-shot figcaption a:hover {
   color: var(--ink);
-  background: var(--btn-glass-hover-bg);
-  border-color: rgba(255, 255, 255, 0.3);
 }
 
-.hero-img {
-  max-width: 380px;
+.hero-shot-frame {
+  /* width explícito: si no, max-height encoge también el ancho por la proporción */
   width: 100%;
-  flex-shrink: 0;
+  aspect-ratio: 1340 / 949;
+  max-height: 30rem;
+  overflow: hidden;
+  border: 1px solid var(--line);
+  border-radius: var(--r-surface);
+  background: #f7f7f7; /* el fondo de la propia captura, mientras carga */
+  -webkit-mask-image: linear-gradient(to bottom, #000 62%, transparent);
+  mask-image: linear-gradient(to bottom, #000 62%, transparent);
+}
+
+.hero-shot-frame img {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: top left;
+}
+
+/* Secuencia de entrada: una sola vez, escalonada, y la captura al final */
+@keyframes hero-rise {
+  from {
+    opacity: 0;
+    transform: translateY(14px);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+
+.hero-copy > *,
+.hero-shot {
+  animation: hero-rise 700ms cubic-bezier(0.2, 0.7, 0.2, 1) both;
+}
+
+.hero-copy > :nth-child(2) { animation-delay: 90ms; }
+.hero-copy > :nth-child(3) { animation-delay: 180ms; }
+.hero-copy > :nth-child(4) { animation-delay: 260ms; }
+
+.hero-shot {
+  animation-duration: 1000ms;
+  animation-delay: 380ms;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .hero-copy > *,
+  .hero-shot {
+    animation: none;
+  }
 }
 
 /* Sobre mí */
@@ -620,15 +732,6 @@ onBeforeUnmount(() => layoutObserver?.disconnect())
 
 /* Responsive */
 @media (max-width: 895px) {
-  .hero-section {
-    justify-content: center;
-    text-align: center;
-  }
-
-  .hero-actions {
-    justify-content: center;
-  }
-
   .contact {
     grid-template-columns: minmax(0, 1fr);
     gap: var(--s-7);
@@ -666,6 +769,19 @@ onBeforeUnmount(() => layoutObserver?.disconnect())
 
   .section {
     padding: 3rem var(--section-pad);
+  }
+
+  .hero {
+    padding-top: var(--s-7);
+  }
+
+  .hero-shot {
+    margin-top: var(--s-7);
+  }
+
+  .hero-shot-frame {
+    max-height: 16rem;
+    border-radius: var(--r-control);
   }
 
   .contact {
