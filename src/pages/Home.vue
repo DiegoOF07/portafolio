@@ -11,88 +11,95 @@ const year = new Date().getFullYear()
 
 <template>
   <div class="home">
-    <!--  HERO  -->
-    <section id="inicio" class="section hero-section">
-      <div class="hero-glass-card">
-        <span class="availability-badge">
-          <span class="availability-dot"></span>
-          Disponible para oportunidades remotas
-        </span>
-        <h1>Diego Flores <span class="role">Full-Stack Developer</span></h1>
-        <p class="description">
-          Construyo productos completos, del backend a la base de datos,
-          con curiosidad por entender cómo funcionan los sistemas por dentro.
-        </p>
-        <div class="hero-actions">
-          <a href="#proyectos" class="btn-hero-primary">Ver proyectos</a>
-          <a href="mailto:floresdiego041@gmail.com" class="btn-hero-secondary">Escríbeme</a>
-          <a href="/cv-diego-flores.pdf" download class="btn-hero-secondary">
-            <Download :size="18" /> Descargar CV
-          </a>
-        </div>
+    <!-- La línea de traza recorre del hero a Experimentos y termina donde empieza el contacto -->
+    <div class="traced">
+      <div class="throughline" aria-hidden="true">
+        <span class="throughline-fill"></span>
       </div>
-      <img src="../assets/Developer activity-bro.svg" alt="Developer" class="hero-img" />
-    </section>
 
-    <!-- SOBRE MÍ  -->
-    <section id="sobre-mi" class="section">
-      <h2 class="section-title">Sobre mí</h2>
-      <div class="about-body">
-        <img
-          src="@/assets/img/profile.jpg"
-          alt="Diego Flores"
-          class="avatar"
-          width="460"
-          height="460"
-          loading="lazy"
-        />
-        <div class="about-text">
-          <p>
-            Soy estudiante de Ingeniería en Ciencias de la Computación —llevo más de
-            3 años en la carrera— y desarrollador full-stack, principalmente con Go,
-            Vue y bases de datos relacionales y en grafos. Disfruto llevar proyectos
-            de principio a fin, desde entender el problema de un cliente real hasta
-            el despliegue.
+      <!--  HERO  -->
+      <section id="inicio" class="section hero-section">
+        <div class="hero-glass-card">
+          <span class="availability-badge">
+            <span class="availability-dot"></span>
+            Disponible para oportunidades remotas
+          </span>
+          <h1>Diego Flores <span class="role">Full-Stack Developer</span></h1>
+          <p class="description">
+            Construyo productos completos, del backend a la base de datos,
+            con curiosidad por entender cómo funcionan los sistemas por dentro.
           </p>
-          <p>
-            Lo complemento con curiosidad técnica hacia temas menos comunes: he
-            construido un compilador básico, trabajado con sistemas operativos a bajo
-            nivel y experimentado con gráficos 3D y raytracing. Creo que entender los
-            fundamentos, no solo los frameworks, es lo que hace la diferencia a largo
-            plazo.
-          </p>
+          <div class="hero-actions">
+            <a href="#proyectos" class="btn-hero-primary">Ver proyectos</a>
+            <a href="mailto:floresdiego041@gmail.com" class="btn-hero-secondary">Escríbeme</a>
+            <a href="/cv-diego-flores.pdf" download class="btn-hero-secondary">
+              <Download :size="18" /> Descargar CV
+            </a>
+          </div>
         </div>
-      </div>
-    </section>
+        <img src="../assets/Developer activity-bro.svg" alt="Developer" class="hero-img" />
+      </section>
 
-    <!--  PROYECTOS DESTACADOS  -->
-    <section id="proyectos" class="section">
-      <h2 class="section-title">Proyectos destacados</h2>
-      <div class="projects-list">
-        <ProjectCard v-for="p in featuredProjects" :key="p.slug" :project="p" />
-      </div>
-    </section>
-
-    <!--  STACK TÉCNICO  -->
-    <section id="stack" class="section">
-      <h2 class="section-title">Stack técnico</h2>
-      <dl class="stack-list">
-        <div v-for="group in stackGroups" :key="group.label" class="stack-row">
-          <dt>{{ group.label }}</dt>
-          <dd>
-            <TechBadge v-for="tech in group.items" :key="tech.name" :name="tech.name" :icon="tech.icon" />
-          </dd>
+      <!-- SOBRE MÍ  -->
+      <section id="sobre-mi" class="section">
+        <h2 class="section-title">Sobre mí</h2>
+        <div class="about-body">
+          <img
+            src="@/assets/img/profile.jpg"
+            alt="Diego Flores"
+            class="avatar"
+            width="460"
+            height="460"
+            loading="lazy"
+          />
+          <div class="about-text">
+            <p>
+              Soy estudiante de Ingeniería en Ciencias de la Computación —llevo más de
+              3 años en la carrera— y desarrollador full-stack, principalmente con Go,
+              Vue y bases de datos relacionales y en grafos. Disfruto llevar proyectos
+              de principio a fin, desde entender el problema de un cliente real hasta
+              el despliegue.
+            </p>
+            <p>
+              Lo complemento con curiosidad técnica hacia temas menos comunes: he
+              construido un compilador básico, trabajado con sistemas operativos a bajo
+              nivel y experimentado con gráficos 3D y raytracing. Creo que entender los
+              fundamentos, no solo los frameworks, es lo que hace la diferencia a largo
+              plazo.
+            </p>
+          </div>
         </div>
-      </dl>
-    </section>
+      </section>
 
-    <!--  EXPERIMENTALES  -->
-    <section id="experimentos" class="section">
-      <h2 class="section-title">Proyectos experimentales</h2>
-      <div class="experiments-grid">
-        <ExperimentCard v-for="p in experimentProjects" :key="p.slug" :project="p" />
-      </div>
-    </section>
+      <!--  PROYECTOS DESTACADOS  -->
+      <section id="proyectos" class="section">
+        <h2 class="section-title">Proyectos destacados</h2>
+        <div class="projects-list">
+          <ProjectCard v-for="p in featuredProjects" :key="p.slug" :project="p" />
+        </div>
+      </section>
+
+      <!--  STACK TÉCNICO  -->
+      <section id="stack" class="section">
+        <h2 class="section-title">Stack técnico</h2>
+        <dl class="stack-list">
+          <div v-for="group in stackGroups" :key="group.label" class="stack-row">
+            <dt>{{ group.label }}</dt>
+            <dd>
+              <TechBadge v-for="tech in group.items" :key="tech.name" :name="tech.name" :icon="tech.icon" />
+            </dd>
+          </div>
+        </dl>
+      </section>
+
+      <!--  EXPERIMENTALES  -->
+      <section id="experimentos" class="section">
+        <h2 class="section-title">Proyectos experimentales</h2>
+        <div class="experiments-grid">
+          <ExperimentCard v-for="p in experimentProjects" :key="p.slug" :project="p" />
+        </div>
+      </section>
+    </div>
 
     <!--  CONTACTO: la única superficie cálida del sitio  -->
     <div class="warm">
@@ -146,12 +153,15 @@ const year = new Date().getFullYear()
 
 <style scoped>
 .home {
+  /* La línea de traza vive en el margen: a --trace-inset del borde de la sección */
+  --section-pad: 2rem;
+  --trace-inset: 1rem;
   display: flex;
   flex-direction: column;
 }
 
 .section {
-  padding: 4rem 2rem;
+  padding: 4rem var(--section-pad);
   max-width: 1200px;
   margin: 0 auto;
   width: 100%;
@@ -161,6 +171,101 @@ const year = new Date().getFullYear()
 .section-title {
   font-size: var(--step-4);
   margin: 0 0 var(--s-6);
+}
+
+/* ------------------------------------------------------------------
+   Línea de traza: una arista que recorre la página. Su punta sigue el
+   centro del viewport y cada título es un nodo que se rellena al
+   alcanzarlo. Sin JS: scroll-driven animations. Sin soporte (o con
+   movimiento reducido) la línea queda completa y los nodos rellenos.
+   ------------------------------------------------------------------ */
+.traced {
+  position: relative;
+}
+
+.throughline {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: calc(max(0px, 50% - 600px) + var(--trace-inset));
+  width: 1px;
+  background: var(--line);
+  pointer-events: none;
+}
+
+.throughline-fill {
+  display: block;
+  height: 100%;
+  background: color-mix(in srgb, var(--signal) 70%, transparent);
+  transform-origin: top;
+}
+
+.traced .section {
+  position: relative;
+  z-index: 1;
+}
+
+.traced .section-title {
+  position: relative;
+}
+
+.traced .section-title::before {
+  content: '';
+  position: absolute;
+  top: 0.55em;
+  left: calc(var(--trace-inset) - var(--section-pad) + 0.5px);
+  width: 9px;
+  height: 9px;
+  border-radius: 50%;
+  border: 1.5px solid var(--signal);
+  background: var(--signal);
+  transform: translate(-50%, -50%);
+}
+
+@supports (animation-timeline: view()) {
+  .traced {
+    view-timeline-name: --trace;
+  }
+
+  /* 0 cuando el inicio de la zona cruza el centro del viewport, 1 cuando cruza su final */
+  .throughline-fill {
+    animation: trace-draw linear both;
+    animation-timeline: --trace;
+    animation-range: cover 50vh cover calc(100% - 50vh);
+  }
+
+  .traced .section-title {
+    view-timeline-name: --node;
+  }
+
+  .traced .section-title::before {
+    animation: node-reach linear both;
+    animation-timeline: --node;
+    animation-range: cover 45% cover 50%;
+  }
+}
+
+@keyframes trace-draw {
+  from { transform: scaleY(0); }
+  to { transform: scaleY(1); }
+}
+
+@keyframes node-reach {
+  from {
+    background: var(--field-navy);
+    border-color: var(--ink-dim);
+  }
+  to {
+    background: var(--signal);
+    border-color: var(--signal);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .throughline-fill,
+  .traced .section-title::before {
+    animation: none;
+  }
 }
 
 /* Hero */
@@ -512,8 +617,13 @@ const year = new Date().getFullYear()
 }
 
 @media (max-width: 600px) {
+  .home {
+    --section-pad: 1rem;
+    --trace-inset: 0.5rem;
+  }
+
   .section {
-    padding: 3rem 1rem;
+    padding: 3rem var(--section-pad);
   }
 
   .contact {

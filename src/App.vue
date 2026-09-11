@@ -33,7 +33,9 @@ const backgroundType = computed(() => {
   width: 100dvw;
   min-height: 100dvh;
   position: relative;
-  overflow-x: hidden;
+  /* clip, no hidden: hidden convierte a #app en un contenedor de scroll que
+     nunca se desplaza, y rompe sticky y las animaciones ligadas al scroll. */
+  overflow-x: clip;
 }
 
 :deep(.router-view-content) {
