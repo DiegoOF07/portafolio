@@ -18,12 +18,12 @@ defineProps<{
   align-items: center;
   gap: 6px;
   padding: 6px 10px;
-  border-radius: 12px;
+  border-radius: var(--r-badge);
   backdrop-filter: var(--glass-blur-badge);
   -webkit-backdrop-filter: var(--glass-blur-badge);
   background: var(--glass-bg-badge);
   border: var(--glass-border-badge);
-  color: var(--color-text-primary);
+  color: var(--ink);
   font-size: 0.85rem;
   font-weight: 500;
   transition: background var(--glass-transition),

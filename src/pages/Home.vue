@@ -17,7 +17,7 @@ import { stackGroups } from '@/data/stack'
           <span class="availability-dot"></span>
           Disponible para oportunidades remotas
         </span>
-        <h1>Diego Flores <span class="highlight">— Full-Stack Developer</span></h1>
+        <h1>Diego Flores <span class="role">Full-Stack Developer</span></h1>
         <p class="description">
           Construyo productos completos, del backend a la base de datos,
           con curiosidad por entender cómo funcionan los sistemas por dentro.
@@ -143,9 +143,8 @@ import { stackGroups } from '@/data/stack'
 }
 
 .section-title {
-  font-size: 2.25rem;
-  color: var(--color-text-primary);
-  margin-bottom: 2rem;
+  font-size: var(--step-4);
+  margin: 0 0 var(--s-6);
 }
 
 .section-title.centered {
@@ -170,9 +169,9 @@ import { stackGroups } from '@/data/stack'
   border-radius: 999px;
   font-size: 0.85rem;
   font-weight: 600;
-  color: var(--color-accent-cold);
-  background: rgba(6, 255, 165, 0.08);
-  border: 1px solid rgba(6, 255, 165, 0.25);
+  color: var(--signal);
+  background: rgba(79, 209, 232, 0.08);
+  border: 1px solid rgba(79, 209, 232, 0.28);
   margin-bottom: 1.25rem;
 }
 
@@ -180,14 +179,20 @@ import { stackGroups } from '@/data/stack'
   width: 8px;
   height: 8px;
   border-radius: 50%;
-  background: var(--color-accent-cold);
-  box-shadow: 0 0 8px rgba(6, 255, 165, 0.8);
+  background: var(--signal);
+  box-shadow: 0 0 8px rgba(79, 209, 232, 0.7);
   animation: availability-pulse 2s ease-in-out infinite;
 }
 
 @keyframes availability-pulse {
   0%, 100% { opacity: 1; }
   50% { opacity: 0.4; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .availability-dot {
+    animation: none;
+  }
 }
 
 .hero-glass-card {
@@ -201,19 +206,23 @@ import { stackGroups } from '@/data/stack'
 }
 
 .hero-glass-card h1 {
-  font-size: 2.25rem;
-  margin: 0 0 1.5rem;
-  color: var(--color-text-primary);
+  font-size: clamp(2.25rem, 1.4rem + 3vw, 3.25rem);
+  margin: 0 0 var(--s-5);
 }
 
-.highlight {
-  color: var(--color-accent);
+.role {
+  display: block;
+  margin-top: 0.35em;
+  font-size: 0.5em;
+  font-weight: 500;
+  letter-spacing: -0.005em;
+  color: var(--ink-dim);
 }
 
 .hero-glass-card .description {
-  color: var(--color-text-primary);
-  margin-bottom: 1.5rem;
-  font-size: 1.1rem;
+  max-width: var(--measure);
+  margin-bottom: var(--s-5);
+  font-size: var(--step-1);
 }
 
 .hero-actions {
@@ -225,40 +234,40 @@ import { stackGroups } from '@/data/stack'
 .btn-hero-primary,
 .btn-hero-secondary {
   padding: 0.75rem 1.5rem;
-  border-radius: 0.75rem;
+  border-radius: var(--r-control);
   font-weight: 600;
   text-decoration: none;
   display: inline-flex;
   align-items: center;
   gap: 8px;
-  transition: background 0.3s ease, transform 0.3s ease, box-shadow 0.3s ease;
-  backdrop-filter: blur(8px);
-  background: var(--btn-glass-bg);
-  border: var(--btn-glass-border);
+  transition: background 0.3s ease, transform 0.3s ease, border-color 0.3s ease;
 }
 
 .btn-hero-primary {
-  color: white;
+  color: var(--signal-ink);
+  background: var(--signal);
+  border: 1px solid var(--signal);
 }
 
 .btn-hero-primary:hover {
-  color: white;
-  background: linear-gradient(135deg, var(--hover-primary), var(--color-primary));
-  border: 1px solid rgba(255, 255, 255, 0.25);
+  color: var(--signal-ink);
+  background: color-mix(in srgb, var(--signal) 80%, white);
+  border-color: color-mix(in srgb, var(--signal) 80%, white);
   transform: translateY(-2px);
-  box-shadow: 0 8px 24px rgba(8, 126, 139, 0.35);
 }
 
 .btn-hero-secondary {
-  color: var(--color-text-primary);
+  color: var(--ink);
+  background: var(--btn-glass-bg);
+  border: var(--btn-glass-border);
+  backdrop-filter: blur(8px);
 }
 
 .btn-hero-secondary:hover {
-  color: white;
-  background: linear-gradient(135deg, var(--color-gradient-5), var(--color-gradient-4));
-  border: 1px solid rgba(255, 255, 255, 0.25);
+  color: var(--ink);
+  background: var(--btn-glass-hover-bg);
+  border-color: rgba(255, 255, 255, 0.3);
   transform: translateY(-2px);
-  box-shadow: 0 8px 24px rgba(131, 56, 236, 0.35);
 }
 
 .hero-img {
@@ -286,14 +295,11 @@ import { stackGroups } from '@/data/stack'
   flex-shrink: 0;
   object-fit: cover;
   border-radius: 50%;
-  border: 3px solid var(--color-primary);
-  box-shadow: 0 0 12px rgba(0, 0, 0, 0.3);
+  border: 1px solid var(--line);
 }
 
 .about-body p {
-  color: var(--color-text-primary);
-  font-size: 1rem;
-  line-height: 1.6;
+  max-width: var(--measure);
 }
 
 /* Proyectos */
@@ -318,9 +324,12 @@ import { stackGroups } from '@/data/stack'
 }
 
 .stack-group h3 {
-  color: var(--color-accent);
-  font-size: 1.1rem;
-  margin-bottom: 0.75rem;
+  font-family: var(--font-body);
+  font-size: var(--step-0);
+  font-weight: 600;
+  letter-spacing: 0;
+  color: var(--ink-dim);
+  margin: 0 0 var(--s-3);
 }
 
 .stack-badges {
@@ -345,7 +354,6 @@ import { stackGroups } from '@/data/stack'
 }
 
 .contact-cta {
-  color: var(--color-text-primary);
   margin-bottom: 1.5rem;
 }
 
@@ -368,23 +376,23 @@ import { stackGroups } from '@/data/stack'
 }
 
 .icon {
-  color: var(--color-primary);
+  color: var(--ink-dim);
   flex-shrink: 0;
   width: 20px;
   height: 20px;
 }
 
 a {
-  color: var(--color-text-primary);
+  color: var(--ink);
   text-decoration: none;
   border-bottom: 1px solid transparent;
-  transition: all 0.2s;
+  transition: color 0.2s, border-color 0.2s;
   word-break: break-all;
 }
 
 a:hover {
-  color: var(--color-accent);
-  border-bottom: 1px solid var(--color-accent);
+  color: var(--signal);
+  border-bottom: 1px solid var(--signal);
 }
 
 /* Responsive */

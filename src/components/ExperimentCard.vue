@@ -36,7 +36,7 @@ defineProps<{
   overflow: hidden;
   display: flex;
   flex-direction: column;
-  color: var(--color-text-primary);
+  color: var(--ink);
 }
 
 .experiment-media {
@@ -51,14 +51,13 @@ defineProps<{
 }
 
 h4 {
-  font-size: 1.2rem;
-  color: var(--color-accent);
+  font-size: var(--step-2);
   margin: 0;
 }
 
 .description {
   font-size: 0.85rem;
-  color: var(--color-text-secondary, rgba(255,255,255,0.8));
+  color: var(--ink-dim);
   margin: 0;
 }
 
@@ -80,10 +79,10 @@ h4 {
   align-items: center;
   gap: 6px;
   padding: 6px 12px;
-  border-radius: 10px;
+  border-radius: var(--r-control);
   background: var(--btn-glass-bg);
   border: var(--btn-glass-border);
-  color: var(--color-text-primary);
+  color: var(--ink);
   text-decoration: none;
   font-size: 0.8rem;
   font-weight: 600;

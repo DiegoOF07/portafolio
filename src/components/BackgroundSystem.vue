@@ -26,25 +26,28 @@ interface SphereConfig {
 }
 
 const sphereConfigs: Record<string, SphereConfig[]> = {
+  // Solo familia navy/índigo/teal: el fondo es atmósfera, no compite con el acento.
   home: [
-    { xRatio: 0.12, yRatio: 0.18, radius: 260, solidColor: '#087E8B', glowColor: '#06C5D9', speed: 0.0000016, amplitude: 28, depth: 0.25 },
-    { xRatio: 0.82, yRatio: 0.72, radius: 300, solidColor: '#5F3DC4', glowColor: '#8338EC', speed: 0.0000014, amplitude: 22, depth: 0.25 },
+    { xRatio: 0.12, yRatio: 0.18, radius: 260, solidColor: '#0E7C8C', glowColor: '#4FD1E8', speed: 0.0000016, amplitude: 28, depth: 0.25 },
+    { xRatio: 0.82, yRatio: 0.72, radius: 300, solidColor: '#1F2F6B', glowColor: '#3D56B2', speed: 0.0000014, amplitude: 22, depth: 0.25 },
     { xRatio: 0.58, yRatio: 0.82, radius: 180, solidColor: '#0F4C75', glowColor: '#3282B8', speed: 0.0000024, amplitude: 20, depth: 0.55 },
-    { xRatio: 0.72, yRatio: 0.14, radius: 160, solidColor: '#8338EC', glowColor: '#A371F7', speed: 0.0000022, amplitude: 26, depth: 0.55 },
-    { xRatio: 0.35, yRatio: 0.45, radius: 100, solidColor: '#2E86AB', glowColor: '#06FFA5', speed: 0.0000032, amplitude: 18, depth: 1.0  },
+    { xRatio: 0.72, yRatio: 0.14, radius: 160, solidColor: '#233A7A', glowColor: '#4A6CC4', speed: 0.0000022, amplitude: 26, depth: 0.55 },
+    { xRatio: 0.35, yRatio: 0.45, radius: 100, solidColor: '#155E75', glowColor: '#4FD1E8', speed: 0.0000032, amplitude: 18, depth: 1.0  },
   ],
   projects: [
-    { xRatio: 0.08, yRatio: 0.14, radius: 270, solidColor: '#8338EC', glowColor: '#A371F7', speed: 0.0000015, amplitude: 24, depth: 0.25 },
-    { xRatio: 0.86, yRatio: 0.65, radius: 240, solidColor: '#2E86AB', glowColor: '#3282B8', speed: 0.0000013, amplitude: 20, depth: 0.25 },
-    { xRatio: 0.42, yRatio: 0.86, radius: 175, solidColor: '#087E8B', glowColor: '#06C5D9', speed: 0.0000023, amplitude: 22, depth: 0.55 },
-    { xRatio: 0.62, yRatio: 0.22, radius: 165, solidColor: '#5F3DC4', glowColor: '#8338EC', speed: 0.0000021, amplitude: 28, depth: 0.55 },
+    { xRatio: 0.08, yRatio: 0.14, radius: 270, solidColor: '#1F2F6B', glowColor: '#3D56B2', speed: 0.0000015, amplitude: 24, depth: 0.25 },
+    { xRatio: 0.86, yRatio: 0.65, radius: 240, solidColor: '#15607F', glowColor: '#3282B8', speed: 0.0000013, amplitude: 20, depth: 0.25 },
+    { xRatio: 0.42, yRatio: 0.86, radius: 175, solidColor: '#0E7C8C', glowColor: '#4FD1E8', speed: 0.0000023, amplitude: 22, depth: 0.55 },
+    { xRatio: 0.62, yRatio: 0.22, radius: 165, solidColor: '#233A7A', glowColor: '#4A6CC4', speed: 0.0000021, amplitude: 28, depth: 0.55 },
     { xRatio: 0.25, yRatio: 0.60, radius: 95,  solidColor: '#0F4C75', glowColor: '#3282B8', speed: 0.0000030, amplitude: 16, depth: 1.0  },
   ],
 }
 
+// El primer color se sobrescribe al montar con --field-navy (ver onMounted),
+// para que el navbar translúcido y el canvas compartan exactamente el mismo navy.
 const bgColors: Record<string, [string, string, string]> = {
-  home: ['#0D1B2A', '#111827', '#1a0f2e'],
-  projects: ['#0f1a2e', '#111827', '#1a0a2e'],
+  home: ['#0B1622', '#0E1A2B', '#101A33'],
+  projects: ['#0B1622', '#0F1B2E', '#111936'],
 }
 
 const FADE_DURATION = 500 // ms
@@ -188,7 +191,7 @@ const drawGradientBackground = () => {
 
   // Esferas interpoladas
   const spheres = getInterpolatedSpheres()
-  ctx.globalAlpha = 0.60
+  ctx.globalAlpha = 0.42
 
   spheres.forEach((sphere, index) => {
     const phase = index * 1.57
@@ -235,6 +238,12 @@ const reducedMotion =
   window.matchMedia('(prefers-reduced-motion: reduce)').matches
 
 onMounted(() => {
+  // hexToRgb necesita un hex literal de 6 dígitos, así que el token se lee una vez.
+  const fieldNavy = getComputedStyle(document.documentElement).getPropertyValue('--field-navy').trim()
+  if (/^#[0-9a-f]{6}$/i.test(fieldNavy)) {
+    for (const colors of Object.values(bgColors)) colors[0] = fieldNavy
+  }
+
   if (canvasRef.value) {
     canvasRef.value.width  = window.innerWidth
     canvasRef.value.height = window.innerHeight

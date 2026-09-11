@@ -48,7 +48,7 @@ const typeLabel: Record<MediaAsset['type'], string> = {
   align-items: center;
   justify-content: center;
   gap: 0.5rem;
-  color: var(--color-text-secondary, rgba(255, 255, 255, 0.5));
+  color: var(--ink-dim);
   border: 1px dashed rgba(255, 255, 255, 0.18);
   font-size: 0.85rem;
   font-style: italic;

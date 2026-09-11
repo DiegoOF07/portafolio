@@ -81,7 +81,7 @@ const closeMenu = () => {
   left: 0;
   right: 0;
   z-index: 50;
-  background: rgba(13, 27, 42, 0.45);
+  background: color-mix(in srgb, var(--field-navy) 55%, transparent);
   backdrop-filter: blur(var(--glass-blur));
   -webkit-backdrop-filter: blur(var(--glass-blur));
   border-bottom: 1px solid rgba(255, 255, 255, 0.07);
@@ -89,10 +89,12 @@ const closeMenu = () => {
 }
 
 .logo {
-  font-size: 1.5rem;
-  font-weight: bold;
-  color: var(--color-text-primary);
-  letter-spacing: 0.02em;
+  font-family: var(--font-display);
+  font-size: 1.25rem;
+  font-weight: 700;
+  font-stretch: 112%;
+  color: var(--ink);
+  letter-spacing: -0.01em;
   text-decoration: none;
 }
 
@@ -100,7 +102,7 @@ const closeMenu = () => {
   display: none;
   background: none;
   border: none;
-  color: var(--color-text-primary);
+  color: var(--ink);
   cursor: pointer;
   padding: 8px;
   border-radius: 8px;
@@ -120,7 +122,7 @@ const closeMenu = () => {
   border-radius: 8px;
   text-decoration: none;
   font-weight: 600;
-  color: var(--color-text-primary);
+  color: var(--ink);
   background: var(--glass-bg);
   border: 1px solid rgba(255, 255, 255, 0.14);
   transition: background 0.2s, border-color 0.2s;
@@ -135,7 +137,7 @@ const closeMenu = () => {
 .nav-cv:focus-visible,
 .menu-btn:focus-visible,
 .logo:focus-visible {
-  outline: 2px solid var(--color-accent);
+  outline: 2px solid var(--focus-ring);
   outline-offset: 2px;
 }
 
@@ -152,7 +154,7 @@ const closeMenu = () => {
   display: flex;
   align-items: center;
   gap: 6px;
-  color: var(--color-text-secondary);
+  color: var(--ink-dim);
   text-decoration: none;
   padding: 10px 16px;
   border-radius: 8px;
@@ -163,13 +165,13 @@ const closeMenu = () => {
 .nav-link:hover {
   background: var(--glass-bg-hover);
   border-color: rgba(255, 255, 255, 0.10);
-  color: var(--color-text-primary);
+  color: var(--ink);
 }
 
 .active {
   background: var(--glass-bg);
   border-color: rgba(255, 255, 255, 0.12);
-  color: var(--color-text-primary);
+  color: var(--ink);
 }
 
 @media (max-width: 999px) {
@@ -189,7 +191,7 @@ const closeMenu = () => {
     padding: 0;
     margin: 0;
 
-    background: rgba(13, 27, 42, 0.75);
+    background: var(--chrome-bg-strong);
     backdrop-filter: blur(var(--glass-blur));
     -webkit-backdrop-filter: blur(var(--glass-blur));
     border-bottom: 1px solid rgba(255, 255, 255, 0.07);

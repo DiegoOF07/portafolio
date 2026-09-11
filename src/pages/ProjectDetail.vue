@@ -161,19 +161,19 @@ const onSlideChange = (swiper: any) => {
   display: inline-flex;
   align-items: center;
   gap: 6px;
-  color: var(--color-text-primary);
+  color: var(--ink);
   text-decoration: none;
   margin-bottom: 1.5rem;
   font-weight: 600;
 }
 
 .back-link:hover {
-  color: var(--color-accent);
+  color: var(--signal);
 }
 
 .detail-card {
   padding: 2.5rem;
-  color: var(--color-text-primary);
+  color: var(--ink);
 }
 
 .hero-media {
@@ -182,13 +182,12 @@ const onSlideChange = (swiper: any) => {
 }
 
 h1 {
-  font-size: 2.25rem;
-  color: var(--color-accent);
-  margin: 0 0 0.5rem;
+  font-size: var(--step-4);
+  margin: 0 0 var(--s-2);
 }
 
 .tagline {
-  font-size: 1.1rem;
+  font-size: var(--step-1);
   margin-bottom: 2rem;
 }
 
@@ -200,9 +199,12 @@ h1 {
 }
 
 .meta-grid h3 {
-  color: var(--color-accent);
-  font-size: 1rem;
-  margin-bottom: 0.4rem;
+  font-family: var(--font-body);
+  font-size: var(--step--1);
+  font-weight: 600;
+  letter-spacing: 0;
+  color: var(--ink-dim);
+  margin: 0 0 var(--s-2);
 }
 
 .extended {
@@ -210,13 +212,13 @@ h1 {
 }
 
 .extended h3 {
-  color: var(--color-accent);
+  font-size: var(--step-2);
   margin-bottom: 0.5rem;
 }
 
 .placeholder-note p {
   font-style: italic;
-  color: var(--color-text-secondary, rgba(255,255,255,0.6));
+  color: var(--ink-dim);
 }
 
 .techs {
@@ -233,14 +235,13 @@ h1 {
 }
 
 .gallery-title {
-  color: var(--color-accent);
-  font-size: 1.25rem;
+  font-size: var(--step-2);
   margin-bottom: 1.5rem;
 }
 
 .gallery-swiper {
-  --swiper-navigation-color: var(--color-text-primary);
-  --swiper-pagination-color: var(--color-text-primary);
+  --swiper-navigation-color: var(--ink);
+  --swiper-pagination-color: var(--ink);
   --swiper-pagination-bullet-inactive-color: rgba(255,255,255,0.35);
   --swiper-pagination-bullet-inactive-opacity: 1;
   --swiper-pagination-bullet-opacity: 1;
@@ -258,21 +259,21 @@ h1 {
 .gallery-swiper :deep(.swiper-button-prev) {
   width: 48px;
   height: 48px;
-  background: rgba(13, 17, 25, 0.62);
+  background: var(--chrome-bg);
   border: 1px solid rgba(255, 255, 255, 0.55);
   border-radius: 50%;
   backdrop-filter: blur(8px);
   -webkit-backdrop-filter: blur(8px);
   box-shadow: 0 4px 16px rgba(0, 0, 0, 0.45);
   transition: background 0.2s, border-color 0.2s, transform 0.2s;
-  color: #ffffff;
+  color: var(--ink);
   --swiper-navigation-size: 20px;
 }
 
 .gallery-swiper :deep(.swiper-button-next:hover),
 .gallery-swiper :deep(.swiper-button-prev:hover) {
-  background: rgba(13, 17, 25, 0.82);
-  border-color: #ffffff;
+  background: var(--chrome-bg-strong);
+  border-color: var(--ink);
   transform: scale(1.05);
 }
 
@@ -289,7 +290,7 @@ h1 {
   width: fit-content;
   padding: 6px 12px;
   border-radius: 999px;
-  background: rgba(13, 17, 25, 0.62);
+  background: var(--chrome-bg);
   border: 1px solid rgba(255, 255, 255, 0.4);
   backdrop-filter: blur(8px);
   -webkit-backdrop-filter: blur(8px);
@@ -311,10 +312,10 @@ h1 {
 }
 
 .gallery-swiper :deep(.swiper-pagination-bullet-active) {
-  background: var(--color-accent);
-  border-color: #ffffff;
+  background: var(--signal);
+  border-color: var(--ink);
   transform: scale(1.25);
-  box-shadow: 0 0 12px rgba(245, 158, 11, 0.7);
+  box-shadow: 0 0 12px rgba(79, 209, 232, 0.6);
 }
 
 .slide-wrapper {
@@ -337,12 +338,12 @@ h1 {
   height: 42px;
   padding: 0 16px;
   border-radius: 999px;
-  background: rgba(13, 17, 25, 0.62);
+  background: var(--chrome-bg);
   border: 1px solid rgba(255, 255, 255, 0.55);
   backdrop-filter: blur(8px);
   -webkit-backdrop-filter: blur(8px);
   box-shadow: 0 4px 16px rgba(0, 0, 0, 0.45);
-  color: #ffffff;
+  color: var(--ink);
   font-size: 0.875rem;
   font-weight: 600;
   cursor: pointer;
@@ -356,8 +357,8 @@ h1 {
 }
 
 .fullscreen-btn:hover {
-  background: rgba(13, 17, 25, 0.82);
-  border-color: #ffffff;
+  background: var(--chrome-bg-strong);
+  border-color: var(--ink);
   transform: scale(1.05);
 }
 
@@ -375,7 +376,7 @@ h1 {
   padding: 0.25rem;
   overflow-x: auto;
   scrollbar-width: thin;
-  scrollbar-color: var(--color-accent) transparent;
+  scrollbar-color: var(--signal-deep) transparent;
 }
 
 .thumbnails::-webkit-scrollbar {
@@ -387,7 +388,7 @@ h1 {
 }
 
 .thumbnails::-webkit-scrollbar-thumb {
-  background: var(--color-accent);
+  background: var(--signal-deep);
   border-radius: 3px;
 }
 
@@ -409,8 +410,8 @@ h1 {
 }
 
 .thumb-btn.active {
-  border-color: var(--color-accent);
-  box-shadow: 0 0 16px rgba(245, 158, 11, 0.4);
+  border-color: var(--signal);
+  box-shadow: 0 0 16px rgba(79, 209, 232, 0.35);
 }
 
 .thumb-media {
@@ -423,7 +424,7 @@ h1 {
 .gallery-swiper :deep(.swiper-button-prev:focus-visible),
 .gallery-swiper :deep(.swiper-pagination-bullet:focus-visible),
 .thumb-btn:focus-visible {
-  outline: 2px solid var(--color-accent);
+  outline: 2px solid var(--focus-ring);
   outline-offset: 2px;
 }
 
@@ -440,7 +441,7 @@ h1 {
   gap: 6px;
   font-size: 0.85rem;
   font-style: italic;
-  color: var(--color-text-secondary, rgba(255,255,255,0.7));
+  color: var(--ink-dim);
 }
 
 .project-btn {
@@ -448,11 +449,11 @@ h1 {
   align-items: center;
   gap: 8px;
   padding: 10px 16px;
-  border-radius: 12px;
+  border-radius: var(--r-control);
   backdrop-filter: blur(10px);
   background: var(--btn-glass-bg);
   border: var(--btn-glass-border);
-  color: var(--color-text-primary);
+  color: var(--ink);
   text-decoration: none;
   font-weight: 600;
   transition: background 0.3s ease, transform 0.2s ease, box-shadow 0.3s ease;
@@ -467,6 +468,6 @@ h1 {
 .not-found {
   text-align: center;
   padding: 4rem 2rem;
-  color: var(--color-text-primary);
+  color: var(--ink);
 }
 </style>

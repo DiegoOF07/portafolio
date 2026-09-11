@@ -72,7 +72,7 @@ const variants = (i: number) => ({
 <style scoped>
 .project-card {
   overflow: hidden;
-  color: var(--color-text-primary);
+  color: var(--ink);
   max-width: 950px;
   margin: auto;
   display: flex;
@@ -93,19 +93,17 @@ const variants = (i: number) => ({
 }
 
 h3 {
-  font-size: 2rem;
-  color: var(--color-accent);
+  font-size: var(--step-3);
   margin: 0.2rem 0;
 }
 
 .tagline {
-  color: var(--color-text-primary);
   font-size: 1rem;
   margin-top: 0.5rem;
 }
 
 .meta {
-  color: var(--color-text-secondary, rgba(255,255,255,0.75));
+  color: var(--ink-dim);
   font-size: 0.9rem;
   margin-top: 0.35rem;
 }
@@ -113,7 +111,7 @@ h3 {
 .status {
   font-size: 0.85rem;
   font-style: italic;
-  color: var(--color-text-secondary, rgba(255,255,255,0.7));
+  color: var(--ink-dim);
   margin-top: 0.5rem;
 }
 
@@ -138,7 +136,7 @@ h3 {
   gap: 6px;
   font-size: 0.85rem;
   font-style: italic;
-  color: var(--color-text-secondary, rgba(255,255,255,0.7));
+  color: var(--ink-dim);
 }
 
 .project-btn {
@@ -146,11 +144,11 @@ h3 {
   align-items: center;
   gap: 8px;
   padding: 10px 16px;
-  border-radius: 12px;
+  border-radius: var(--r-control);
   backdrop-filter: blur(10px);
   background: var(--btn-glass-bg);
   border: var(--btn-glass-border);
-  color: var(--color-text-primary);
+  color: var(--ink);
   text-decoration: none;
   font-weight: 600;
   transition: background 0.3s ease, transform 0.2s ease, box-shadow 0.3s ease;
@@ -163,8 +161,13 @@ h3 {
 }
 
 .project-btn-primary {
-  background: var(--color-accent);
-  color: #0d1b2a;
+  background: var(--signal);
+  border-color: var(--signal);
+  color: var(--signal-ink);
+}
+
+.project-btn-primary:hover {
+  background: color-mix(in srgb, var(--signal) 80%, white);
 }
 
 @media (min-width: 768px) {
