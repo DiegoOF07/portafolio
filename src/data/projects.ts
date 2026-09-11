@@ -15,15 +15,12 @@ import phaserLogo from '@/assets/logos/phaser.svg'
 import raylibLogo from '@/assets/logos/raylib.svg'
 import dockerLogo from '@/assets/logos/docker.svg'
 
-import fundacionMedia from '@/assets/img/proyecto-fundacion.svg'
-import logisticaMedia from '@/assets/img/01_dapa.png'
+import logisticaLanding from '@/assets/img/01_dapa-landing.webp'
 import logisticaCotizaciones from '@/assets/img/05_dapa-quotes.png'
 import logisticaVehiculos from '@/assets/img/04_dapa-vehicle.png'
 import logisticaFormCreacion from '@/assets/img/03_dapa-form.png'
 import logisticaFormulario from '@/assets/img/02_dapa-form.png'
 import logisticaFinancial from '@/assets/img/06_dapa-financial.png'
-import recomendadorMedia from '@/assets/img/proyecto-recomendador.svg'
-import optimizadorMedia from '@/assets/img/proyecto-optimizador.svg'
 
 export interface TechRef {
   name: string
@@ -55,14 +52,18 @@ export interface FeaturedProject {
   challenge: string
   // 4. stack
   techs: TechRef[]
-  // 5. resultado/estado
+  // 5. resultado/estado. Vacío si no hay nada verificable que decir.
   status: string
   // 6. links
   links: ProjectLinks
-  media: MediaAsset
-  // Si es true, la card enlaza a /proyectos/[slug] con más detalle.
+  // Captura principal. Los proyectos sin capturas reales no la llevan:
+  // se muestran como fila de texto en vez de con una imagen de relleno.
+  media?: MediaAsset
+  // Pieza principal de la sección: se muestra grande, con su captura.
+  lead?: boolean
+  // Se deriva del contenido (ver withDerivedDetail): true solo si el
+  // detalle tiene galería o descripción, para no enlazar a una página vacía.
   hasDetail: boolean
-  // Contenido extendido, solo se usa si hasDetail = true.
   detail?: {
     gallery: MediaAsset[]
     extendedDescription: string
@@ -78,34 +79,14 @@ export interface ExperimentProject {
   links: ProjectLinks
 }
 
-export const featuredProjects: FeaturedProject[] = [
-  {
-    slug: 'Fundacion Hannah',
-    title: 'Sitio web para Fundación Hannah',
-    tagline:
-      'Plataforma web para una ONG real con: control de pacientes, donaciones, eventos y voluntarios, además de un sitio público para dar visibilidad a la fundación.',
-    context: 'Cliente real (ONG) · Proyecto grupal · En curso',
-    challenge:
-      'Diseñar el sistema completo siguiendo fases formales de ingeniería de software, manteniéndolo usable para personal no técnico de la fundación. Resultado: la gestión de pacientes, donaciones, eventos y voluntarios centralizada en una sola plataforma hecha a la medida.',
-    techs: [
-      { name: 'Go', icon: goLogo },
-      { name: 'Vue', icon: vueLogo },
-      { name: 'Supabase', icon: supabaseLogo },
-    ],
-    status: 'En curso: despliegue con dominio propio planificado para 2026.',
-    links: {
-      // Por privacidad del cliente no se comparte el repositorio.
-      privacyNote: 'Repositorio privado por confidencialidad del cliente. No disponible para mostrar en entrevista.',
-      // TODO: demo pública cuando esté disponible
-      demo: '',
-    },
-    media: { type: 'image', src: fundacionMedia, alt: 'Sistema de gestión para fundación' },
-    hasDetail: true,
-    detail: {
-      gallery: [], // TODO: agregar screenshots/gif del dashboard y sitio público
-      extendedDescription: '', // TODO: redactar
-    },
-  },
+type FeaturedProjectData = Omit<FeaturedProject, 'hasDetail'>
+
+const withDerivedDetail = (p: FeaturedProjectData): FeaturedProject => ({
+  ...p,
+  hasDetail: Boolean(p.detail && (p.detail.gallery.length > 0 || p.detail.extendedDescription.trim())),
+})
+
+const featuredProjectData: FeaturedProjectData[] = [
   {
     slug: 'dapa-logistica',
     title: 'Sistema administrativo de logística',
@@ -127,10 +108,15 @@ export const featuredProjects: FeaturedProject[] = [
       repoBackend: 'https://github.com/vicperezch/dapa-backend',
       privacyNote: 'Proyecto para cliente real, repositorios disponibles para mostrar en entrevista.',
     },
-    media: { type: 'image', src: logisticaMedia, alt: 'Sistema administrativo de logística' },
-    hasDetail: true,
+    media: {
+      type: 'image',
+      src: logisticaCotizaciones,
+      alt: 'Módulo de cotizaciones: solicitudes pendientes y las respuestas del formulario de un cliente',
+    },
+    lead: true,
     detail: {
       gallery: [
+        { type: 'image', src: logisticaLanding, alt: 'Sitio público de la empresa, con el acceso al formulario de cotización' },
         { type: 'image', src: logisticaCotizaciones, alt: 'Cotizaciones de los clientes' },
         { type: 'image', src: logisticaVehiculos, alt: 'Módulo de gestión de vehículos' },
         { type: 'image', src: logisticaFormulario, alt: 'Formulario para los clientes' },
@@ -139,6 +125,32 @@ export const featuredProjects: FeaturedProject[] = [
       ],
       extendedDescription:
         'Sistema administrativo completo para una empresa de transporte real, desarrollado en equipo durante aproximadamente 1 año bajo metodología Scrum por medio de Jira. La arquitectura está basada en un backend con Go y un frontend con Vue, usando PostgreSQL como base de datos principal.\n\nEl componente más innovador es el cotizador dinámico: un subsistema donde el administrador puede crear, editar o eliminar preguntas de formulario sin tocar código y las respuestas generan automáticamente cotizaciones para que el administrador las vea y decida qué hacer.\n\nEl sistema incluye gestión de vehículos, conductores, cotizaciones, pedidos y mantenimiento preventivo. El dashboard centralizado muestra KPIs operativos, alertas de mantenimiento y métricas de eficiencia de la flota.\n\nTodo se orquesta con Docker para mejorar la portabilidad.',
+    },
+  },
+  {
+    slug: 'fundacion-hannah',
+    title: 'Sitio web para Fundación Hannah',
+    tagline:
+      'Plataforma web para una ONG real con: control de pacientes, donaciones, eventos y voluntarios, además de un sitio público para dar visibilidad a la fundación.',
+    context: 'Cliente real (ONG) · Proyecto grupal · En curso',
+    challenge:
+      'Diseñar el sistema completo siguiendo fases formales de ingeniería de software, manteniéndolo usable para personal no técnico de la fundación. Resultado: la gestión de pacientes, donaciones, eventos y voluntarios centralizada en una sola plataforma hecha a la medida.',
+    techs: [
+      { name: 'Go', icon: goLogo },
+      { name: 'Vue', icon: vueLogo },
+      { name: 'Supabase', icon: supabaseLogo },
+    ],
+    status: 'En curso: despliegue con dominio propio planificado para 2026.',
+    links: {
+      // Por privacidad del cliente no se comparte el repositorio.
+      privacyNote: 'Repositorio privado por confidencialidad del cliente. No disponible para mostrar en entrevista.',
+      // TODO: demo pública cuando esté disponible
+      demo: '',
+    },
+    // TODO: con capturas o descripción, el detalle se habilita solo
+    detail: {
+      gallery: [],
+      extendedDescription: '',
     },
   },
   {
@@ -154,14 +166,13 @@ export const featuredProjects: FeaturedProject[] = [
       { name: 'Vue', icon: vueLogo },
       { name: 'Neo4j', icon: neo4jLogo },
     ],
-    status: 'Demo disponible.',
+    // TODO: con los links de demo/repos, volver a indicar el estado
+    status: '',
     links: {
       repoFrontend: '', // TODO: link repo frontend
       repoBackend: '',  // TODO: link repo backend
       demo: '', // TODO: link demo
     },
-    media: { type: 'image', src: recomendadorMedia, alt: 'Recomendador de películas' },
-    hasDetail: false,
   },
   {
     slug: 'optimizador-rutas',
@@ -176,16 +187,17 @@ export const featuredProjects: FeaturedProject[] = [
       { name: 'React', icon: reactLogo },
       { name: 'Google Cloud Platform', icon: gcpLogo },
     ],
-    status: 'Demo disponible.',
+    // TODO: con los links de demo/repos, volver a indicar el estado
+    status: '',
     links: {
       repoFrontend: '', // TODO: link repo frontend
       repoBackend: '',  // TODO: link repo backend
       demo: '', // TODO: link demo
     },
-    media: { type: 'image', src: optimizadorMedia, alt: 'Optimizador de rutas con algoritmos genéticos' },
-    hasDetail: false,
   },
 ]
+
+export const featuredProjects: FeaturedProject[] = featuredProjectData.map(withDerivedDetail)
 
 // ----------------------------------------------------------------------------
 // Proyectos experimentales (sección compacta, apoyo visual fuerte, poco texto)
@@ -208,7 +220,7 @@ export const experimentProjects: ExperimentProject[] = [
   {
     slug: 'raytracer-rust',
     title: 'Raytracer / escenas 3D en Rust',
-    description: 'Renderizado de escenas 3D con raylib. Pieza más vistosa: sistema solar o escena estilo Minecraft.',
+    description: 'Renderizado de escenas 3D en Rust con raylib.',
     techs: [
       { name: 'Rust', icon: rustLogo },
       { name: 'raylib', icon: raylibLogo },

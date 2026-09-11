@@ -41,7 +41,7 @@ const onSlideChange = (swiper: any) => {
     <RouterLink to="/#proyectos" class="back-link"><ArrowLeft :size="18" /> Volver a proyectos</RouterLink>
 
     <GlassCard variant="section" class="detail-card">
-      <MediaSlot :media="project.media" aspect="16/9" class="hero-media" />
+      <MediaSlot v-if="project.media" :media="project.media" aspect="16/9" focus="left top" class="hero-media" />
 
       <h1>{{ project.title }}</h1>
       <p class="tagline">{{ project.tagline }}</p>
@@ -55,7 +55,7 @@ const onSlideChange = (swiper: any) => {
           <h3>Reto técnico</h3>
           <p>{{ project.challenge }}</p>
         </div>
-        <div>
+        <div v-if="project.status">
           <h3>Estado</h3>
           <p>{{ project.status }}</p>
         </div>
@@ -63,10 +63,10 @@ const onSlideChange = (swiper: any) => {
 
       <div v-if="project.detail?.extendedDescription" class="extended">
         <h3>Más sobre el proyecto</h3>
-        <p>{{ project.detail.extendedDescription }}</p>
-      </div>
-      <div v-else class="extended placeholder-note">
-        <p>Descripción extendida pendiente de agregar.</p>
+        <!-- Los párrafos vienen separados por una línea en blanco en los datos -->
+        <p v-for="(paragraph, idx) in project.detail.extendedDescription.split('\n\n')" :key="idx">
+          {{ paragraph }}
+        </p>
       </div>
 
       <div class="techs">
@@ -125,16 +125,16 @@ const onSlideChange = (swiper: any) => {
       </div>
 
       <footer class="buttons">
-        <a v-if="project.links.demo" class="project-btn" :href="project.links.demo" target="_blank">
+        <a v-if="project.links.demo" class="project-btn" :href="project.links.demo" target="_blank" rel="noopener noreferrer">
           <Link :size="18" /> Ver demo
         </a>
-        <a v-if="project.links.repo" class="project-btn" :href="project.links.repo" target="_blank">
+        <a v-if="project.links.repo" class="project-btn" :href="project.links.repo" target="_blank" rel="noopener noreferrer">
           <Github :size="18" /> Repositorio
         </a>
-        <a v-if="project.links.repoFrontend" class="project-btn" :href="project.links.repoFrontend" target="_blank">
+        <a v-if="project.links.repoFrontend" class="project-btn" :href="project.links.repoFrontend" target="_blank" rel="noopener noreferrer">
           <Github :size="18" /> Repo frontend
         </a>
-        <a v-if="project.links.repoBackend" class="project-btn" :href="project.links.repoBackend" target="_blank">
+        <a v-if="project.links.repoBackend" class="project-btn" :href="project.links.repoBackend" target="_blank" rel="noopener noreferrer">
           <Github :size="18" /> Repo backend
         </a>
         <span v-if="project.links.privacyNote" class="privacy-note">
@@ -214,11 +214,6 @@ h1 {
 .extended h3 {
   font-size: var(--step-2);
   margin-bottom: 0.5rem;
-}
-
-.placeholder-note p {
-  font-style: italic;
-  color: var(--ink-dim);
 }
 
 .techs {

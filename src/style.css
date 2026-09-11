@@ -183,6 +183,43 @@ button {
 }
 
 /* ================================================================
+   Acciones: una sola acción sólida por bloque; el resto, enlaces discretos
+   ================================================================ */
+.btn-primary {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--s-2);
+  padding: 0.8rem 1.5rem;
+  border-radius: var(--r-control);
+  font-weight: 600;
+  color: var(--signal-ink);
+  background: var(--signal);
+  transition: background 0.2s ease;
+}
+
+.btn-primary:hover {
+  color: var(--signal-ink);
+  background: color-mix(in srgb, var(--signal) 80%, white);
+}
+
+.link-quiet {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--s-2);
+  color: var(--ink);
+  font-weight: 600;
+  text-decoration: underline;
+  text-decoration-color: color-mix(in srgb, var(--ink) 30%, transparent);
+  text-underline-offset: 0.3em;
+  transition: color 0.2s ease, text-decoration-color 0.2s ease;
+}
+
+.link-quiet:hover {
+  color: var(--signal);
+  text-decoration-color: currentColor;
+}
+
+/* ================================================================
    Vidrio
    ================================================================ */
 .glass-card {

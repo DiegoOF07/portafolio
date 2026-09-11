@@ -1,26 +1,42 @@
 <script setup lang="ts">
-import { ImageOff } from 'lucide-vue-next'
 import type { MediaAsset } from '@/data/projects'
 
-const props = defineProps<{
-  media: MediaAsset
-  aspect?: string // ej. '16/9', '4/3'
-}>()
-
-const typeLabel: Record<MediaAsset['type'], string> = {
-  image: 'imagen',
-  gif: 'gif',
-  video: 'video',
-}
+withDefaults(
+  defineProps<{
+    media: MediaAsset
+    aspect?: string // ej. '16/9', '4/3'
+    // Punto de anclaje al recortar (object-position). Las capturas de
+    // interfaz se leen mejor ancladas arriba a la izquierda.
+    focus?: string
+    // Logos que se muestran mientras no haya captura
+    fallbackIcons?: string[]
+  }>(),
+  { aspect: '16/9', focus: 'center', fallbackIcons: () => [] },
+)
 </script>
 
 <template>
-  <div class="media-slot" :style="{ aspectRatio: aspect || '16/9' }">
-    <img v-if="media.type !== 'video' && media.src" :src="media.src" :alt="media.alt" class="media-content" />
-    <video v-else-if="media.type === 'video' && media.src" :src="media.src" class="media-content" autoplay loop muted playsinline />
-    <div v-else class="media-placeholder">
-      <ImageOff :size="32" />
-      <span>Agregar {{ typeLabel[props.media.type] }}</span>
+  <div class="media-slot" :style="{ aspectRatio: aspect }">
+    <img
+      v-if="media.type !== 'video' && media.src"
+      :src="media.src"
+      :alt="media.alt"
+      :style="{ objectPosition: focus }"
+      class="media-content"
+    />
+    <video
+      v-else-if="media.type === 'video' && media.src"
+      :src="media.src"
+      :style="{ objectPosition: focus }"
+      class="media-content"
+      autoplay
+      loop
+      muted
+      playsinline
+    />
+    <!-- Sin captura: panel de rejilla con los logos del stack, nunca un hueco -->
+    <div v-else class="media-fallback" aria-hidden="true">
+      <img v-for="icon in fallbackIcons" :key="icon" :src="icon" alt="" />
     </div>
   </div>
 </template>
@@ -40,17 +56,21 @@ const typeLabel: Record<MediaAsset['type'], string> = {
   display: block;
 }
 
-.media-placeholder {
+.media-fallback {
   width: 100%;
   height: 100%;
   display: flex;
-  flex-direction: column;
   align-items: center;
   justify-content: center;
-  gap: 0.5rem;
-  color: var(--ink-dim);
-  border: 1px dashed rgba(255, 255, 255, 0.18);
-  font-size: 0.85rem;
-  font-style: italic;
+  gap: var(--s-5);
+  background-color: var(--field-raised);
+  background-image: radial-gradient(circle, rgba(232, 237, 247, 0.1) 1px, transparent 1.5px);
+  background-size: 18px 18px;
+}
+
+.media-fallback img {
+  width: 44px;
+  height: 44px;
+  object-fit: contain;
 }
 </style>

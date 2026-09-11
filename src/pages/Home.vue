@@ -14,6 +14,10 @@ import formWebp1340 from '@/assets/img/hero/hero-form-1340.webp'
 
 const year = new Date().getFullYear()
 
+// La pieza principal va grande; el resto, en una lista más ligera
+const leadProject = featuredProjects.find((p) => p.lead)
+const otherProjects = featuredProjects.filter((p) => !p.lead)
+
 // Captura del hero (constructor del formulario dinámico) en AVIF/WebP,
 // con el PNG original como respaldo.
 const heroSrcset = {
@@ -92,8 +96,8 @@ onBeforeUnmount(() => layoutObserver?.disconnect())
           </p>
           <div class="hero-actions">
             <a href="#proyectos" class="btn-primary">Ver proyectos</a>
-            <a href="mailto:floresdiego041@gmail.com" class="hero-link">Escríbeme</a>
-            <a href="/cv-diego-flores.pdf" download class="hero-link">
+            <a href="mailto:floresdiego041@gmail.com" class="link-quiet">Escríbeme</a>
+            <a href="/cv-diego-flores.pdf" download class="link-quiet">
               <Download :size="18" aria-hidden="true" /> Descargar CV
             </a>
           </div>
@@ -156,8 +160,9 @@ onBeforeUnmount(() => layoutObserver?.disconnect())
       <!--  PROYECTOS DESTACADOS  -->
       <section id="proyectos" class="section">
         <h2 class="section-title trace-node">Proyectos destacados</h2>
-        <div class="projects-list">
-          <ProjectCard v-for="p in featuredProjects" :key="p.slug" :project="p" />
+        <ProjectCard v-if="leadProject" :project="leadProject" />
+        <div class="project-rows">
+          <ProjectCard v-for="p in otherProjects" :key="p.slug" :project="p" />
         </div>
       </section>
 
@@ -434,40 +439,6 @@ onBeforeUnmount(() => layoutObserver?.disconnect())
   gap: var(--s-4) var(--s-6);
 }
 
-.btn-primary {
-  display: inline-flex;
-  align-items: center;
-  gap: var(--s-2);
-  padding: 0.8rem 1.5rem;
-  border-radius: var(--r-control);
-  font-weight: 600;
-  color: var(--signal-ink);
-  background: var(--signal);
-  transition: background 0.2s ease;
-}
-
-.btn-primary:hover {
-  color: var(--signal-ink);
-  background: color-mix(in srgb, var(--signal) 80%, white);
-}
-
-.hero-link {
-  display: inline-flex;
-  align-items: center;
-  gap: var(--s-2);
-  color: var(--ink);
-  font-weight: 600;
-  text-decoration: underline;
-  text-decoration-color: color-mix(in srgb, var(--ink) 30%, transparent);
-  text-underline-offset: 0.3em;
-  transition: color 0.2s ease, text-decoration-color 0.2s ease;
-}
-
-.hero-link:hover {
-  color: var(--signal);
-  text-decoration-color: currentColor;
-}
-
 /* Captura: evidencia real del trabajo. Se corta con un desvanecido
    hacia abajo para invitar a seguir bajando. */
 .hero-shot {
@@ -572,10 +543,9 @@ onBeforeUnmount(() => layoutObserver?.disconnect())
 }
 
 /* Proyectos */
-.projects-list {
-  display: flex;
-  flex-direction: column;
-  gap: 3rem;
+.project-rows {
+  margin-top: var(--s-8);
+  border-top: 1px solid var(--line);
 }
 
 /* Stack: una fila por grupo, etiqueta a la izquierda */

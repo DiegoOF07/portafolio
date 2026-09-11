@@ -1,30 +1,36 @@
 <script setup lang="ts">
+import { computed } from 'vue'
 import { Link, Github } from 'lucide-vue-next'
 import GlassCard from '@/components/GlassCard.vue'
 import MediaSlot from '@/components/MediaSlot.vue'
 import TechBadge from './TechBadge.vue'
 import type { ExperimentProject } from '@/data/projects'
 
-defineProps<{
+const props = defineProps<{
   project: ExperimentProject
 }>()
+
+// Si todavía no hay captura, el panel muestra los logos de su stack
+const techIcons = computed(() =>
+  props.project.techs.map((t) => t.icon).filter((icon): icon is string => !!icon),
+)
 </script>
 
 <template>
   <GlassCard variant="project" class="experiment-card">
-    <MediaSlot :media="project.media" class="experiment-media" aspect="16/10" />
+    <MediaSlot :media="project.media" :fallback-icons="techIcons" class="experiment-media" aspect="16/10" />
     <div class="experiment-content">
       <h4>{{ project.title }}</h4>
       <p class="description">{{ project.description }}</p>
       <div class="techs">
         <TechBadge v-for="(tech, idx) in project.techs" :key="idx" :name="tech.name" :icon="tech.icon" />
       </div>
-      <div class="buttons">
-        <a v-if="project.links.demo" class="exp-btn" :href="project.links.demo" target="_blank">
-          <Link :size="16" /> Demo
+      <div v-if="project.links.demo || project.links.repo" class="buttons">
+        <a v-if="project.links.demo" class="link-quiet" :href="project.links.demo" target="_blank" rel="noopener noreferrer">
+          <Link :size="16" aria-hidden="true" /> Demo
         </a>
-        <a v-if="project.links.repo" class="exp-btn" :href="project.links.repo" target="_blank">
-          <Github :size="16" /> Repo
+        <a v-if="project.links.repo" class="link-quiet" :href="project.links.repo" target="_blank" rel="noopener noreferrer">
+          <Github :size="16" aria-hidden="true" /> Repo
         </a>
       </div>
     </div>
@@ -70,26 +76,8 @@ h4 {
 
 .buttons {
   display: flex;
-  gap: 0.6rem;
-  margin-top: 0.4rem;
-}
-
-.exp-btn {
-  display: inline-flex;
-  align-items: center;
-  gap: 6px;
-  padding: 6px 12px;
-  border-radius: var(--r-control);
-  background: var(--btn-glass-bg);
-  border: var(--btn-glass-border);
-  color: var(--ink);
-  text-decoration: none;
-  font-size: 0.8rem;
-  font-weight: 600;
-  transition: background 0.2s ease;
-}
-
-.exp-btn:hover {
-  background: var(--btn-glass-hover-bg);
+  gap: var(--s-5);
+  margin-top: var(--s-2);
+  font-size: var(--step--1);
 }
 </style>
