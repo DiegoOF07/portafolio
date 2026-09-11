@@ -1,4 +1,5 @@
 <script setup lang="ts">
+import { ref, onMounted, onBeforeUnmount } from 'vue'
 import { Github, Linkedin, Download } from 'lucide-vue-next'
 import ProjectCard from '@/components/ProjectCard.vue'
 import ExperimentCard from '@/components/ExperimentCard.vue'
@@ -7,12 +8,42 @@ import { featuredProjects, experimentProjects } from '@/data/projects'
 import { stackGroups } from '@/data/stack'
 
 const year = new Date().getFullYear()
+
+// La línea de traza arranca en el nodo del H1 del hero, no en el borde
+// superior. Esa altura depende del centrado del hero y de la carga de
+// fuentes, así que se mide al montar y cada vez que cambia el layout.
+const tracedEl = ref<HTMLElement | null>(null)
+const traceStartEl = ref<HTMLElement | null>(null)
+const traceStart = ref(0)
+let layoutObserver: ResizeObserver | undefined
+
+// Mismo valor que `top` de .trace-node::before (0.55em)
+const NODE_OFFSET_EM = 0.55
+
+const measureTraceStart = () => {
+  const traced = tracedEl.value
+  const start = traceStartEl.value
+  if (!traced || !start) return
+  const nodeY =
+    start.getBoundingClientRect().top + parseFloat(getComputedStyle(start).fontSize) * NODE_OFFSET_EM
+  traceStart.value = Math.round(nodeY - traced.getBoundingClientRect().top)
+}
+
+onMounted(() => {
+  measureTraceStart()
+  if (tracedEl.value) {
+    layoutObserver = new ResizeObserver(measureTraceStart)
+    layoutObserver.observe(tracedEl.value)
+  }
+})
+
+onBeforeUnmount(() => layoutObserver?.disconnect())
 </script>
 
 <template>
   <div class="home">
     <!-- La línea de traza recorre del hero a Experimentos y termina donde empieza el contacto -->
-    <div class="traced">
+    <div ref="tracedEl" class="traced" :style="{ '--trace-start': `${traceStart}px` }">
       <div class="throughline" aria-hidden="true">
         <span class="throughline-fill"></span>
       </div>
@@ -24,7 +55,9 @@ const year = new Date().getFullYear()
             <span class="availability-dot"></span>
             Disponible para oportunidades remotas
           </span>
-          <h1>Diego Flores <span class="role">Full-Stack Developer</span></h1>
+          <h1 ref="traceStartEl" class="trace-node">
+            Diego Flores <span class="role">Full-Stack Developer</span>
+          </h1>
           <p class="description">
             Construyo productos completos, del backend a la base de datos,
             con curiosidad por entender cómo funcionan los sistemas por dentro.
@@ -42,7 +75,7 @@ const year = new Date().getFullYear()
 
       <!-- SOBRE MÍ  -->
       <section id="sobre-mi" class="section">
-        <h2 class="section-title">Sobre mí</h2>
+        <h2 class="section-title trace-node">Sobre mí</h2>
         <div class="about-body">
           <img
             src="@/assets/img/profile.jpg"
@@ -73,7 +106,7 @@ const year = new Date().getFullYear()
 
       <!--  PROYECTOS DESTACADOS  -->
       <section id="proyectos" class="section">
-        <h2 class="section-title">Proyectos destacados</h2>
+        <h2 class="section-title trace-node">Proyectos destacados</h2>
         <div class="projects-list">
           <ProjectCard v-for="p in featuredProjects" :key="p.slug" :project="p" />
         </div>
@@ -81,7 +114,7 @@ const year = new Date().getFullYear()
 
       <!--  STACK TÉCNICO  -->
       <section id="stack" class="section">
-        <h2 class="section-title">Stack técnico</h2>
+        <h2 class="section-title trace-node">Stack técnico</h2>
         <dl class="stack-list">
           <div v-for="group in stackGroups" :key="group.label" class="stack-row">
             <dt>{{ group.label }}</dt>
@@ -94,7 +127,7 @@ const year = new Date().getFullYear()
 
       <!--  EXPERIMENTALES  -->
       <section id="experimentos" class="section">
-        <h2 class="section-title">Proyectos experimentales</h2>
+        <h2 class="section-title trace-node">Proyectos experimentales</h2>
         <div class="experiments-grid">
           <ExperimentCard v-for="p in experimentProjects" :key="p.slug" :project="p" />
         </div>
@@ -183,9 +216,11 @@ const year = new Date().getFullYear()
   position: relative;
 }
 
+/* Arranca en el nodo del hero (--trace-start) y no en el borde superior,
+   para que no parezca continuar por debajo del navbar. */
 .throughline {
   position: absolute;
-  top: 0;
+  top: var(--trace-start, 0px);
   bottom: 0;
   left: calc(max(0px, 50% - 600px) + var(--trace-inset));
   width: 1px;
@@ -205,15 +240,22 @@ const year = new Date().getFullYear()
   z-index: 1;
 }
 
-.traced .section-title {
+/* Nodo sobre la línea. Por defecto se alinea con un título de sección;
+   en el hero se corre además el padding y el borde de la tarjeta. */
+.trace-node {
+  --node-x: calc(var(--trace-inset) - var(--section-pad) + 0.5px);
   position: relative;
 }
 
-.traced .section-title::before {
+.hero-glass-card .trace-node {
+  --node-x: calc(var(--trace-inset) - var(--section-pad) - 2.5rem - 1px + 0.5px);
+}
+
+.trace-node::before {
   content: '';
   position: absolute;
   top: 0.55em;
-  left: calc(var(--trace-inset) - var(--section-pad) + 0.5px);
+  left: var(--node-x);
   width: 9px;
   height: 9px;
   border-radius: 50%;
@@ -223,22 +265,22 @@ const year = new Date().getFullYear()
 }
 
 @supports (animation-timeline: view()) {
-  .traced {
+  .throughline {
     view-timeline-name: --trace;
   }
 
-  /* 0 cuando el inicio de la zona cruza el centro del viewport, 1 cuando cruza su final */
+  /* 0 cuando el inicio de la línea cruza el centro del viewport, 1 cuando cruza su final */
   .throughline-fill {
     animation: trace-draw linear both;
     animation-timeline: --trace;
     animation-range: cover 50vh cover calc(100% - 50vh);
   }
 
-  .traced .section-title {
+  .trace-node {
     view-timeline-name: --node;
   }
 
-  .traced .section-title::before {
+  .trace-node::before {
     animation: node-reach linear both;
     animation-timeline: --node;
     animation-range: cover 45% cover 50%;
@@ -263,7 +305,7 @@ const year = new Date().getFullYear()
 
 @media (prefers-reduced-motion: reduce) {
   .throughline-fill,
-  .traced .section-title::before {
+  .trace-node::before {
     animation: none;
   }
 }
