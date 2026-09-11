@@ -15,6 +15,9 @@
   --focus-ring:   #4FD1E8;
   --warm-surface: #F0E6D2;
   --warm-ink:     #1A1410;
+  --warm-ink-dim: #5C5147;
+  --warm-line:    rgba(26, 20, 16, 0.15);
+  --signal-on-warm: #0A5C68; /* el acento oscurecido: 6:1 sobre la banda cálida */
 
   /* Cromo flotante (navbar, carrusel): el mismo navy del campo, translúcido */
   --chrome-bg:        color-mix(in srgb, var(--field-navy) 62%, transparent);

@@ -20,7 +20,8 @@ export interface StackGroup {
   items: TechRef[]
 }
 
-// Agrupado igual que en el CV: Lenguajes / Frontend / Backend / Bases de datos / Herramientas
+// Agrupado como en el CV, con Backend y Bases de datos juntos
+// (un grupo de un solo elemento se veía vacío junto a los demás).
 export const stackGroups: StackGroup[] = [
   {
     label: 'Lenguajes',
@@ -43,14 +44,9 @@ export const stackGroups: StackGroup[] = [
     ],
   },
   {
-    label: 'Backend',
+    label: 'Backend y bases de datos',
     items: [
       { name: 'Go', icon: goLogo },
-    ],
-  },
-  {
-    label: 'Bases de datos',
-    items: [
       { name: 'PostgreSQL', icon: postgresLogo },
       { name: 'Neo4j', icon: neo4jLogo },
       { name: 'Supabase', icon: supabaseLogo },

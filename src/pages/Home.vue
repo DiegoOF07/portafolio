@@ -1,11 +1,12 @@
 <script setup lang="ts">
-import { Mail, Github, Linkedin, MapPin, GraduationCap, Download } from 'lucide-vue-next'
-import GlassCard from '@/components/GlassCard.vue'
+import { Github, Linkedin, Download } from 'lucide-vue-next'
 import ProjectCard from '@/components/ProjectCard.vue'
 import ExperimentCard from '@/components/ExperimentCard.vue'
 import TechBadge from '@/components/TechBadge.vue'
 import { featuredProjects, experimentProjects } from '@/data/projects'
 import { stackGroups } from '@/data/stack'
+
+const year = new Date().getFullYear()
 </script>
 
 <template>
@@ -35,28 +36,38 @@ import { stackGroups } from '@/data/stack'
 
     <!-- SOBRE MÍ  -->
     <section id="sobre-mi" class="section">
-      <GlassCard variant="section" class="about-card">
-        <h2 class="section-title">Sobre mí</h2>
-        <div class="about-body">
-          <img src="@/assets/img/profile.jpg" alt="Diego Flores" class="avatar" />
+      <h2 class="section-title">Sobre mí</h2>
+      <div class="about-body">
+        <img
+          src="@/assets/img/profile.jpg"
+          alt="Diego Flores"
+          class="avatar"
+          width="460"
+          height="460"
+          loading="lazy"
+        />
+        <div class="about-text">
           <p>
             Soy estudiante de Ingeniería en Ciencias de la Computación —llevo más de
             3 años en la carrera— y desarrollador full-stack, principalmente con Go,
             Vue y bases de datos relacionales y en grafos. Disfruto llevar proyectos
             de principio a fin, desde entender el problema de un cliente real hasta
-            el despliegue, y complementar eso con curiosidad técnica hacia temas
-            menos comunes: he construido un compilador básico, trabajado con
-            sistemas operativos a bajo nivel y experimentado con gráficos 3D y
-            raytracing. Creo que entender los fundamentos, no solo los frameworks,
-            es lo que hace la diferencia a largo plazo.
+            el despliegue.
+          </p>
+          <p>
+            Lo complemento con curiosidad técnica hacia temas menos comunes: he
+            construido un compilador básico, trabajado con sistemas operativos a bajo
+            nivel y experimentado con gráficos 3D y raytracing. Creo que entender los
+            fundamentos, no solo los frameworks, es lo que hace la diferencia a largo
+            plazo.
           </p>
         </div>
-      </GlassCard>
+      </div>
     </section>
 
     <!--  PROYECTOS DESTACADOS  -->
     <section id="proyectos" class="section">
-      <h2 class="section-title centered">Proyectos destacados</h2>
+      <h2 class="section-title">Proyectos destacados</h2>
       <div class="projects-list">
         <ProjectCard v-for="p in featuredProjects" :key="p.slug" :project="p" />
       </div>
@@ -64,62 +75,72 @@ import { stackGroups } from '@/data/stack'
 
     <!--  STACK TÉCNICO  -->
     <section id="stack" class="section">
-      <GlassCard variant="section" class="stack-card">
-        <h2 class="section-title centered">Stack técnico</h2>
-        <div class="stack-groups">
-          <div v-for="group in stackGroups" :key="group.label" class="stack-group">
-            <h3>{{ group.label }}</h3>
-            <div class="stack-badges">
-              <TechBadge v-for="tech in group.items" :key="tech.name" :name="tech.name" :icon="tech.icon" />
-            </div>
-          </div>
+      <h2 class="section-title">Stack técnico</h2>
+      <dl class="stack-list">
+        <div v-for="group in stackGroups" :key="group.label" class="stack-row">
+          <dt>{{ group.label }}</dt>
+          <dd>
+            <TechBadge v-for="tech in group.items" :key="tech.name" :name="tech.name" :icon="tech.icon" />
+          </dd>
         </div>
-      </GlassCard>
+      </dl>
     </section>
 
     <!--  EXPERIMENTALES  -->
     <section id="experimentos" class="section">
-      <h2 class="section-title centered">Proyectos experimentales</h2>
+      <h2 class="section-title">Proyectos experimentales</h2>
       <div class="experiments-grid">
         <ExperimentCard v-for="p in experimentProjects" :key="p.slug" :project="p" />
       </div>
     </section>
 
-    <!--  CONTACTO  -->
-    <section id="contacto" class="section">
-      <GlassCard variant="section" class="contact-card">
-        <h2 class="section-title centered">Contacto</h2>
-        <p class="contact-cta">
-          Escríbeme, estoy buscando oportunidades remotas.
-        </p>
-        <ul class="info-list">
-          <li>
-            <Mail class="icon" />
-            <span><a href="mailto:floresdiego041@gmail.com">floresdiego041@gmail.com</a></span>
-          </li>
-          <li>
-            <Github class="icon" />
-            <span><a href="https://github.com/DiegoOF07" target="_blank">github.com/DiegoOF07</a></span>
-          </li>
-          <li>
-            <Linkedin class="icon" />
-            <span><a href="https://linkedin.com/in/diego-flores-gt" target="_blank">linkedin.com/in/diego-flores-gt</a></span>
-          </li>
-          <li>
-            <MapPin class="icon" />
-            <span>Guatemala</span>
-          </li>
-          <li>
-            <GraduationCap class="icon" />
-            <span>Ingeniería en Ciencias de la Computación</span>
-          </li>
-          <li>
-            <Download class="icon" />
-            <span><a href="/cv-diego-flores.pdf" download>Descargar CV</a></span>
-          </li>
-        </ul>
-      </GlassCard>
-    </section>
+    <!--  CONTACTO: la única superficie cálida del sitio  -->
+    <div class="warm">
+      <section id="contacto" class="section contact">
+        <div class="contact-main">
+          <h2 class="section-title">Contacto</h2>
+          <p class="contact-lead">
+            Busco oportunidades remotas como desarrollador
+            <span class="nowrap">full-stack</span>. Si algo de lo que viste encaja con
+            lo que tu equipo está construyendo, escríbeme.
+          </p>
+          <a class="contact-email" href="mailto:floresdiego041@gmail.com">floresdiego041@gmail.com</a>
+          <ul class="contact-links">
+            <li>
+              <a href="https://github.com/DiegoOF07" target="_blank" rel="noopener noreferrer">
+                <Github :size="18" aria-hidden="true" /> GitHub
+              </a>
+            </li>
+            <li>
+              <a href="https://linkedin.com/in/diego-flores-gt" target="_blank" rel="noopener noreferrer">
+                <Linkedin :size="18" aria-hidden="true" /> LinkedIn
+              </a>
+            </li>
+            <li>
+              <a href="/cv-diego-flores.pdf" download>
+                <Download :size="18" aria-hidden="true" /> Descargar CV
+              </a>
+            </li>
+          </ul>
+        </div>
+
+        <dl class="contact-facts">
+          <div>
+            <dt>Ubicación</dt>
+            <dd>Guatemala (GMT-6)</dd>
+          </div>
+          <div>
+            <dt>Formación</dt>
+            <dd>Ingeniería en Ciencias de la Computación</dd>
+          </div>
+        </dl>
+      </section>
+
+      <footer class="site-footer">
+        <p>© {{ year }} Diego Flores</p>
+        <a href="#inicio">Volver arriba</a>
+      </footer>
+    </div>
   </div>
 </template>
 
@@ -140,10 +161,6 @@ import { stackGroups } from '@/data/stack'
 .section-title {
   font-size: var(--step-4);
   margin: 0 0 var(--s-6);
-}
-
-.section-title.centered {
-  text-align: center;
 }
 
 /* Hero */
@@ -270,65 +287,63 @@ import { stackGroups } from '@/data/stack'
 }
 
 /* Sobre mí */
-.about-card {
-  padding: 2.5rem;
-  max-width: 950px;
-  margin: 0 auto;
-}
-
 .about-body {
-  display: flex;
-  align-items: center;
-  gap: 2rem;
+  display: grid;
+  grid-template-columns: 200px minmax(0, 1fr);
+  gap: var(--s-7);
+  align-items: start;
 }
 
 .avatar {
-  width: 160px;
-  height: 160px;
-  flex-shrink: 0;
+  width: 200px;
+  height: 200px;
   object-fit: cover;
-  border-radius: 50%;
+  border-radius: var(--r-control);
   border: 1px solid var(--line);
 }
 
-.about-body p {
-  max-width: var(--measure);
+.about-text p {
+  max-width: 62ch;
+  margin: 0 0 var(--s-4);
+  font-size: var(--step-1);
+}
+
+.about-text p:last-child {
+  margin-bottom: 0;
 }
 
 /* Proyectos */
 .projects-list {
   display: flex;
   flex-direction: column;
-  align-items: center;
   gap: 3rem;
 }
 
-/* Stack */
-.stack-card {
-  padding: 2.5rem;
-  max-width: 950px;
-  margin: 0 auto;
+/* Stack: una fila por grupo, etiqueta a la izquierda */
+.stack-list {
+  margin: 0;
+  border-top: 1px solid var(--line);
 }
 
-.stack-groups {
-  display: flex;
-  flex-direction: column;
-  gap: 1.75rem;
+.stack-row {
+  display: grid;
+  grid-template-columns: 14rem minmax(0, 1fr);
+  gap: var(--s-5);
+  align-items: center;
+  padding-block: var(--s-5);
+  border-bottom: 1px solid var(--line);
 }
 
-.stack-group h3 {
-  font-family: var(--font-body);
-  font-size: var(--step-0);
+.stack-row dt {
   font-weight: 600;
-  letter-spacing: 0;
   color: var(--ink-dim);
-  margin: 0 0 var(--s-3);
 }
 
-.stack-badges {
+.stack-row dd {
+  margin: 0;
   display: flex;
   flex-wrap: wrap;
-  gap: 0.6rem;
+  gap: var(--s-2);
 }
 
 /* Experimentales */
@@ -338,54 +353,124 @@ import { stackGroups } from '@/data/stack'
   gap: 1.5rem;
 }
 
-/* Contacto */
-.contact-card {
-  padding: 2.5rem;
-  max-width: 700px;
-  margin: 0 auto;
-  text-align: center;
+/* Contacto — banda cálida */
+.warm {
+  background: var(--warm-surface);
+  color: var(--warm-ink);
 }
 
-.contact-cta {
-  margin-bottom: 1.5rem;
+.warm :focus-visible {
+  outline-color: var(--warm-ink);
 }
 
-.info-list {
+.contact {
+  display: grid;
+  grid-template-columns: minmax(0, 1.7fr) minmax(0, 1fr);
+  gap: var(--s-8);
+  align-items: end;
+  padding-block: var(--s-9) var(--s-8);
+}
+
+.contact .section-title {
+  color: var(--warm-ink);
+}
+
+.contact-lead {
+  max-width: 52ch;
+  margin: 0 0 var(--s-6);
+  font-size: var(--step-1);
+}
+
+.nowrap {
+  white-space: nowrap;
+}
+
+.contact-email {
+  font-family: var(--font-display);
+  font-stretch: 112%;
+  font-weight: 700;
+  font-size: clamp(1.25rem, 0.8rem + 2.6vw, 2.5rem);
+  letter-spacing: -0.02em;
+  line-height: 1.15;
+  color: var(--signal-on-warm);
+  text-decoration: underline;
+  text-decoration-thickness: 2px;
+  text-underline-offset: 0.18em;
+  overflow-wrap: anywhere;
+  transition: color 0.2s ease;
+}
+
+.contact-email:hover {
+  color: var(--warm-ink);
+}
+
+.contact-links {
   list-style: none;
   padding: 0;
+  margin: var(--s-6) 0 0;
   display: flex;
-  flex-direction: column;
-  gap: 1rem;
-  text-align: left;
-  max-width: 400px;
-  margin: 0 auto;
+  flex-wrap: wrap;
+  gap: var(--s-3) var(--s-6);
 }
 
-.info-list li {
-  display: flex;
+.contact-links a {
+  display: inline-flex;
   align-items: center;
-  gap: 0.75rem;
-  font-size: 1rem;
+  gap: var(--s-2);
+  color: var(--warm-ink);
+  font-weight: 600;
+  text-decoration: underline;
+  text-decoration-color: var(--warm-line);
+  text-underline-offset: 0.25em;
+  transition: text-decoration-color 0.2s ease;
 }
 
-.icon {
-  color: var(--ink-dim);
-  flex-shrink: 0;
-  width: 20px;
-  height: 20px;
+.contact-links a:hover {
+  text-decoration-color: currentColor;
 }
 
-a {
-  color: var(--ink);
-  text-decoration: none;
-  border-bottom: 1px solid transparent;
-  transition: color 0.2s, border-color 0.2s;
-  word-break: break-all;
+.contact-facts {
+  margin: 0;
+  display: grid;
+  gap: var(--s-5);
+  padding-left: var(--s-6);
+  border-left: 1px solid var(--warm-line);
 }
 
-a:hover {
-  color: var(--signal);
-  border-bottom: 1px solid var(--signal);
+.contact-facts dt {
+  font-size: var(--step--1);
+  font-weight: 600;
+  color: var(--warm-ink-dim);
+}
+
+.contact-facts dd {
+  margin: 0;
+}
+
+.site-footer {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: var(--s-5) 2rem;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  gap: var(--s-4);
+  border-top: 1px solid var(--warm-line);
+  font-size: var(--step--1);
+  color: var(--warm-ink-dim);
+}
+
+.site-footer p {
+  margin: 0;
+}
+
+.site-footer a {
+  color: var(--warm-ink);
+  font-weight: 600;
+}
+
+.site-footer a:hover {
+  color: var(--signal-on-warm);
 }
 
 /* Responsive */
@@ -399,15 +484,46 @@ a:hover {
     justify-content: center;
   }
 
+  .contact {
+    grid-template-columns: minmax(0, 1fr);
+    gap: var(--s-7);
+  }
+
+  .contact-facts {
+    padding: var(--s-5) 0 0;
+    border-left: none;
+    border-top: 1px solid var(--warm-line);
+  }
+}
+
+@media (max-width: 700px) {
   .about-body {
-    flex-direction: column;
-    text-align: center;
+    grid-template-columns: minmax(0, 1fr);
+    gap: var(--s-5);
+  }
+
+  .avatar {
+    width: 120px;
+    height: 120px;
+  }
+
+  .stack-row {
+    grid-template-columns: minmax(0, 1fr);
+    gap: var(--s-3);
   }
 }
 
 @media (max-width: 600px) {
   .section {
     padding: 3rem 1rem;
+  }
+
+  .contact {
+    padding-block: var(--s-8) var(--s-7);
+  }
+
+  .site-footer {
+    padding-inline: 1rem;
   }
 }
 </style>

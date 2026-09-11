@@ -55,8 +55,6 @@ defineProps<{
 .project-card {
   overflow: hidden;
   color: var(--ink);
-  max-width: 950px;
-  margin: auto;
   display: flex;
   flex-direction: column;
   width: 100%;
