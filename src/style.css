@@ -13,11 +13,12 @@
   --signal-deep:  #0E7C8C;
   --signal-ink:   #06222A; /* texto sobre relleno signal */
   --focus-ring:   #4FD1E8;
-  --warm-surface: #F0E6D2;
-  --warm-ink:     #1A1410;
-  --warm-ink-dim: #5C5147;
-  --warm-line:    rgba(26, 20, 16, 0.15);
-  --signal-on-warm: #0A5C68; /* el acento oscurecido: 6:1 sobre la banda cálida */
+  /* Banda de contacto: carbón cálido con el mismo brillo que el navy,
+     para que el cierre cambie de temperatura sin un golpe de luz. */
+  --warm-surface: #1C1814;
+  --warm-ink:     #F0E6D2;
+  --warm-ink-dim: #B3A797;
+  --warm-line:    rgba(240, 230, 210, 0.14);
 
   /* Cromo flotante (navbar, carrusel): el mismo navy del campo, translúcido */
   --chrome-bg:        color-mix(in srgb, var(--field-navy) 62%, transparent);

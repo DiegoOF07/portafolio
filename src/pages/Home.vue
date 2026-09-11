@@ -354,13 +354,11 @@ const year = new Date().getFullYear()
 }
 
 /* Contacto — banda cálida */
+/* El degradado deja que las esferas del fondo se fundan en la banda
+   en lugar de cortarse contra un plano. */
 .warm {
-  background: var(--warm-surface);
+  background: linear-gradient(to bottom, transparent, var(--warm-surface) 180px);
   color: var(--warm-ink);
-}
-
-.warm :focus-visible {
-  outline-color: var(--warm-ink);
 }
 
 .contact {
@@ -392,7 +390,7 @@ const year = new Date().getFullYear()
   font-size: clamp(1.25rem, 0.8rem + 2.6vw, 2.5rem);
   letter-spacing: -0.02em;
   line-height: 1.15;
-  color: var(--signal-on-warm);
+  color: var(--signal);
   text-decoration: underline;
   text-decoration-thickness: 2px;
   text-underline-offset: 0.18em;
@@ -470,7 +468,7 @@ const year = new Date().getFullYear()
 }
 
 .site-footer a:hover {
-  color: var(--signal-on-warm);
+  color: var(--signal);
 }
 
 /* Responsive */
