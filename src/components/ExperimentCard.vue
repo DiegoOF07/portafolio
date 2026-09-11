@@ -11,7 +11,7 @@ defineProps<{
 </script>
 
 <template>
-  <GlassCard variant="project" hoverable class="experiment-card">
+  <GlassCard variant="project" class="experiment-card">
     <MediaSlot :media="project.media" class="experiment-media" aspect="16/10" />
     <div class="experiment-content">
       <h4>{{ project.title }}</h4>
@@ -86,11 +86,10 @@ h4 {
   text-decoration: none;
   font-size: 0.8rem;
   font-weight: 600;
-  transition: background 0.3s ease, transform 0.2s ease;
+  transition: background 0.2s ease;
 }
 
 .exp-btn:hover {
   background: var(--btn-glass-hover-bg);
-  transform: translateY(-2px);
 }
 </style>

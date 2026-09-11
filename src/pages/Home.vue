@@ -58,12 +58,7 @@ import { stackGroups } from '@/data/stack'
     <section id="proyectos" class="section">
       <h2 class="section-title centered">Proyectos destacados</h2>
       <div class="projects-list">
-        <ProjectCard
-          v-for="(p, i) in featuredProjects"
-          :key="p.slug"
-          :project="p"
-          :i="i"
-        />
+        <ProjectCard v-for="p in featuredProjects" :key="p.slug" :project="p" />
       </div>
     </section>
 
@@ -240,7 +235,7 @@ import { stackGroups } from '@/data/stack'
   display: inline-flex;
   align-items: center;
   gap: 8px;
-  transition: background 0.3s ease, transform 0.3s ease, border-color 0.3s ease;
+  transition: background 0.2s ease, border-color 0.2s ease;
 }
 
 .btn-hero-primary {
@@ -253,7 +248,6 @@ import { stackGroups } from '@/data/stack'
   color: var(--signal-ink);
   background: color-mix(in srgb, var(--signal) 80%, white);
   border-color: color-mix(in srgb, var(--signal) 80%, white);
-  transform: translateY(-2px);
 }
 
 .btn-hero-secondary {
@@ -267,7 +261,6 @@ import { stackGroups } from '@/data/stack'
   color: var(--ink);
   background: var(--btn-glass-hover-bg);
   border-color: rgba(255, 255, 255, 0.3);
-  transform: translateY(-2px);
 }
 
 .hero-img {

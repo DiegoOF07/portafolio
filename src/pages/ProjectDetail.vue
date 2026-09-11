@@ -265,7 +265,7 @@ h1 {
   backdrop-filter: blur(8px);
   -webkit-backdrop-filter: blur(8px);
   box-shadow: 0 4px 16px rgba(0, 0, 0, 0.45);
-  transition: background 0.2s, border-color 0.2s, transform 0.2s;
+  transition: background 0.2s, border-color 0.2s;
   color: var(--ink);
   --swiper-navigation-size: 20px;
 }
@@ -274,7 +274,6 @@ h1 {
 .gallery-swiper :deep(.swiper-button-prev:hover) {
   background: var(--chrome-bg-strong);
   border-color: var(--ink);
-  transform: scale(1.05);
 }
 
 .gallery-swiper :deep(.swiper-button-next:after),
@@ -347,7 +346,7 @@ h1 {
   font-size: 0.875rem;
   font-weight: 600;
   cursor: pointer;
-  transition: background 0.2s, border-color 0.2s, transform 0.2s, opacity 0.2s;
+  transition: background 0.2s, border-color 0.2s, opacity 0.2s;
   opacity: 0;
 }
 
@@ -359,7 +358,6 @@ h1 {
 .fullscreen-btn:hover {
   background: var(--chrome-bg-strong);
   border-color: var(--ink);
-  transform: scale(1.05);
 }
 
 @media (hover: none) {
@@ -400,13 +398,12 @@ h1 {
   border-radius: 0.75rem;
   background: transparent;
   cursor: pointer;
-  transition: border-color 0.2s, transform 0.2s;
+  transition: border-color 0.2s;
   overflow: hidden;
 }
 
 .thumb-btn:hover {
   border-color: rgba(255, 255, 255, 0.25);
-  transform: translateY(-2px);
 }
 
 .thumb-btn.active {
@@ -456,12 +453,11 @@ h1 {
   color: var(--ink);
   text-decoration: none;
   font-weight: 600;
-  transition: background 0.3s ease, transform 0.2s ease, box-shadow 0.3s ease;
+  transition: background 0.2s ease, box-shadow 0.2s ease;
 }
 
 .project-btn:hover {
   background: var(--btn-glass-hover-bg);
-  transform: translateY(-2px);
   box-shadow: var(--btn-glass-shadow);
 }
 

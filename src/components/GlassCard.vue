@@ -6,12 +6,10 @@ type CardVariant = 'project' | 'skill' | 'section' | 'default'
 
 interface Props {
   variant?: CardVariant
-  hoverable?: boolean
 }
 
 const props = withDefaults(defineProps<Props>(), {
   variant: 'default',
-  hoverable: false,
 })
 
 const { getGlassClass } = useGlass()
@@ -23,10 +21,7 @@ const glassVariantMap: Record<CardVariant, 'card' | 'badge' | 'section'> = {
   default: 'card',
 }
 
-const classes = computed(() => [
-  getGlassClass(glassVariantMap[props.variant]),
-  props.hoverable ? 'hoverable' : '',
-])
+const classes = computed(() => getGlassClass(glassVariantMap[props.variant]))
 </script>
 
 <template>

@@ -54,15 +54,12 @@
   --glass-blur: 12px;
   --glass-bg: rgba(255, 255, 255, 0.05);
   --glass-bg-hover: rgba(255, 255, 255, 0.09);
-  --glass-transition: 0.3s ease;
 
   --glass-blur-card: blur(12px);
   --glass-blur-badge: blur(6px);
   --glass-blur-section: blur(16px);
   --glass-bg-card: rgba(255, 255, 255, 0.05);
-  --glass-bg-card-hover: rgba(255, 255, 255, 0.08);
   --glass-bg-badge: rgba(255, 255, 255, 0.06);
-  --glass-bg-badge-hover: rgba(255, 255, 255, 0.12);
   --glass-bg-section: rgba(255, 255, 255, 0.03);
   --glass-border-card: 1px solid rgba(255, 255, 255, 0.1);
   --glass-border-badge: 1px solid rgba(255, 255, 255, 0.12);
@@ -78,7 +75,6 @@
   --hero-glass-shadow: 0 12px 24px rgba(0, 0, 0, 0.15);
 
   --shadow-glass: 0 8px 16px rgba(0, 0, 0, 0.15);
-  --shadow-glass-hover: 0 12px 24px rgba(0, 0, 0, 0.2);
 
   color-scheme: dark;
   font-family: var(--font-body);
@@ -196,15 +192,6 @@ button {
   border: var(--glass-border-card);
   border-radius: var(--r-surface);
   box-shadow: var(--shadow-glass);
-  transition: background var(--glass-transition),
-    transform var(--glass-transition),
-    box-shadow var(--glass-transition);
-}
-
-.glass-card.hoverable:hover {
-  background: var(--glass-bg-card-hover);
-  transform: translateY(-4px);
-  box-shadow: var(--shadow-glass-hover);
 }
 
 .glass-badge {
@@ -213,13 +200,6 @@ button {
   background: var(--glass-bg-badge);
   border: var(--glass-border-badge);
   border-radius: var(--r-badge);
-  transition: background var(--glass-transition),
-    transform var(--glass-transition);
-}
-
-.glass-badge.hoverable:hover {
-  background: var(--glass-bg-badge-hover);
-  transform: scale(1.05);
 }
 
 .glass-section {

@@ -1,5 +1,4 @@
 <script setup lang="ts">
-import { motion } from 'motion-v'
 import { Link, Github, ArrowRight, Lock } from 'lucide-vue-next'
 import TechBadge from './TechBadge.vue'
 import GlassCard from '@/components/GlassCard.vue'
@@ -8,65 +7,48 @@ import type { FeaturedProject } from '@/data/projects'
 
 defineProps<{
   project: FeaturedProject
-  i: number
 }>()
-
-const variants = (i: number) => ({
-  offscreen: { opacity: 0, y: 20 },
-  onscreen: {
-    opacity: 1,
-    y: 0,
-    transition: { type: 'spring', bounce: 0.4, duration: 0.4, delay: i * 0.05 }
-  }
-})
 </script>
 
 <template>
-  <motion.div
-    :initial="'offscreen'"
-    :while-in-view="'onscreen'"
-    :in-view-options="{ amount: 0.15, once: true }"
-    :variants="variants(i)"
-  >
-    <GlassCard variant="project" hoverable class="project-card">
-      <MediaSlot :media="project.media" class="project-image" />
-      <div class="project-content">
-        <header>
-          <h3>{{ project.title }}</h3>
-          <p class="tagline">{{ project.tagline }}</p>
-          <p class="meta"><strong>Contexto:</strong> {{ project.context }}</p>
-          <p class="meta"><strong>Reto técnico:</strong> {{ project.challenge }}</p>
-        </header>
+  <GlassCard variant="project" class="project-card">
+    <MediaSlot :media="project.media" class="project-image" />
+    <div class="project-content">
+      <header>
+        <h3>{{ project.title }}</h3>
+        <p class="tagline">{{ project.tagline }}</p>
+        <p class="meta"><strong>Contexto:</strong> {{ project.context }}</p>
+        <p class="meta"><strong>Reto técnico:</strong> {{ project.challenge }}</p>
+      </header>
 
-        <div class="techs">
-          <TechBadge v-for="(tech, idx) in project.techs" :key="idx" :name="tech.name" :icon="tech.icon" />
-        </div>
-
-        <p class="status">{{ project.status }}</p>
-
-        <footer class="buttons">
-          <a v-if="project.links.demo" class="project-btn" :href="project.links.demo" target="_blank">
-            <Link :size="18" /> Ver demo
-          </a>
-          <a v-if="project.links.repo" class="project-btn" :href="project.links.repo" target="_blank">
-            <Github :size="18" /> Repositorio
-          </a>
-          <a v-if="project.links.repoFrontend" class="project-btn" :href="project.links.repoFrontend" target="_blank">
-            <Github :size="18" /> Repo frontend
-          </a>
-          <a v-if="project.links.repoBackend" class="project-btn" :href="project.links.repoBackend" target="_blank">
-            <Github :size="18" /> Repo backend
-          </a>
-          <span v-if="project.links.privacyNote" class="privacy-note">
-            <Lock :size="16" /> {{ project.links.privacyNote }}
-          </span>
-          <RouterLink v-if="project.hasDetail" :to="`/proyectos/${project.slug}`" class="project-btn project-btn-primary">
-            Ver más <ArrowRight :size="18" />
-          </RouterLink>
-        </footer>
+      <div class="techs">
+        <TechBadge v-for="(tech, idx) in project.techs" :key="idx" :name="tech.name" :icon="tech.icon" />
       </div>
-    </GlassCard>
-  </motion.div>
+
+      <p class="status">{{ project.status }}</p>
+
+      <footer class="buttons">
+        <a v-if="project.links.demo" class="project-btn" :href="project.links.demo" target="_blank">
+          <Link :size="18" /> Ver demo
+        </a>
+        <a v-if="project.links.repo" class="project-btn" :href="project.links.repo" target="_blank">
+          <Github :size="18" /> Repositorio
+        </a>
+        <a v-if="project.links.repoFrontend" class="project-btn" :href="project.links.repoFrontend" target="_blank">
+          <Github :size="18" /> Repo frontend
+        </a>
+        <a v-if="project.links.repoBackend" class="project-btn" :href="project.links.repoBackend" target="_blank">
+          <Github :size="18" /> Repo backend
+        </a>
+        <span v-if="project.links.privacyNote" class="privacy-note">
+          <Lock :size="16" /> {{ project.links.privacyNote }}
+        </span>
+        <RouterLink v-if="project.hasDetail" :to="`/proyectos/${project.slug}`" class="project-btn project-btn-primary">
+          Ver más <ArrowRight :size="18" />
+        </RouterLink>
+      </footer>
+    </div>
+  </GlassCard>
 </template>
 
 <style scoped>
@@ -151,12 +133,11 @@ h3 {
   color: var(--ink);
   text-decoration: none;
   font-weight: 600;
-  transition: background 0.3s ease, transform 0.2s ease, box-shadow 0.3s ease;
+  transition: background 0.2s ease, box-shadow 0.2s ease;
 }
 
 .project-btn:hover {
   background: var(--btn-glass-hover-bg);
-  transform: translateY(-2px);
   box-shadow: var(--btn-glass-shadow);
 }
 

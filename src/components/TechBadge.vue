@@ -26,13 +26,6 @@ defineProps<{
   color: var(--ink);
   font-size: 0.85rem;
   font-weight: 500;
-  transition: background var(--glass-transition),
-    transform var(--glass-transition);
-}
-
-.tech-badge:hover {
-  background: var(--glass-bg-badge-hover);
-  transform: scale(1.05);
 }
 
 .tech-badge img {
