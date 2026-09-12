@@ -21,6 +21,7 @@ import logisticaVehiculos from '@/assets/img/04_dapa-vehicle.png'
 import logisticaFormCreacion from '@/assets/img/03_dapa-form.png'
 import logisticaFormulario from '@/assets/img/02_dapa-form.png'
 import logisticaFinancial from '@/assets/img/06_dapa-financial.png'
+import invitadoEspecial from '@/assets/img/invitado-especial.webp'
 
 export interface TechRef {
   name: string
@@ -242,8 +243,9 @@ export const experimentProjects: ExperimentProject[] = [
     ],
     media: {
       type: 'image',
-      src: 'https://ggjv4.s3.us-west-1.amazonaws.com/files/styles/flexslider_full/s3/games/2026/812398/screenshot/In%20Game.png?VersionId=3ov4AS_izQgNgThRogihS5dtasifW4z8&itok=LtAWOLCa',
-      alt: 'Invitado especial - Global Game Jam 2026',
+      // Copia local: la URL de la Global Game Jam lleva un token que caduca
+      src: invitadoEspecial,
+      alt: 'Invitado especial: los sospechosos en una rueda de reconocimiento',
     },
     links: {
       demo: 'https://invitado-especial-game.netlify.app/',

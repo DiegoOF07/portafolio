@@ -41,7 +41,7 @@ const onSlideChange = (swiper: any) => {
     <RouterLink to="/#proyectos" class="back-link"><ArrowLeft :size="18" /> Volver a proyectos</RouterLink>
 
     <GlassCard variant="section" class="detail-card">
-      <MediaSlot v-if="project.media" :media="project.media" aspect="16/9" focus="left top" class="hero-media" />
+      <MediaSlot v-if="project.media" :media="project.media" aspect="16/9" focus="left top" priority class="hero-media" />
 
       <h1>{{ project.title }}</h1>
       <p class="tagline">{{ project.tagline }}</p>

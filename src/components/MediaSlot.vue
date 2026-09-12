@@ -8,10 +8,13 @@ withDefaults(
     // Punto de anclaje al recortar (object-position). Las capturas de
     // interfaz se leen mejor ancladas arriba a la izquierda.
     focus?: string
+    // true solo para imágenes de la primera pantalla: se cargan de
+    // inmediato y con prioridad alta. El resto se carga al acercarse.
+    priority?: boolean
     // Logos que se muestran mientras no haya captura
     fallbackIcons?: string[]
   }>(),
-  { aspect: '16/9', focus: 'center', fallbackIcons: () => [] },
+  { aspect: '16/9', focus: 'center', priority: false, fallbackIcons: () => [] },
 )
 </script>
 
@@ -22,6 +25,9 @@ withDefaults(
       :src="media.src"
       :alt="media.alt"
       :style="{ objectPosition: focus }"
+      :loading="priority ? 'eager' : 'lazy'"
+      :fetchpriority="priority ? 'high' : 'auto'"
+      decoding="async"
       class="media-content"
     />
     <video
