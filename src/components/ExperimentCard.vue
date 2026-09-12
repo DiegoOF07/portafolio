@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { computed } from 'vue'
-import { Link, Github } from 'lucide-vue-next'
+import { Link, Github, Play } from 'lucide-vue-next'
 import GlassCard from '@/components/GlassCard.vue'
 import MediaSlot from '@/components/MediaSlot.vue'
 import TechBadge from './TechBadge.vue'
@@ -25,12 +25,33 @@ const techIcons = computed(() =>
       <div class="techs">
         <TechBadge v-for="(tech, idx) in project.techs" :key="idx" :name="tech.name" :icon="tech.icon" />
       </div>
-      <div v-if="project.links.demo || project.links.repo" class="buttons">
+      <!-- Serie de varios repos: una fila por pieza, para no apilar seis
+           links sueltos en una tarjeta que debe seguir siendo compacta -->
+      <ul v-if="project.parts" class="parts">
+        <li v-for="part in project.parts" :key="part.repo">
+          <span class="part-name">{{ part.name }}</span>
+          <a class="link-quiet" :href="part.repo" target="_blank" rel="noopener noreferrer">
+            <Github :size="14" aria-hidden="true" /> Repo
+          </a>
+          <a v-if="part.video" class="link-quiet" :href="part.video" target="_blank" rel="noopener noreferrer">
+            <Play :size="14" aria-hidden="true" /> Video
+          </a>
+        </li>
+      </ul>
+
+      <div v-else-if="project.links.demo || project.links.repos?.length" class="buttons">
         <a v-if="project.links.demo" class="link-quiet" :href="project.links.demo" target="_blank" rel="noopener noreferrer">
           <Link :size="16" aria-hidden="true" /> Demo
         </a>
-        <a v-if="project.links.repo" class="link-quiet" :href="project.links.repo" target="_blank" rel="noopener noreferrer">
-          <Github :size="16" aria-hidden="true" /> Repo
+        <a
+          v-for="repo in project.links.repos"
+          :key="repo.url"
+          class="link-quiet"
+          :href="repo.url"
+          target="_blank"
+          rel="noopener noreferrer"
+        >
+          <Github :size="16" aria-hidden="true" /> {{ repo.label }}
         </a>
       </div>
     </div>
@@ -79,5 +100,29 @@ h4 {
   gap: var(--s-5);
   margin-top: var(--s-2);
   font-size: var(--step--1);
+}
+
+/* Lista de piezas de una serie. Cada fila se parte sola si la tarjeta
+   llega a su ancho mínimo (280px en la rejilla de experimentales). */
+.parts {
+  list-style: none;
+  margin: var(--s-2) 0 0;
+  padding: 0;
+  font-size: var(--step--1);
+}
+
+.parts li {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  gap: var(--s-1) var(--s-4);
+  padding-block: var(--s-2);
+  border-top: 1px solid var(--line);
+}
+
+.part-name {
+  flex: 1 1 auto;
+  min-width: 0;
+  color: var(--ink);
 }
 </style>

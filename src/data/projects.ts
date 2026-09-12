@@ -14,6 +14,7 @@ import pyside6Logo from '@/assets/logos/pyside6.svg'
 import phaserLogo from '@/assets/logos/phaser.svg'
 import raylibLogo from '@/assets/logos/raylib.svg'
 import dockerLogo from '@/assets/logos/docker.svg'
+import sqliteLogo from '@/assets/logos/sqlite.svg'
 
 import logisticaLanding from '@/assets/img/01_dapa-landing.webp'
 import logisticaCotizaciones from '@/assets/img/05_dapa-quotes.png'
@@ -22,6 +23,8 @@ import logisticaFormCreacion from '@/assets/img/03_dapa-form.png'
 import logisticaFormulario from '@/assets/img/02_dapa-form.png'
 import logisticaFinancial from '@/assets/img/06_dapa-financial.png'
 import invitadoEspecial from '@/assets/img/invitado-especial.webp'
+import mcpArquitectura from '@/assets/img/mcp-arquitectura.svg'
+import graficasRust from '@/assets/img/graficas-rust.webp'
 
 export interface TechRef {
   name: string
@@ -29,9 +32,10 @@ export interface TechRef {
 }
 
 export interface ProjectLinks {
-  repo?: string          // repo único
-  repoFrontend?: string  // link al repo de frontend
-  repoBackend?: string   // link al repo de backend
+  // Lista con etiqueta propia: un proyecto puede tener uno, dos o tres
+  // repos y no siempre son "frontend" y "backend" (ver el proyecto MCP,
+  // que son servidor, cliente y release).
+  repos?: { label: string; url: string }[]
   demo?: string          // link a demo en vivo
   privacyNote?: string   // usar cuando el proyecto es de un cliente real
 }
@@ -78,6 +82,9 @@ export interface ExperimentProject {
   techs: TechRef[]
   media: MediaAsset
   links: ProjectLinks
+  // Para una serie de proyectos hermanos: cada pieza con su repo y su video,
+  // en vez de apilar seis links sueltos en una tarjeta compacta.
+  parts?: { name: string; repo: string; video?: string }[]
 }
 
 type FeaturedProjectData = Omit<FeaturedProject, 'hasDetail'>
@@ -104,9 +111,10 @@ const featuredProjectData: FeaturedProjectData[] = [
     ],
     status: 'Desplegado en AWS (actualmente fuera de línea).',
     links: {
-      // Distintos repos para frontend y backend
-      repoFrontend: 'https://github.com/JuanDsm04/dapa-frontend',
-      repoBackend: 'https://github.com/vicperezch/dapa-backend',
+      repos: [
+        { label: 'Repo frontend', url: 'https://github.com/JuanDsm04/dapa-frontend' },
+        { label: 'Repo backend', url: 'https://github.com/vicperezch/dapa-backend' },
+      ],
       privacyNote: 'Proyecto para cliente real, repositorios disponibles para mostrar en entrevista.',
     },
     media: {
@@ -129,6 +137,39 @@ const featuredProjectData: FeaturedProjectData[] = [
     },
   },
   {
+    slug: 'mcp-desde-cero',
+    title: 'Cliente y servidor MCP escritos desde cero',
+    tagline:
+      'Asistente conversacional que responde sobre recetas, inventario y alérgenos de un restaurante: un cliente capaz de hablar con cualquier servidor MCP y un servidor propio que resuelve el dominio.',
+    context: 'Proyecto personal · individual · septiembre 2026',
+    challenge:
+      'Implementar el Model Context Protocol a mano —framing JSON-RPC 2.0, handshake de initialize y negociación entre dos revisiones— en lugar de apoyarse en el SDK, para entender qué viaja realmente por el cable. El cliente fusiona las herramientas de varios servidores en un solo catálogo y el servidor resuelve los permisos por rol antes de ejecutar nada, de modo que el modelo nunca calcula cuántas porciones quedan ni recuerda una receta.',
+    techs: [
+      { name: 'Go', icon: goLogo },
+      { name: 'TypeScript', icon: tsLogo },
+      { name: 'SQLite', icon: sqliteLogo },
+    ],
+    status: 'Repositorios públicos, con binarios para cinco plataformas y checksums.',
+    links: {
+      repos: [
+        { label: 'Repo servidor (Go)', url: 'https://github.com/DiegoOF07/restaurant-mcp-server' },
+        { label: 'Repo cliente (TypeScript)', url: 'https://github.com/DiegoOF07/restaurant-assistant' },
+        { label: 'Release v0.3.0', url: 'https://github.com/DiegoOF07/restaurant-mcp-server/releases/tag/v0.3.0' },
+      ],
+    },
+    media: {
+      type: 'image',
+      src: mcpArquitectura,
+      alt: 'Diagrama: el cliente en TypeScript (CLI, host con el modelo y mcp-client) habla JSON-RPC 2.0 sobre stdio o HTTP con el servidor en Go, que pasa por el control de rol antes de llegar a las herramientas y a SQLite',
+    },
+    // TODO: agregar la captura de terminal a la galería cuando esté lista
+    detail: {
+      gallery: [],
+      extendedDescription:
+        'El sistema son dos programas que se hablan por el Model Context Protocol. El servidor, en Go, expone cinco herramientas sobre la base de datos de un restaurante: buscar platillos, buscar ingredientes con sus alérgenos, consultar la receta de un platillo, calcular cuántas porciones alcanzan con el inventario actual y registrar ajustes de stock. El cliente, en TypeScript, conecta un modelo de lenguaje con esos servidores y le deja decidir qué preguntar.\n\nNinguno de los dos usa el SDK de MCP. El protocolo está implementado a mano en ambos lados: el framing de JSON-RPC 2.0, el handshake de initialize con negociación de versión, la correlación de peticiones y respuestas por id, la paginación y los códigos de error estándar. La razón de hacerlo así fue entender el protocolo en lugar de consumirlo, y el efecto secundario es saber exactamente qué pasa cuando el handshake falla o cuando llega una respuesta sin petición.\n\nDel lado del cliente, lo interesante es que no está atado a este servidor. Los servidores se declaran en un archivo de configuración y sus herramientas se fusionan en un único catálogo que se le ofrece al modelo; si dos servidores exponen una herramienta con el mismo nombre, el cliente falla de forma explícita en vez de elegir uno en silencio. El proveedor del modelo también está detrás de una interfaz, así que cambiarlo no toca la lógica del protocolo, y existe un proveedor de demostración que ejercita todo el flujo sin necesidad de una API key.\n\nDel lado del servidor, la decisión de diseño es que el modelo no es la autoridad. Los permisos por rol se evalúan en el servidor antes de ejecutar el handler y fallan cerrados, las restricciones de inventario viven en el esquema de la base y cada ajuste lleva una clave de idempotencia para que reintentar una llamada no descuente dos veces. Usa SQLite con un driver escrito en Go puro, así que compila sin C y se distribuye como un binario estático: el release publica binarios para Windows, macOS Intel y Apple Silicon, y Linux en amd64 y arm64, con sus checksums.',
+    },
+  },
+  {
     slug: 'fundacion-hannah',
     title: 'Sitio web para Fundación Hannah',
     tagline:
@@ -145,8 +186,7 @@ const featuredProjectData: FeaturedProjectData[] = [
     links: {
       // Por privacidad del cliente no se comparte el repositorio.
       privacyNote: 'Repositorio privado por confidencialidad del cliente. No disponible para mostrar en entrevista.',
-      // TODO: demo pública cuando esté disponible
-      demo: '',
+      // TODO: demo pública cuando el despliegue esté en línea
     },
     // TODO: con capturas o descripción, el detalle se habilita solo
     detail: {
@@ -167,33 +207,30 @@ const featuredProjectData: FeaturedProjectData[] = [
       { name: 'Vue', icon: vueLogo },
       { name: 'Neo4j', icon: neo4jLogo },
     ],
-    // TODO: con los links de demo/repos, volver a indicar el estado
-    status: '',
+    status: 'Repositorios públicos; sin demo desplegada.',
     links: {
-      repoFrontend: '', // TODO: link repo frontend
-      repoBackend: '',  // TODO: link repo backend
-      demo: '', // TODO: link demo
+      repos: [
+        { label: 'Repo frontend', url: 'https://github.com/DiegoOF07/db2-project2-frontend' },
+        { label: 'Repo backend', url: 'https://github.com/DiegoOF07/db2-project2-backend' },
+      ],
     },
   },
   {
     slug: 'optimizador-rutas',
     title: 'Optimizador de rutas con algoritmos genéticos',
     tagline:
-      'Herramienta que optimiza rutas de servicio combinando datos geográficos reales (Google Cloud Platform) con un algoritmo genético para reducir la complejidad del problema de ruteo.',
-    context: 'Proyecto personal · individual',
+      'Aplicación web que calcula el mejor recorrido entre varios destinos con un algoritmo genético y lo dibuja sobre un mapa interactivo.',
+    context: 'Proyecto personal · en equipo',
     challenge:
-      'Aplicar un algoritmo genético sobre datos geográficos reales para reducir un problema de ruteo con alta complejidad combinatoria. Resultado: rutas optimizadas a partir de datos reales de Google Cloud Platform.',
+      'Reducir un problema de ruteo con explosión combinatoria usando un algoritmo genético sobre datos geográficos reales: hasta 15 destinos dentro de un radio de 100 km, minimizando la distancia total del recorrido. El cálculo corre en funciones de Google Cloud y el resultado se traza sobre Google Maps.',
     techs: [
-      { name: 'Go', icon: goLogo },
+      { name: 'Python', icon: pythonLogo },
       { name: 'React', icon: reactLogo },
       { name: 'Google Cloud Platform', icon: gcpLogo },
     ],
-    // TODO: con los links de demo/repos, volver a indicar el estado
-    status: '',
+    status: 'Repositorio público; sin demo desplegada.',
     links: {
-      repoFrontend: '', // TODO: link repo frontend
-      repoBackend: '',  // TODO: link repo backend
-      demo: '', // TODO: link demo
+      repos: [{ label: 'Repositorio', url: 'https://github.com/Isabella334/RoutesOptimization' }],
     },
   },
 ]
@@ -208,28 +245,50 @@ export const experimentProjects: ExperimentProject[] = [
   {
     slug: 'analizador-lexico-sintactico',
     title: 'Analizador léxico y sintáctico',
-    description: 'Generador de compiladores desde archivos .yalex/.yapar, con interfaz estilo IDE.',
+    description:
+      'Genera analizadores a partir de especificaciones .yalex y .yapar: construye el AFD directo desde las expresiones regulares, calcula FIRST y FOLLOW y arma tablas LL(1), SLR y LALR.',
     techs: [
       { name: 'Python', icon: pythonLogo },
       { name: 'PySide6', icon: pyside6Logo },
     ],
-    media: { type: 'gif', src: '', alt: 'Analizador léxico y sintáctico' }, // TODO: gif de la interfaz estilo IDE
+    media: { type: 'gif', src: '', alt: 'Analizador léxico y sintáctico' }, // TODO: gif de la interfaz
     links: {
-      repo: '', // TODO: link repo
+      repos: [{ label: 'Repo', url: 'https://github.com/DiegoOF07/generador-sintactico' }],
     },
   },
   {
-    slug: 'raytracer-rust',
-    title: 'Raytracer / escenas 3D en Rust',
-    description: 'Renderizado de escenas 3D en Rust con raylib.',
+    slug: 'graficas-rust',
+    title: 'Serie de gráficas por computadora en Rust',
+    description:
+      'Tres renderizadores escritos desde cero: un juego en primera persona con raycasting, un raytracer de escenas de Minecraft con reflexión y refracción, y un sistema solar con shaders procedurales.',
     techs: [
       { name: 'Rust', icon: rustLogo },
       { name: 'raylib', icon: raylibLogo },
     ],
-    media: { type: 'video', src: '', alt: 'Raytracer en Rust' }, // TODO: video/gif de la escena
-    links: {
-      repo: '', // TODO: link repo
+    media: {
+      type: 'image',
+      // Fotograma del video del raytracer, servido local en vez de enlazado a YouTube
+      src: graficasRust,
+      alt: 'Escena de Minecraft renderizada por el raytracer, con el contador de FPS, el tiempo de render y el modo multihilo sobre la imagen',
     },
+    links: {},
+    parts: [
+      {
+        name: 'Raycaster',
+        repo: 'https://github.com/DiegoOF07/project1-graphics',
+        video: 'https://www.youtube.com/watch?v=8QwW1_mKImg',
+      },
+      {
+        name: 'Raytracer',
+        repo: 'https://github.com/DiegoOF07/project2-graphics',
+        video: 'https://youtu.be/k_zkKDIqTmM',
+      },
+      {
+        name: 'Sistema solar',
+        repo: 'https://github.com/DiegoOF07/project3-graphics',
+        video: 'https://www.youtube.com/watch?v=KpaX5xlLnqM',
+      },
+    ],
   },
   {
     slug: 'invitado-especial',
@@ -249,7 +308,7 @@ export const experimentProjects: ExperimentProject[] = [
     },
     links: {
       demo: 'https://invitado-especial-game.netlify.app/',
-      repo: 'https://github.com/DiegoOF07/ggj-2026.git',
+      repos: [{ label: 'Repo', url: 'https://github.com/DiegoOF07/ggj-2026' }],
     },
   },
 ]

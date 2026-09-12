@@ -128,14 +128,15 @@ const onSlideChange = (swiper: any) => {
         <a v-if="project.links.demo" class="project-btn" :href="project.links.demo" target="_blank" rel="noopener noreferrer">
           <Link :size="18" /> Ver demo
         </a>
-        <a v-if="project.links.repo" class="project-btn" :href="project.links.repo" target="_blank" rel="noopener noreferrer">
-          <Github :size="18" /> Repositorio
-        </a>
-        <a v-if="project.links.repoFrontend" class="project-btn" :href="project.links.repoFrontend" target="_blank" rel="noopener noreferrer">
-          <Github :size="18" /> Repo frontend
-        </a>
-        <a v-if="project.links.repoBackend" class="project-btn" :href="project.links.repoBackend" target="_blank" rel="noopener noreferrer">
-          <Github :size="18" /> Repo backend
+        <a
+          v-for="repo in project.links.repos"
+          :key="repo.url"
+          class="project-btn"
+          :href="repo.url"
+          target="_blank"
+          rel="noopener noreferrer"
+        >
+          <Github :size="18" /> {{ repo.label }}
         </a>
         <span v-if="project.links.privacyNote" class="privacy-note">
           <Lock :size="16" /> {{ project.links.privacyNote }}
@@ -191,11 +192,19 @@ h1 {
   margin-bottom: 2rem;
 }
 
+/* El reto técnico siempre es el más largo de los tres campos; con columnas
+   iguales quedaba estrangulado en una tira de veinte líneas. */
 .meta-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-  gap: 1.5rem;
+  grid-template-columns: minmax(0, 1fr) minmax(0, 2.2fr) minmax(0, 1fr);
+  gap: 1.5rem 2rem;
   margin-bottom: 2rem;
+}
+
+@media (max-width: 900px) {
+  .meta-grid {
+    grid-template-columns: minmax(0, 1fr);
+  }
 }
 
 .meta-grid h3 {

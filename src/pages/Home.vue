@@ -580,6 +580,10 @@ onBeforeUnmount(() => layoutObserver?.disconnect())
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
   gap: 1.5rem;
+  /* Cada tarjeta mide lo que su contenido: estirarlas a la más alta dejaba
+     un vacío al pie de las cortas. Las imágenes comparten proporción, así
+     que los bordes superiores siguen alineados. */
+  align-items: start;
 }
 
 /* Contacto — banda cálida */

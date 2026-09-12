@@ -41,14 +41,15 @@ defineProps<{
         <a v-if="project.links.demo" class="link-quiet" :href="project.links.demo" target="_blank" rel="noopener noreferrer">
           <Link :size="16" aria-hidden="true" /> Ver demo
         </a>
-        <a v-if="project.links.repo" class="link-quiet" :href="project.links.repo" target="_blank" rel="noopener noreferrer">
-          <Github :size="16" aria-hidden="true" /> Repositorio
-        </a>
-        <a v-if="project.links.repoFrontend" class="link-quiet" :href="project.links.repoFrontend" target="_blank" rel="noopener noreferrer">
-          <Github :size="16" aria-hidden="true" /> Repo frontend
-        </a>
-        <a v-if="project.links.repoBackend" class="link-quiet" :href="project.links.repoBackend" target="_blank" rel="noopener noreferrer">
-          <Github :size="16" aria-hidden="true" /> Repo backend
+        <a
+          v-for="repo in project.links.repos"
+          :key="repo.url"
+          class="link-quiet"
+          :href="repo.url"
+          target="_blank"
+          rel="noopener noreferrer"
+        >
+          <Github :size="16" aria-hidden="true" /> {{ repo.label }}
         </a>
       </footer>
 
