@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { ref, onMounted, onBeforeUnmount } from 'vue'
-import { Github, Linkedin, Download } from 'lucide-vue-next'
+import { Github, Linkedin, Download, Copy, Check } from 'lucide-vue-next'
 import ProjectCard from '@/components/ProjectCard.vue'
 import ExperimentCard from '@/components/ExperimentCard.vue'
 import TechBadge from '@/components/TechBadge.vue'
@@ -13,6 +13,23 @@ import formWebp800 from '@/assets/img/hero/hero-form-800.webp'
 import formWebp1340 from '@/assets/img/hero/hero-form-1340.webp'
 
 const year = new Date().getFullYear()
+
+// Copiar el correo: un mailto: no hace nada si el visitante no tiene cliente
+// de correo configurado, y el contacto es el objetivo de la página.
+const EMAIL = 'floresdiego041@gmail.com'
+const copied = ref(false)
+let copyTimer: ReturnType<typeof setTimeout> | undefined
+
+const copyEmail = async () => {
+  try {
+    await navigator.clipboard.writeText(EMAIL)
+    copied.value = true
+    clearTimeout(copyTimer)
+    copyTimer = setTimeout(() => (copied.value = false), 2000)
+  } catch {
+    // Si el navegador lo bloquea, la dirección sigue visible y seleccionable.
+  }
+}
 
 // La pieza principal va grande; el resto, en una lista más ligera
 const leadProject = featuredProjects.find((p) => p.lead)
@@ -68,7 +85,10 @@ onMounted(() => {
   }
 })
 
-onBeforeUnmount(() => layoutObserver?.disconnect())
+onBeforeUnmount(() => {
+  layoutObserver?.disconnect()
+  clearTimeout(copyTimer)
+})
 </script>
 
 <template>
@@ -96,7 +116,10 @@ onBeforeUnmount(() => layoutObserver?.disconnect())
           </p>
           <div class="hero-actions">
             <a href="#proyectos" class="btn-primary">Ver proyectos</a>
-            <a href="mailto:floresdiego041@gmail.com" class="link-quiet">Escríbeme</a>
+            <!-- Lleva a la banda de contacto en vez de abrir mailto: si el
+                 visitante no tiene cliente de correo configurado, un mailto
+                 no hace nada y el botón parece roto. -->
+            <a href="#contacto" class="link-quiet">Escríbeme</a>
             <a href="/cv-diego-flores.pdf" download class="link-quiet">
               <Download :size="18" aria-hidden="true" /> Descargar CV
             </a>
@@ -140,15 +163,15 @@ onBeforeUnmount(() => layoutObserver?.disconnect())
           />
           <div class="about-text">
             <p>
-              Soy estudiante de Ingeniería en Ciencias de la Computación —llevo más de
-              3 años en la carrera— y desarrollador full-stack, principalmente con Go,
+              Soy estudiante de Ingeniería en Ciencias de la Computación, llevo más de
+              3 años en la carrera y soy desarrollador full-stack, principalmente con Go,
               Vue y bases de datos relacionales y en grafos. Disfruto llevar proyectos
               de principio a fin, desde entender el problema de un cliente real hasta
               el despliegue.
             </p>
             <p>
-              Lo complemento con curiosidad técnica hacia temas menos comunes: he
-              construido un compilador básico, trabajado con sistemas operativos a bajo
+              Lo complemento con curiosidad técnica hacia temas menos comunes, como la
+              construcción de un compilador básico, trabajado con sistemas operativos a bajo
               nivel y experimentado con gráficos 3D y raytracing. Creo que entender los
               fundamentos, no solo los frameworks, es lo que hace la diferencia a largo
               plazo.
@@ -198,7 +221,15 @@ onBeforeUnmount(() => layoutObserver?.disconnect())
             <span class="nowrap">full-stack</span>. Si algo de lo que viste encaja con
             lo que tu equipo está construyendo, escríbeme.
           </p>
-          <a class="contact-email" href="mailto:floresdiego041@gmail.com">floresdiego041@gmail.com</a>
+          <!-- El mailto sigue ahí para quien tenga cliente de correo, pero
+               copiar la dirección funciona siempre. -->
+          <p class="contact-email-row">
+            <a class="contact-email" :href="`mailto:${EMAIL}`">{{ EMAIL }}</a>
+            <button type="button" class="copy-btn" @click="copyEmail">
+              <component :is="copied ? Check : Copy" :size="15" aria-hidden="true" />
+              {{ copied ? 'Copiado' : 'Copiar' }}
+            </button>
+          </p>
           <ul class="contact-links">
             <li>
               <a href="https://github.com/DiegoOF07" target="_blank" rel="noopener noreferrer">
@@ -633,6 +664,35 @@ onBeforeUnmount(() => layoutObserver?.disconnect())
 
 .contact-email:hover {
   color: var(--warm-ink);
+}
+
+.contact-email-row {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: var(--s-3) var(--s-5);
+  margin: 0 0 var(--s-6);
+}
+
+.copy-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--s-2);
+  padding: 6px 12px;
+  border: 1px solid var(--warm-line);
+  border-radius: var(--r-control);
+  background: none;
+  color: var(--warm-ink-dim);
+  font-family: var(--font-body);
+  font-size: var(--step--1);
+  font-weight: 500;
+  cursor: pointer;
+  transition: color 0.2s ease, border-color 0.2s ease;
+}
+
+.copy-btn:hover {
+  color: var(--warm-ink);
+  border-color: color-mix(in srgb, var(--warm-ink) 35%, transparent);
 }
 
 .contact-links {

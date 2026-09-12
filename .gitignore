@@ -25,6 +25,10 @@ dist-ssr
 
 #extra
 *.zip
+
+# Grabaciones en crudo: pesan megabytes y git las guarda para siempre.
+# De un video se versiona la miniatura, no el archivo.
+src/assets/video/
 /.agents
 skills-lock.json
 /.claude

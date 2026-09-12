@@ -25,6 +25,7 @@ import logisticaFinancial from '@/assets/img/06_dapa-financial.png'
 import invitadoEspecial from '@/assets/img/invitado-especial.webp'
 import mcpArquitectura from '@/assets/img/mcp-arquitectura.svg'
 import graficasRust from '@/assets/img/graficas-rust.webp'
+import analizadorSintactico from '@/assets/img/analizador-sintactico.webp'
 
 import mcpCli from '@/assets/img/01_mcp-cli.webp'
 import mcpCliConsulta from '@/assets/img/02_mcp-cli-complex-query.webp'
@@ -207,7 +208,7 @@ const featuredProjectData: FeaturedProjectData[] = [
       'Plataforma web para una ONG real con: control de pacientes, donaciones, eventos y voluntarios, además de un sitio público para dar visibilidad a la fundación.',
     context: 'Cliente real (ONG) · Proyecto grupal · En curso',
     challenge:
-      'Diseñar el sistema completo siguiendo fases formales de ingeniería de software, manteniéndolo usable para personal no técnico de la fundación. Resultado: la gestión de pacientes, donaciones, eventos y voluntarios centralizada en una sola plataforma hecha a la medida.',
+      'Diseñar el sistema completo siguiendo fases formales de ingeniería de software, manteniéndolo usable para personal no técnico de la fundación. Como resultado se logra la gestión de pacientes, donaciones, eventos y voluntarios centralizada en una sola plataforma hecha a la medida.',
     techs: [
       { name: 'Go', icon: goLogo },
       { name: 'Vue', icon: vueLogo },
@@ -230,7 +231,7 @@ const featuredProjectData: FeaturedProjectData[] = [
     title: 'Recomendador de películas',
     tagline:
       'Motor de recomendación que consume la API de TMDB y aplica un modelo basado en grafos para sugerir películas personalizadas.',
-    context: 'Proyecto personal · individual',
+    context: 'Proyecto académico · en equipo',
     challenge:
       'Modelar relaciones (usuarios, películas, géneros, actores) como grafo para que las recomendaciones surjan de recorrer conexiones, en vez de reglas fijas. Resultado: recomendaciones explicables por conexiones reales entre el contenido y el usuario.',
     techs: [
@@ -251,7 +252,7 @@ const featuredProjectData: FeaturedProjectData[] = [
     title: 'Optimizador de rutas con algoritmos genéticos',
     tagline:
       'Aplicación web que calcula el mejor recorrido entre varios destinos con un algoritmo genético y lo dibuja sobre un mapa interactivo.',
-    context: 'Proyecto personal · en equipo',
+    context: 'Proyecto académico · en equipo',
     challenge:
       'Reducir un problema de ruteo con explosión combinatoria usando un algoritmo genético sobre datos geográficos reales: hasta 15 destinos dentro de un radio de 100 km, minimizando la distancia total del recorrido. El cálculo corre en funciones de Google Cloud y el resultado se traza sobre Google Maps.',
     techs: [
@@ -277,12 +278,18 @@ export const experimentProjects: ExperimentProject[] = [
     slug: 'analizador-lexico-sintactico',
     title: 'Analizador léxico y sintáctico',
     description:
-      'Genera analizadores a partir de especificaciones .yalex y .yapar: construye el AFD directo desde las expresiones regulares, calcula FIRST y FOLLOW y arma tablas LL(1), SLR y LALR.',
+      'Genera analizadores a partir de especificaciones .yalex y .yapar: construye el AFD directo desde las expresiones regulares, calcula FIRST y FOLLOW, arma tablas LL(1), SLR y LALR, y se recupera de errores de sintaxis en modo pánico en lugar de abortar.',
     techs: [
       { name: 'Python', icon: pythonLogo },
       { name: 'PySide6', icon: pyside6Logo },
     ],
-    media: { type: 'gif', src: '', alt: 'Analizador léxico y sintáctico' }, // TODO: gif de la interfaz
+    media: {
+      type: 'image',
+      // Fotograma de la interfaz: la tabla de parseo se reconoce aún a tamaño
+      // de tarjeta, cosa que la vista de autómata (texto corrido) no logra.
+      src: analizadorSintactico,
+      alt: 'Tabla de parseo generada por la herramienta: una rejilla de estados contra tokens con las acciones de desplazamiento y reducción',
+    },
     links: {
       repos: [{ label: 'Repo', url: 'https://github.com/DiegoOF07/generador-sintactico' }],
     },
