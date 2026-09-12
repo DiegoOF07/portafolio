@@ -26,6 +26,12 @@ import invitadoEspecial from '@/assets/img/invitado-especial.webp'
 import mcpArquitectura from '@/assets/img/mcp-arquitectura.svg'
 import graficasRust from '@/assets/img/graficas-rust.webp'
 
+import mcpCli from '@/assets/img/01_mcp-cli.webp'
+import mcpCliConsulta from '@/assets/img/02_mcp-cli-complex-query.webp'
+import mcpCliRegistro from '@/assets/img/03_mcp-cli-config.webp'
+import mcpWebConfirmacion from '@/assets/img/04_mcp-web-permission-modal.webp'
+import mcpWebResultado from '@/assets/img/05_mcp-web-restock-results.webp'
+
 export interface TechRef {
   name: string
   icon?: string
@@ -140,10 +146,10 @@ const featuredProjectData: FeaturedProjectData[] = [
     slug: 'mcp-desde-cero',
     title: 'Cliente y servidor MCP escritos desde cero',
     tagline:
-      'Asistente conversacional que responde sobre recetas, inventario y alérgenos de un restaurante: un cliente capaz de hablar con cualquier servidor MCP y un servidor propio que resuelve el dominio.',
+      'Asistente conversacional que responde sobre recetas, inventario y alérgenos de un restaurante con un cliente capaz de hablar con cualquier servidor MCP y un servidor propio que resuelve el dominio.',
     context: 'Proyecto personal · individual · septiembre 2026',
     challenge:
-      'Implementar el Model Context Protocol a mano —framing JSON-RPC 2.0, handshake de initialize y negociación entre dos revisiones— en lugar de apoyarse en el SDK, para entender qué viaja realmente por el cable. El cliente fusiona las herramientas de varios servidores en un solo catálogo y el servidor resuelve los permisos por rol antes de ejecutar nada, de modo que el modelo nunca calcula cuántas porciones quedan ni recuerda una receta.',
+      'Implementar el Model Context Protocol a mano incluyendo el framing JSON-RPC 2.0, handshake de initialize y negociación entre dos revisiones, en lugar de apoyarse en el SDK, para entender qué viaja realmente por el cable. El cliente fusiona las herramientas de varios servidores en un solo catálogo y el servidor resuelve los permisos por rol antes de ejecutar nada, de modo que el modelo nunca calcula cuántas porciones quedan ni recuerda una receta.',
     techs: [
       { name: 'Go', icon: goLogo },
       { name: 'TypeScript', icon: tsLogo },
@@ -160,13 +166,38 @@ const featuredProjectData: FeaturedProjectData[] = [
     media: {
       type: 'image',
       src: mcpArquitectura,
-      alt: 'Diagrama: el cliente en TypeScript (CLI, host con el modelo y mcp-client) habla JSON-RPC 2.0 sobre stdio o HTTP con el servidor en Go, que pasa por el control de rol antes de llegar a las herramientas y a SQLite',
+      alt: 'Diagrama: el cliente en TypeScript (interfaz de terminal o web, host con el modelo y mcp-client) habla JSON-RPC 2.0 sobre stdio o HTTP con el servidor en Go, que pasa por el control de rol antes de llegar a las herramientas y a SQLite',
     },
-    // TODO: agregar la captura de terminal a la galería cuando esté lista
     detail: {
-      gallery: [],
+      gallery: [
+        {
+          type: 'image',
+          src: mcpCli,
+          alt: 'Arranque del cliente en la terminal: la sesión con rol de administrador, el servidor declarado en mcp.servers.json, el catálogo de las cinco herramientas con su descripción y una primera pregunta que dispara una llamada al protocolo',
+        },
+        {
+          type: 'image',
+          src: mcpCliConsulta,
+          alt: 'Una sola pregunta encadena cuatro llamadas a herramientas; la respuesta lista los ingredientes con sus alérgenos y distingue el platillo que sí alcanza para dos porciones del que no, indicando cuánto queso falta',
+        },
+        {
+          type: 'image',
+          src: mcpCliRegistro,
+          alt: 'El comando /log muestra el registro de la sesión: cada petición tools/call emparejada con su respuesta y su marca de tiempo, junto a la lista de servidores conectados y sus herramientas',
+        },
+        {
+          type: 'image',
+          src: mcpWebConfirmacion,
+          alt: 'Interfaz web: antes de ejecutar una operación que modifica datos, el cliente pide confirmación y muestra la herramienta, cada argumento y la clave de idempotencia',
+        },
+        {
+          type: 'image',
+          src: mcpWebResultado,
+          alt: 'Tras confirmar, el inventario de queso pasa de 40 a 240 gramos y el asistente explica que el queso es el cuello de botella: alcanza para tres hamburguesas',
+        },
+      ],
       extendedDescription:
-        'El sistema son dos programas que se hablan por el Model Context Protocol. El servidor, en Go, expone cinco herramientas sobre la base de datos de un restaurante: buscar platillos, buscar ingredientes con sus alérgenos, consultar la receta de un platillo, calcular cuántas porciones alcanzan con el inventario actual y registrar ajustes de stock. El cliente, en TypeScript, conecta un modelo de lenguaje con esos servidores y le deja decidir qué preguntar.\n\nNinguno de los dos usa el SDK de MCP. El protocolo está implementado a mano en ambos lados: el framing de JSON-RPC 2.0, el handshake de initialize con negociación de versión, la correlación de peticiones y respuestas por id, la paginación y los códigos de error estándar. La razón de hacerlo así fue entender el protocolo en lugar de consumirlo, y el efecto secundario es saber exactamente qué pasa cuando el handshake falla o cuando llega una respuesta sin petición.\n\nDel lado del cliente, lo interesante es que no está atado a este servidor. Los servidores se declaran en un archivo de configuración y sus herramientas se fusionan en un único catálogo que se le ofrece al modelo; si dos servidores exponen una herramienta con el mismo nombre, el cliente falla de forma explícita en vez de elegir uno en silencio. El proveedor del modelo también está detrás de una interfaz, así que cambiarlo no toca la lógica del protocolo, y existe un proveedor de demostración que ejercita todo el flujo sin necesidad de una API key.\n\nDel lado del servidor, la decisión de diseño es que el modelo no es la autoridad. Los permisos por rol se evalúan en el servidor antes de ejecutar el handler y fallan cerrados, las restricciones de inventario viven en el esquema de la base y cada ajuste lleva una clave de idempotencia para que reintentar una llamada no descuente dos veces. Usa SQLite con un driver escrito en Go puro, así que compila sin C y se distribuye como un binario estático: el release publica binarios para Windows, macOS Intel y Apple Silicon, y Linux en amd64 y arm64, con sus checksums.',
+        'El sistema son dos programas que se hablan por el Model Context Protocol. El servidor, en Go, expone cinco herramientas sobre la base de datos de un restaurante: buscar platillos, buscar ingredientes con sus alérgenos, consultar la receta de un platillo, calcular cuántas porciones alcanzan con el inventario actual y registrar ajustes de stock. El cliente, en TypeScript, conecta un modelo de lenguaje con esos servidores y le deja decidir qué preguntar; se maneja desde una terminal o desde una interfaz web, y las dos muestran en vivo cada llamada del protocolo.\n\nNinguno de los dos usa el SDK de MCP. El protocolo está implementado a mano en ambos lados: el framing de JSON-RPC 2.0, el handshake de initialize con negociación de versión, la correlación de peticiones y respuestas por id, la paginación y los códigos de error estándar. La razón de hacerlo así fue entender el protocolo en lugar de consumirlo, y el efecto secundario es saber exactamente qué pasa cuando el handshake falla o cuando llega una respuesta sin petición.\n\nDel lado del cliente, lo interesante es que no está atado a este servidor. Los servidores se declaran en un archivo de configuración y sus herramientas se fusionan en un único catálogo que se le ofrece al modelo; si dos servidores exponen una herramienta con el mismo nombre, el cliente falla de forma explícita en vez de elegir uno en silencio. Habla igual con un servidor local levantado como subproceso que con uno remoto por HTTP con token, que es como están tomadas las capturas. El proveedor del modelo también está detrás de una interfaz, así que cambiarlo no toca la lógica del protocolo, y existe un proveedor de demostración que ejercita todo el flujo sin necesidad de una API key.\n\nDel lado del servidor, la decisión de diseño es que el modelo no es la autoridad. Antes de una operación que modifica datos el cliente pide confirmación explícita al usuario, y el servidor vuelve a verificar el rol por su cuenta: los permisos se evalúan antes de ejecutar el handler y fallan cerrados. Las restricciones de inventario viven en el esquema de la base y cada ajuste lleva una clave de idempotencia para que reintentar una llamada no descuente dos veces. Usa SQLite con un driver escrito en Go puro, así que compila sin C y se distribuye como un binario estático: el release publica binarios para Windows, macOS Intel y Apple Silicon, y Linux en amd64 y arm64, con sus checksums.',
     },
   },
   {

@@ -22,7 +22,7 @@
   <text class="t dim" x="88" y="106" font-size="17" letter-spacing="1.5">CLIENTE · TypeScript</text>
 
   <rect x="92" y="126" width="306" height="104" rx="12" fill="#0B1622" stroke="#E8EDF7" stroke-opacity="0.16"/>
-  <text class="t ink" x="245" y="169" font-size="23" font-weight="600" text-anchor="middle">CLI · REPL</text>
+  <text class="t ink" x="245" y="169" font-size="23" font-weight="600" text-anchor="middle">CLI · Web</text>
   <text class="t dim" x="245" y="198" font-size="17" text-anchor="middle">/tools · /servers · /log</text>
 
   <rect x="447" y="126" width="306" height="104" rx="12" fill="#0B1622" stroke="#E8EDF7" stroke-opacity="0.16"/>
