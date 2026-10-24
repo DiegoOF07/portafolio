@@ -261,8 +261,8 @@ h1 {
 
 .gallery-swiper :deep(.swiper-button-next),
 .gallery-swiper :deep(.swiper-button-prev) {
-  width: 48px;
-  height: 48px;
+  /* Swiper 12: fija el tamaño del botón y su centrado vertical */
+  --swiper-navigation-size: 48px;
   background: var(--chrome-bg);
   border: 1px solid rgba(255, 255, 255, 0.55);
   border-radius: 50%;
@@ -271,7 +271,6 @@ h1 {
   box-shadow: 0 4px 16px rgba(0, 0, 0, 0.45);
   transition: background 0.2s, border-color 0.2s;
   color: var(--ink);
-  --swiper-navigation-size: 20px;
 }
 
 .gallery-swiper :deep(.swiper-button-next:hover),
@@ -280,10 +279,10 @@ h1 {
   border-color: var(--ink);
 }
 
-.gallery-swiper :deep(.swiper-button-next:after),
-.gallery-swiper :deep(.swiper-button-prev:after) {
-  font-size: 1.1rem;
-  font-weight: 700;
+/* El SVG llena el botón por defecto */
+.gallery-swiper :deep(.swiper-navigation-icon) {
+  width: 10px;
+  height: 18px;
 }
 
 .gallery-swiper :deep(.swiper-pagination) {
