@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import type { MediaAsset } from '@/data/projects'
+import { useLocale } from '@/i18n'
 
 withDefaults(
   defineProps<{
@@ -16,6 +17,8 @@ withDefaults(
   }>(),
   { aspect: '16/9', focus: 'center', priority: false, fallbackIcons: () => [] },
 )
+
+const { t } = useLocale()
 </script>
 
 <template>
@@ -23,7 +26,7 @@ withDefaults(
     <img
       v-if="media.type !== 'video' && media.src"
       :src="media.src"
-      :alt="media.alt"
+      :alt="t(media.alt)"
       :style="{ objectPosition: focus }"
       :loading="priority ? 'eager' : 'lazy'"
       :fetchpriority="priority ? 'high' : 'auto'"
@@ -33,6 +36,7 @@ withDefaults(
     <video
       v-else-if="media.type === 'video' && media.src"
       :src="media.src"
+      :aria-label="t(media.alt)"
       :style="{ objectPosition: focus }"
       class="media-content"
       autoplay

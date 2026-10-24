@@ -5,38 +5,38 @@ import viteLogo from '@/assets/logos/vite.svg'
 import reactLogo from '@/assets/logos/react.svg'
 import goLogo from '@/assets/logos/go.svg'
 import postgresLogo from '@/assets/logos/postgresql.svg'
+import sqliteLogo from '@/assets/logos/sqlite.svg'
 import pythonLogo from '@/assets/logos/python.svg'
-import cplusLogo from '@/assets/logos/cplusplus.svg'
 import javaLogo from '@/assets/logos/java.svg'
 import dockerLogo from '@/assets/logos/docker.svg'
 import rustLogo from '@/assets/logos/rust.svg'
 import neo4jLogo from '@/assets/logos/neo4j.svg'
 import supabaseLogo from '@/assets/logos/supabase.svg'
 import gcpLogo from '@/assets/logos/gcp.svg'
+import type { Localized } from '@/i18n'
 import type { TechRef } from './projects'
 
 export interface StackGroup {
-  label: string
+  label: Localized
   items: TechRef[]
 }
 
-// Agrupado como en el CV, con Backend y Bases de datos juntos
-// (un grupo de un solo elemento se veía vacío junto a los demás).
+// Igual que las aptitudes del CV
 export const stackGroups: StackGroup[] = [
   {
-    label: 'Lenguajes',
+    label: { es: 'Lenguajes', en: 'Languages' },
     items: [
       { name: 'Go', icon: goLogo },
       { name: 'TypeScript', icon: tsLogo },
       { name: 'JavaScript', icon: jsLogo },
       { name: 'Python', icon: pythonLogo },
-      { name: 'C++', icon: cplusLogo },
-      { name: 'Java', icon: javaLogo },
       { name: 'Rust', icon: rustLogo },
+      { name: 'Java', icon: javaLogo },
+      { name: 'C' },
     ],
   },
   {
-    label: 'Frontend',
+    label: { es: 'Frontend', en: 'Frontend' },
     items: [
       { name: 'Vue', icon: vueLogo },
       { name: 'React', icon: reactLogo },
@@ -44,19 +44,37 @@ export const stackGroups: StackGroup[] = [
     ],
   },
   {
-    label: 'Backend y bases de datos',
+    label: { es: 'Backend', en: 'Backend' },
     items: [
       { name: 'Go', icon: goLogo },
+      { name: 'FastAPI' },
+      { name: 'Node.js/Express' },
+      { name: 'REST APIs' },
+      { name: 'Model Context Protocol' },
+    ],
+  },
+  {
+    label: { es: 'Bases de datos', en: 'Databases' },
+    items: [
       { name: 'PostgreSQL', icon: postgresLogo },
+      { name: 'SQLite', icon: sqliteLogo },
       { name: 'Neo4j', icon: neo4jLogo },
+      { name: 'MongoDB' },
+      { name: 'MySQL' },
       { name: 'Supabase', icon: supabaseLogo },
     ],
   },
   {
-    label: 'Herramientas',
+    label: { es: 'Herramientas', en: 'Tools' },
     items: [
+      { name: 'Git' },
+      { name: 'GitHub Actions' },
       { name: 'Docker', icon: dockerLogo },
-      { name: 'Google Cloud Platform', icon: gcpLogo },
+      { name: 'Linux' },
+      { name: 'AWS' },
+      { name: 'Google Cloud', icon: gcpLogo },
+      { name: 'Jira' },
+      { name: 'Scrum' },
     ],
   },
 ]

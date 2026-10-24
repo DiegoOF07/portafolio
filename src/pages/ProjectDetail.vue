@@ -8,8 +8,10 @@ import GlassCard from '@/components/GlassCard.vue'
 import MediaSlot from '@/components/MediaSlot.vue'
 import TechBadge from '@/components/TechBadge.vue'
 import { getFeaturedProjectBySlug } from '@/data/projects'
+import { useLocale, homeRoute } from '@/i18n'
 
 const route = useRoute()
+const { locale, m, t } = useLocale()
 const project = computed(() => getFeaturedProjectBySlug(route.params.slug as string))
 
 const swiperRef = ref()
@@ -38,33 +40,33 @@ const onSlideChange = (swiper: any) => {
 
 <template>
   <section class="detail-wrapper" v-if="project">
-    <RouterLink to="/#proyectos" class="back-link"><ArrowLeft :size="18" /> Volver a proyectos</RouterLink>
+    <RouterLink :to="homeRoute(locale, 'proyectos')" class="back-link"><ArrowLeft :size="18" /> {{ m.project.back }}</RouterLink>
 
     <GlassCard variant="section" class="detail-card">
       <MediaSlot v-if="project.media" :media="project.media" aspect="16/9" focus="left top" priority class="hero-media" />
 
-      <h1>{{ project.title }}</h1>
-      <p class="tagline">{{ project.tagline }}</p>
+      <h1>{{ t(project.title) }}</h1>
+      <p class="tagline">{{ t(project.tagline) }}</p>
 
       <div class="meta-grid">
         <div>
-          <h3>Contexto</h3>
-          <p>{{ project.context }}</p>
+          <h3>{{ m.project.context }}</h3>
+          <p>{{ t(project.context) }}</p>
         </div>
         <div>
-          <h3>Reto técnico</h3>
-          <p>{{ project.challenge }}</p>
+          <h3>{{ m.project.challenge }}</h3>
+          <p>{{ t(project.challenge) }}</p>
         </div>
         <div v-if="project.status">
-          <h3>Estado</h3>
-          <p>{{ project.status }}</p>
+          <h3>{{ m.project.status }}</h3>
+          <p>{{ t(project.status) }}</p>
         </div>
       </div>
 
-      <div v-if="project.detail?.extendedDescription" class="extended">
-        <h3>Más sobre el proyecto</h3>
+      <div v-if="project.detail?.extendedDescription.es" class="extended">
+        <h3>{{ m.project.more }}</h3>
         <!-- Los párrafos vienen separados por una línea en blanco en los datos -->
-        <p v-for="(paragraph, idx) in project.detail.extendedDescription.split('\n\n')" :key="idx">
+        <p v-for="(paragraph, idx) in t(project.detail.extendedDescription).split('\n\n')" :key="idx">
           {{ paragraph }}
         </p>
       </div>
@@ -75,7 +77,7 @@ const onSlideChange = (swiper: any) => {
 
       <!-- Carrusel de galería estilo glassmorphism -->
       <div v-if="project.detail?.gallery?.length" class="gallery-section">
-        <h3 class="gallery-title">Galería del proyecto</h3>
+        <h3 class="gallery-title">{{ m.project.gallery }}</h3>
 
         <Swiper
           ref="swiperRef"
@@ -93,17 +95,17 @@ const onSlideChange = (swiper: any) => {
           @slide-change="onSlideChange"
           class="gallery-swiper"
         >
-          <SwiperSlide v-for="(m, idx) in project.detail.gallery" :key="idx">
+          <SwiperSlide v-for="(shot, idx) in project.detail.gallery" :key="idx">
             <div class="slide-wrapper">
-              <MediaSlot :media="m" aspect="16/9" class="slide-media" />
+              <MediaSlot :media="shot" aspect="16/9" class="slide-media" />
               <button
                 class="fullscreen-btn"
                 @click="openFullscreen(idx)"
-                :aria-label="`Ver imagen ${idx + 1} en pantalla completa`"
-                :title="`Ver imagen ${idx + 1} en pantalla completa`"
+                :aria-label="m.project.fullscreenAria(idx + 1)"
+                :title="m.project.fullscreenAria(idx + 1)"
               >
                 <Expand :size="18" />
-                <span class="fullscreen-label">Pantalla completa</span>
+                <span class="fullscreen-label">{{ m.project.fullscreen }}</span>
               </button>
             </div>
           </SwiperSlide>
@@ -112,21 +114,21 @@ const onSlideChange = (swiper: any) => {
         <!-- Miniaturas (thumbnails) -->
         <div class="thumbnails" v-if="project.detail.gallery.length > 1">
           <button
-            v-for="(m, idx) in project.detail.gallery"
+            v-for="(shot, idx) in project.detail.gallery"
             :key="idx"
             :class="['thumb-btn', { active: activeIndex === idx }]"
             @click="goToSlide(idx)"
-            :aria-label="`Ir a imagen ${idx + 1}`"
+            :aria-label="m.project.goToImage(idx + 1)"
             :aria-current="activeIndex === idx ? 'true' : 'false'"
           >
-            <MediaSlot :media="m" aspect="4/3" class="thumb-media" />
+            <MediaSlot :media="shot" aspect="4/3" class="thumb-media" />
           </button>
         </div>
       </div>
 
       <footer class="buttons">
         <a v-if="project.links.demo" class="project-btn" :href="project.links.demo" target="_blank" rel="noopener noreferrer">
-          <Link :size="18" /> Ver demo
+          <Link :size="18" /> {{ m.project.seeDemo }}
         </a>
         <a
           v-for="repo in project.links.repos"
@@ -136,18 +138,18 @@ const onSlideChange = (swiper: any) => {
           target="_blank"
           rel="noopener noreferrer"
         >
-          <Github :size="18" /> {{ repo.label }}
+          <Github :size="18" /> {{ t(repo.label) }}
         </a>
         <span v-if="project.links.privacyNote" class="privacy-note">
-          <Lock :size="16" /> {{ project.links.privacyNote }}
+          <Lock :size="16" /> {{ t(project.links.privacyNote) }}
         </span>
       </footer>
     </GlassCard>
   </section>
 
   <section class="not-found" v-else>
-    <p>Proyecto no encontrado.</p>
-    <RouterLink to="/#proyectos" class="back-link"><ArrowLeft :size="18" /> Volver a proyectos</RouterLink>
+    <p>{{ m.project.notFound }}</p>
+    <RouterLink :to="homeRoute(locale, 'proyectos')" class="back-link"><ArrowLeft :size="18" /> {{ m.project.back }}</RouterLink>
   </section>
 </template>
 

@@ -1,11 +1,12 @@
 <script setup lang="ts">
-import { ref, onMounted, onBeforeUnmount } from 'vue'
+import { ref, computed, onMounted, onBeforeUnmount } from 'vue'
 import { Github, Linkedin, Download, Copy, Check } from 'lucide-vue-next'
 import ProjectCard from '@/components/ProjectCard.vue'
 import ExperimentCard from '@/components/ExperimentCard.vue'
 import TechBadge from '@/components/TechBadge.vue'
 import { featuredProjects, experimentProjects } from '@/data/projects'
 import { stackGroups } from '@/data/stack'
+import { useLocale, projectRoute, CV_FILES } from '@/i18n'
 import formPng from '@/assets/img/03_dapa-form.png'
 import formAvif800 from '@/assets/img/hero/hero-form-800.avif'
 import formAvif1340 from '@/assets/img/hero/hero-form-1340.avif'
@@ -13,6 +14,8 @@ import formWebp800 from '@/assets/img/hero/hero-form-800.webp'
 import formWebp1340 from '@/assets/img/hero/hero-form-1340.webp'
 
 const year = new Date().getFullYear()
+const { locale, m, t } = useLocale()
+const otherCv = computed(() => CV_FILES[locale.value === 'es' ? 'en' : 'es'])
 
 // Copiar el correo: un mailto: no hace nada si el visitante no tiene cliente
 // de correo configurado, y el contacto es el objetivo de la página.
@@ -104,34 +107,28 @@ onBeforeUnmount(() => {
         <div class="hero-copy">
           <span class="availability-badge">
             <span class="availability-dot"></span>
-            Disponible para oportunidades remotas
+            {{ m.hero.availability }}
           </span>
           <h1 ref="traceStartEl" class="trace-node">
-            Diego Flores <span class="role">Full-Stack Developer</span>
+            Diego Flores <span class="role">{{ m.hero.role }}</span>
           </h1>
-          <p class="hero-lead">
-            Construyo software completo para clientes reales, del modelo de datos a
-            la interfaz y el despliegue, con curiosidad por entender cómo funcionan
-            los sistemas por dentro.
-          </p>
+          <p class="hero-lead">{{ m.hero.lead }}</p>
           <div class="hero-actions">
-            <a href="#proyectos" class="btn-primary">Ver proyectos</a>
+            <a href="#proyectos" class="btn-primary">{{ m.hero.seeProjects }}</a>
             <!-- Lleva a la banda de contacto en vez de abrir mailto: si el
                  visitante no tiene cliente de correo configurado, un mailto
                  no hace nada y el botón parece roto. -->
-            <a href="#contacto" class="link-quiet">Escríbeme</a>
-            <a href="/cv-diego-flores.pdf" download class="link-quiet">
-              <Download :size="18" aria-hidden="true" /> Descargar CV
+            <a href="#contacto" class="link-quiet">{{ m.hero.writeMe }}</a>
+            <a :href="CV_FILES[locale]" download class="link-quiet">
+              <Download :size="18" aria-hidden="true" /> {{ m.hero.downloadCv }}
             </a>
           </div>
         </div>
 
         <figure class="hero-shot">
           <figcaption>
-            En pantalla: el constructor de formularios dinámicos que desarrollé en equipo
-            para una empresa de transporte. Las preguntas se crean sin tocar código y las
-            respuestas generan las cotizaciones.
-            <RouterLink to="/proyectos/dapa-logistica">Ver el proyecto</RouterLink>
+            {{ m.hero.caption }}
+            <RouterLink :to="projectRoute(locale, 'dapa-logistica')">{{ m.hero.seeProject }}</RouterLink>
           </figcaption>
           <div class="hero-shot-frame">
             <picture>
@@ -139,7 +136,7 @@ onBeforeUnmount(() => {
               <source type="image/webp" :srcset="heroSrcset.webp" :sizes="HERO_SIZES" />
               <img
                 :src="formPng"
-                alt="Constructor del formulario dinámico: ventana para agregar una pregunta con su tipo, sus opciones y si es obligatoria"
+                :alt="m.hero.shotAlt"
                 width="1340"
                 height="949"
                 fetchpriority="high"
@@ -151,7 +148,7 @@ onBeforeUnmount(() => {
 
       <!-- SOBRE MÍ  -->
       <section id="sobre-mi" class="section">
-        <h2 class="section-title trace-node">Sobre mí</h2>
+        <h2 class="section-title trace-node">{{ m.about.title }}</h2>
         <div class="about-body">
           <img
             src="@/assets/img/profile.jpg"
@@ -162,27 +159,14 @@ onBeforeUnmount(() => {
             loading="lazy"
           />
           <div class="about-text">
-            <p>
-              Soy estudiante de Ingeniería en Ciencias de la Computación, llevo más de
-              3 años en la carrera y soy desarrollador full-stack, principalmente con Go,
-              Vue y bases de datos relacionales y en grafos. Disfruto llevar proyectos
-              de principio a fin, desde entender el problema de un cliente real hasta
-              el despliegue.
-            </p>
-            <p>
-              Lo complemento con curiosidad técnica hacia temas menos comunes, como la
-              construcción de un compilador básico, trabajado con sistemas operativos a bajo
-              nivel y experimentado con gráficos 3D y raytracing. Creo que entender los
-              fundamentos, no solo los frameworks, es lo que hace la diferencia a largo
-              plazo.
-            </p>
+            <p v-for="(paragraph, idx) in m.about.paragraphs" :key="idx">{{ paragraph }}</p>
           </div>
         </div>
       </section>
 
       <!--  PROYECTOS DESTACADOS  -->
       <section id="proyectos" class="section">
-        <h2 class="section-title trace-node">Proyectos destacados</h2>
+        <h2 class="section-title trace-node">{{ m.sections.projects }}</h2>
         <ProjectCard v-if="leadProject" :project="leadProject" />
         <div class="project-rows">
           <ProjectCard v-for="p in otherProjects" :key="p.slug" :project="p" />
@@ -191,10 +175,10 @@ onBeforeUnmount(() => {
 
       <!--  STACK TÉCNICO  -->
       <section id="stack" class="section">
-        <h2 class="section-title trace-node">Stack técnico</h2>
+        <h2 class="section-title trace-node">{{ m.sections.stack }}</h2>
         <dl class="stack-list">
-          <div v-for="group in stackGroups" :key="group.label" class="stack-row">
-            <dt>{{ group.label }}</dt>
+          <div v-for="group in stackGroups" :key="group.label.es" class="stack-row">
+            <dt>{{ t(group.label) }}</dt>
             <dd>
               <TechBadge v-for="tech in group.items" :key="tech.name" :name="tech.name" :icon="tech.icon" />
             </dd>
@@ -204,7 +188,7 @@ onBeforeUnmount(() => {
 
       <!--  EXPERIMENTALES  -->
       <section id="experimentos" class="section">
-        <h2 class="section-title trace-node">Proyectos experimentales</h2>
+        <h2 class="section-title trace-node">{{ m.sections.experiments }}</h2>
         <div class="experiments-grid">
           <ExperimentCard v-for="p in experimentProjects" :key="p.slug" :project="p" />
         </div>
@@ -215,19 +199,15 @@ onBeforeUnmount(() => {
     <div class="warm">
       <section id="contacto" class="section contact">
         <div class="contact-main">
-          <h2 class="section-title">Contacto</h2>
-          <p class="contact-lead">
-            Busco oportunidades remotas como desarrollador
-            <span class="nowrap">full-stack</span>. Si algo de lo que viste encaja con
-            lo que tu equipo está construyendo, escríbeme.
-          </p>
+          <h2 class="section-title">{{ m.contact.title }}</h2>
+          <p class="contact-lead">{{ m.contact.lead }}</p>
           <!-- El mailto sigue ahí para quien tenga cliente de correo, pero
                copiar la dirección funciona siempre. -->
           <p class="contact-email-row">
             <a class="contact-email" :href="`mailto:${EMAIL}`">{{ EMAIL }}</a>
             <button type="button" class="copy-btn" @click="copyEmail">
               <component :is="copied ? Check : Copy" :size="15" aria-hidden="true" />
-              {{ copied ? 'Copiado' : 'Copiar' }}
+              {{ copied ? m.contact.copied : m.contact.copy }}
             </button>
           </p>
           <ul class="contact-links">
@@ -242,8 +222,13 @@ onBeforeUnmount(() => {
               </a>
             </li>
             <li>
-              <a href="/cv-diego-flores.pdf" download>
-                <Download :size="18" aria-hidden="true" /> Descargar CV
+              <a :href="CV_FILES[locale]" download>
+                <Download :size="18" aria-hidden="true" /> {{ m.contact.downloadCv }}
+              </a>
+            </li>
+            <li>
+              <a :href="otherCv" download>
+                <Download :size="18" aria-hidden="true" /> {{ m.contact.otherCv }}
               </a>
             </li>
           </ul>
@@ -251,19 +236,19 @@ onBeforeUnmount(() => {
 
         <dl class="contact-facts">
           <div>
-            <dt>Ubicación</dt>
+            <dt>{{ m.contact.location }}</dt>
             <dd>Guatemala (GMT-6)</dd>
           </div>
           <div>
-            <dt>Formación</dt>
-            <dd>Ingeniería en Ciencias de la Computación</dd>
+            <dt>{{ m.contact.education }}</dt>
+            <dd>{{ m.contact.educationValue }}</dd>
           </div>
         </dl>
       </section>
 
       <footer class="site-footer">
         <p>© {{ year }} Diego Flores</p>
-        <a href="#inicio">Volver arriba</a>
+        <a href="#inicio">{{ m.contact.backToTop }}</a>
       </footer>
     </div>
   </div>
@@ -641,10 +626,6 @@ onBeforeUnmount(() => {
   max-width: 52ch;
   margin: 0 0 var(--s-6);
   font-size: var(--step-1);
-}
-
-.nowrap {
-  white-space: nowrap;
 }
 
 .contact-email {

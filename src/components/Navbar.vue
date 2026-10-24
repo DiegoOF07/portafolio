@@ -3,26 +3,30 @@ import { ref, computed } from 'vue'
 import { useRoute } from 'vue-router'
 import { Home, User, FolderGit2, Layers, FlaskConical, Phone, Menu, X, Download } from 'lucide-vue-next'
 import { useScrollSpy } from '@/composables/useScrollSpy'
+import { useLocale, homeRoute, CV_FILES } from '@/i18n'
 
 const isOpen = ref(false)
 const route = useRoute()
+const { locale, m, alternate } = useLocale()
+const otherLocale = computed(() => (locale.value === 'es' ? 'en' : 'es'))
 
+// Mismos ids en ambos idiomas
 const navItems = [
-  { id: 'inicio', label: 'Inicio', icon: Home },
-  { id: 'sobre-mi', label: 'Sobre mí', icon: User },
-  { id: 'proyectos', label: 'Proyectos', icon: FolderGit2 },
-  { id: 'stack', label: 'Stack', icon: Layers },
-  { id: 'experimentos', label: 'Experimentos', icon: FlaskConical },
-  { id: 'contacto', label: 'Contacto', icon: Phone },
-]
+  { id: 'inicio', icon: Home },
+  { id: 'sobre-mi', icon: User },
+  { id: 'proyectos', icon: FolderGit2 },
+  { id: 'stack', icon: Layers },
+  { id: 'experimentos', icon: FlaskConical },
+  { id: 'contacto', icon: Phone },
+] as const
 
 // El scroll-spy solo tiene sentido en la home (donde viven las secciones).
-const isHome = computed(() => route.path === '/')
+const isHome = computed(() => route.meta.page === 'home')
 const { activeId, setActiveId } = useScrollSpy(navItems.map((i) => i.id))
 
 const isItemActive = (itemId: string) => {
   // En el detalle de un proyecto, la sección "Proyectos" se mantiene activa.
-  if (itemId === 'proyectos' && route.name === 'ProjectDetail') return true
+  if (itemId === 'proyectos' && route.meta.page === 'project') return true
   return isHome.value && activeId.value === itemId
 }
 
@@ -42,28 +46,31 @@ const closeMenu = () => {
 
 <template>
   <nav class="navbar">
-    <RouterLink to="/#inicio" class="logo">Diego Flores</RouterLink>
+    <RouterLink :to="homeRoute(locale, 'inicio')" class="logo">Diego Flores</RouterLink>
 
     <ul :class="['nav-links', { open: isOpen }]">
       <li v-for="item in navItems" :key="item.id">
         <RouterLink
-          :to="{ path: '/', hash: `#${item.id}` }"
+          :to="homeRoute(locale, item.id)"
           class="nav-link"
           :class="{ active: isItemActive(item.id) }"
           @click="handleClick(item.id)"
         >
           <component :is="item.icon" :size="18" />
-          <span>{{ item.label }}</span>
+          <span>{{ m.nav[item.id] }}</span>
         </RouterLink>
       </li>
     </ul>
 
     <div class="nav-right">
-      <a href="/cv-diego-flores.pdf" download class="nav-cv" aria-label="Descargar CV">
+      <RouterLink :to="alternate" class="nav-lang" :hreflang="otherLocale" :lang="otherLocale" :title="m.nav.switchAria" @click="closeMenu">
+        {{ m.nav.switchLabel }}
+      </RouterLink>
+      <a :href="CV_FILES[locale]" download class="nav-cv" :aria-label="m.nav.downloadCv">
         <Download :size="18" />
         <span>CV</span>
       </a>
-      <button class="menu-btn" aria-label="Abrir menú" @click="toggleMenu">
+      <button class="menu-btn" :aria-label="isOpen ? m.nav.closeMenu : m.nav.openMenu" @click="toggleMenu">
         <component :is="isOpen ? X : Menu" :size="28" />
       </button>
     </div>
@@ -128,6 +135,23 @@ const closeMenu = () => {
   transition: background 0.2s, border-color 0.2s;
 }
 
+/* Sin borde: el CV sigue siendo la acción principal */
+.nav-lang {
+  padding: 8px 10px;
+  border-radius: 8px;
+  font-weight: 600;
+  font-size: 0.9rem;
+  letter-spacing: 0.04em;
+  color: var(--ink-dim);
+  text-decoration: none;
+  transition: color 0.2s, background 0.2s;
+}
+
+.nav-lang:hover {
+  color: var(--ink);
+  background: var(--glass-bg-hover);
+}
+
 .nav-cv:hover {
   background: var(--glass-bg-hover);
   border-color: rgba(255, 255, 255, 0.22);
@@ -135,6 +159,7 @@ const closeMenu = () => {
 
 .nav-link:focus-visible,
 .nav-cv:focus-visible,
+.nav-lang:focus-visible,
 .menu-btn:focus-visible,
 .logo:focus-visible {
   outline: 2px solid var(--focus-ring);

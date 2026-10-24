@@ -10,7 +10,7 @@ const route = useRoute()
 // La home es una SPA de una sola sección de fondo; el detalle de proyecto
 // usa una variante propia.
 const backgroundType = computed(() => {
-  if (route.name === 'ProjectDetail') return 'projects'
+  if (route.meta.page === 'project') return 'projects'
   return 'home'
 })
 </script>

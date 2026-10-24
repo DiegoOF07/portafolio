@@ -3,10 +3,13 @@ import { Link, Github, Lock } from 'lucide-vue-next'
 import TechBadge from './TechBadge.vue'
 import MediaSlot from '@/components/MediaSlot.vue'
 import type { FeaturedProject } from '@/data/projects'
+import { useLocale, projectRoute } from '@/i18n'
 
 defineProps<{
   project: FeaturedProject
 }>()
+
+const { locale, m, t } = useLocale()
 </script>
 
 <template>
@@ -17,29 +20,29 @@ defineProps<{
     </div>
 
     <header class="project-head">
-      <h3>{{ project.title }}</h3>
-      <p class="project-context">{{ project.context }}</p>
+      <h3>{{ t(project.title) }}</h3>
+      <p class="project-context">{{ t(project.context) }}</p>
     </header>
 
     <div class="project-body">
-      <p class="project-tagline">{{ project.tagline }}</p>
+      <p class="project-tagline">{{ t(project.tagline) }}</p>
       <p class="project-challenge">
-        <span class="label">Reto técnico</span>
-        {{ project.challenge }}
+        <span class="label">{{ m.project.challenge }}</span>
+        {{ t(project.challenge) }}
       </p>
 
       <div class="techs">
         <TechBadge v-for="(tech, idx) in project.techs" :key="idx" :name="tech.name" :icon="tech.icon" />
       </div>
 
-      <p v-if="project.status" class="project-status">{{ project.status }}</p>
+      <p v-if="project.status" class="project-status">{{ t(project.status) }}</p>
 
       <footer class="project-links">
-        <RouterLink v-if="project.hasDetail" :to="`/proyectos/${project.slug}`" class="btn-primary">
-          Ver el proyecto
+        <RouterLink v-if="project.hasDetail" :to="projectRoute(locale, project.slug)" class="btn-primary">
+          {{ m.project.seeProject }}
         </RouterLink>
         <a v-if="project.links.demo" class="link-quiet" :href="project.links.demo" target="_blank" rel="noopener noreferrer">
-          <Link :size="16" aria-hidden="true" /> Ver demo
+          <Link :size="16" aria-hidden="true" /> {{ m.project.seeDemo }}
         </a>
         <a
           v-for="repo in project.links.repos"
@@ -49,12 +52,12 @@ defineProps<{
           target="_blank"
           rel="noopener noreferrer"
         >
-          <Github :size="16" aria-hidden="true" /> {{ repo.label }}
+          <Github :size="16" aria-hidden="true" /> {{ t(repo.label) }}
         </a>
       </footer>
 
       <p v-if="project.links.privacyNote" class="privacy-note">
-        <Lock :size="14" aria-hidden="true" /> {{ project.links.privacyNote }}
+        <Lock :size="14" aria-hidden="true" /> {{ t(project.links.privacyNote) }}
       </p>
     </div>
   </article>

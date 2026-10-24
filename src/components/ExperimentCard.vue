@@ -5,10 +5,13 @@ import GlassCard from '@/components/GlassCard.vue'
 import MediaSlot from '@/components/MediaSlot.vue'
 import TechBadge from './TechBadge.vue'
 import type { ExperimentProject } from '@/data/projects'
+import { useLocale } from '@/i18n'
 
 const props = defineProps<{
   project: ExperimentProject
 }>()
+
+const { t } = useLocale()
 
 // Si todavía no hay captura, el panel muestra los logos de su stack
 const techIcons = computed(() =>
@@ -20,8 +23,8 @@ const techIcons = computed(() =>
   <GlassCard variant="project" class="experiment-card">
     <MediaSlot :media="project.media" :fallback-icons="techIcons" class="experiment-media" aspect="16/10" />
     <div class="experiment-content">
-      <h4>{{ project.title }}</h4>
-      <p class="description">{{ project.description }}</p>
+      <h4>{{ t(project.title) }}</h4>
+      <p class="description">{{ t(project.description) }}</p>
       <div class="techs">
         <TechBadge v-for="(tech, idx) in project.techs" :key="idx" :name="tech.name" :icon="tech.icon" />
       </div>
@@ -29,7 +32,7 @@ const techIcons = computed(() =>
            links sueltos en una tarjeta que debe seguir siendo compacta -->
       <ul v-if="project.parts" class="parts">
         <li v-for="part in project.parts" :key="part.repo">
-          <span class="part-name">{{ part.name }}</span>
+          <span class="part-name">{{ t(part.name) }}</span>
           <a class="link-quiet" :href="part.repo" target="_blank" rel="noopener noreferrer">
             <Github :size="14" aria-hidden="true" /> Repo
           </a>
@@ -51,7 +54,7 @@ const techIcons = computed(() =>
           target="_blank"
           rel="noopener noreferrer"
         >
-          <Github :size="16" aria-hidden="true" /> {{ repo.label }}
+          <Github :size="16" aria-hidden="true" /> {{ t(repo.label) }}
         </a>
       </div>
     </div>
