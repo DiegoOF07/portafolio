@@ -85,11 +85,9 @@ export interface FeaturedProject {
   hasDetail: boolean
   detail?: {
     gallery: MediaAsset[]
-    // Párrafos separados por una línea en blanco
-    extendedDescription?: Localized
-    // Alternativa a extendedDescription cuando el texto pide títulos
-    sections?: { heading: Localized; body: Localized }[]
     stats?: { value: string; label: Localized }[]
+    // Párrafos del cuerpo separados por una línea en blanco
+    sections?: { heading: Localized; body: Localized }[]
   }
 }
 
@@ -109,10 +107,7 @@ type FeaturedProjectData = Omit<FeaturedProject, 'hasDetail'>
 
 const withDerivedDetail = (p: FeaturedProjectData): FeaturedProject => ({
   ...p,
-  hasDetail: Boolean(
-    p.detail &&
-      (p.detail.gallery.length > 0 || p.detail.extendedDescription?.es.trim() || p.detail.sections?.length),
-  ),
+  hasDetail: Boolean(p.detail && (p.detail.gallery.length > 0 || p.detail.sections?.length)),
 })
 
 const featuredProjectData: FeaturedProjectData[] = [
@@ -192,10 +187,41 @@ const featuredProjectData: FeaturedProjectData[] = [
           alt: { es: 'Dashboard general con KPIs y alertas', en: 'Main dashboard with KPIs and alerts' },
         },
       ],
-      extendedDescription: {
-        es: 'Sistema administrativo completo para una empresa de transporte real, desarrollado en equipo durante aproximadamente 1 año bajo metodología Scrum por medio de Jira. La arquitectura está basada en un backend con Go y un frontend con Vue, usando PostgreSQL como base de datos principal.\n\nEl componente más innovador es el cotizador dinámico: un subsistema donde el administrador puede crear, editar o eliminar preguntas de formulario sin tocar código y las respuestas generan automáticamente cotizaciones para que el administrador las vea y decida qué hacer.\n\nEl sistema incluye gestión de vehículos, conductores, cotizaciones, pedidos y mantenimiento preventivo. El dashboard centralizado muestra KPIs operativos, alertas de mantenimiento y métricas de eficiencia de la flota.\n\nTodo se orquesta con Docker para mejorar la portabilidad.',
-        en: 'A complete management system for a real transportation company, built as a team over roughly one year using Scrum with Jira. The architecture is a Go backend and a Vue frontend, with PostgreSQL as the main database.\n\nThe most innovative piece is the dynamic quoting system: a subsystem where the administrator can create, edit or remove form questions without touching code, and the answers automatically generate quotes for the administrator to review and decide on.\n\nThe system covers vehicles, drivers, quotes, orders and preventive maintenance. A central dashboard shows operational KPIs, maintenance alerts and fleet efficiency metrics.\n\nEverything is orchestrated with Docker for portability.',
-      },
+      stats: [
+        { value: '~1 año', label: { es: 'de desarrollo en equipo', en: 'of team development' } },
+        { value: '5', label: { es: 'módulos de gestión', en: 'management modules' } },
+        { value: 'Scrum', label: { es: 'con sprints en Jira', en: 'with sprints in Jira' } },
+      ],
+      sections: [
+        {
+          heading: { es: 'Qué problema resuelve', en: 'The problem it solves' },
+          body: {
+            es: 'Una empresa de transporte real necesitaba administrar su operación en un solo lugar. El sistema cubre la gestión de vehículos, conductores, cotizaciones, pedidos y mantenimiento preventivo, con control de acceso por roles. Un dashboard centralizado muestra KPIs operativos, alertas de mantenimiento y métricas de eficiencia de la flota.',
+            en: 'A real transportation company needed to run its operation from a single place. The system covers vehicles, drivers, quotes, orders and preventive maintenance, with role-based access control. A central dashboard shows operational KPIs, maintenance alerts and fleet efficiency metrics.',
+          },
+        },
+        {
+          heading: { es: 'Arquitectura', en: 'Architecture' },
+          body: {
+            es: 'Un backend en Go y un frontend en Vue, con PostgreSQL como base de datos principal. Todo se orquesta con Docker para que el entorno sea el mismo en cada máquina del equipo y en el despliegue, que se hizo en AWS.',
+            en: 'A Go backend and a Vue frontend, with PostgreSQL as the main database. Everything is orchestrated with Docker so the environment is the same on every team member\'s machine and in the deployment, which ran on AWS.',
+          },
+        },
+        {
+          heading: { es: 'El cotizador dinámico', en: 'The dynamic quoting system' },
+          body: {
+            es: 'Es el componente más innovador: un subsistema donde el administrador puede crear, editar o eliminar preguntas del formulario de cotización sin tocar código. Las respuestas de los clientes generan automáticamente cotizaciones para que el administrador las revise y decida qué hacer con cada una.',
+            en: 'This is the most innovative piece: a subsystem where the administrator can create, edit or remove questions on the quote form without touching code. Client answers automatically generate quotes for the administrator to review and decide on.',
+          },
+        },
+        {
+          heading: { es: 'Cómo se trabajó', en: 'How we worked' },
+          body: {
+            es: 'Lo desarrollamos en equipo durante aproximadamente un año, con Scrum y Jira para organizar los sprints, y en contacto con el cliente para validar los requerimientos a lo largo del proyecto.',
+            en: 'We built it as a team over roughly one year, using Scrum with Jira to organize the sprints, and stayed in touch with the client to validate requirements throughout the project.',
+          },
+        },
+      ],
     },
   },
   {
@@ -406,10 +432,49 @@ const featuredProjectData: FeaturedProjectData[] = [
           },
         },
       ],
-      extendedDescription: {
-        es: 'El sistema son dos programas que se hablan por el Model Context Protocol. El servidor, en Go, expone cinco herramientas sobre la base de datos de un restaurante: buscar platillos, buscar ingredientes con sus alérgenos, consultar la receta de un platillo, calcular cuántas porciones alcanzan con el inventario actual y registrar ajustes de stock. El cliente, en TypeScript, conecta un modelo de lenguaje con esos servidores y le deja decidir qué preguntar; se maneja desde una terminal o desde una interfaz web, y las dos muestran en vivo cada llamada del protocolo.\n\nNinguno de los dos usa el SDK de MCP. El protocolo está implementado a mano en ambos lados: el framing de JSON-RPC 2.0, el handshake de initialize con negociación de versión, la correlación de peticiones y respuestas por id, la paginación y los códigos de error estándar. La razón de hacerlo así fue entender el protocolo en lugar de consumirlo, y el efecto secundario es saber exactamente qué pasa cuando el handshake falla o cuando llega una respuesta sin petición.\n\nDel lado del cliente, lo interesante es que no está atado a este servidor. Los servidores se declaran en un archivo de configuración y sus herramientas se fusionan en un único catálogo que se le ofrece al modelo; si dos servidores exponen una herramienta con el mismo nombre, el cliente falla de forma explícita en vez de elegir uno en silencio. Habla igual con un servidor local levantado como subproceso que con uno remoto por HTTP con token, que es como están tomadas las capturas. El proveedor del modelo también está detrás de una interfaz, así que cambiarlo no toca la lógica del protocolo, y existe un proveedor de demostración que ejercita todo el flujo sin necesidad de una API key.\n\nDel lado del servidor, la decisión de diseño es que el modelo no es la autoridad. Antes de una operación que modifica datos el cliente pide confirmación explícita al usuario, y el servidor vuelve a verificar el rol por su cuenta: los permisos se evalúan antes de ejecutar el handler y fallan cerrados. Las restricciones de inventario viven en el esquema de la base y cada ajuste lleva una clave de idempotencia para que reintentar una llamada no descuente dos veces. Usa SQLite con un driver escrito en Go puro, así que compila sin C y se distribuye como un binario estático: el release publica binarios para Windows, macOS Intel y Apple Silicon, y Linux en amd64 y arm64, con sus checksums.',
-        en: "The system is two programs that talk to each other over the Model Context Protocol. The server, written in Go, exposes five tools over a restaurant's database: searching dishes, searching ingredients with their allergens, looking up a dish's recipe, computing how many portions the current inventory allows, and recording stock adjustments. The client, written in TypeScript, connects a language model to those servers and lets it decide what to ask; it runs from a terminal or a web interface, and both show every protocol call live.\n\nNeither of them uses the MCP SDK. The protocol is implemented by hand on both sides: JSON-RPC 2.0 framing, the initialize handshake with version negotiation, request/response correlation by id, pagination and the standard error codes. The reason was to understand the protocol rather than just consume it, and the side effect is knowing exactly what happens when the handshake fails or a response arrives with no matching request.\n\nOn the client side, the interesting part is that it is not tied to this server. Servers are declared in a configuration file and their tools are merged into a single catalog offered to the model; if two servers expose a tool with the same name, the client fails explicitly instead of silently picking one. It talks the same way to a local server spawned as a subprocess and to a remote one over HTTP with a token, which is how the screenshots were taken. The model provider also sits behind an interface, so swapping it does not touch the protocol logic, and a demo provider exercises the whole flow without needing an API key.\n\nOn the server side, the design decision is that the model is not the authority. Before an operation that modifies data, the client asks the user for explicit confirmation, and the server checks the role again on its own: permissions are evaluated before the handler runs and fail closed. Inventory constraints live in the database schema, and every adjustment carries an idempotency key so that retrying a call never deducts twice. It uses SQLite with a pure-Go driver, so it builds without C and ships as a static binary: the release publishes binaries for Windows, macOS on Intel and Apple Silicon, and Linux on amd64 and arm64, with their checksums.",
-      },
+      stats: [
+        { value: '5', label: { es: 'herramientas MCP', en: 'MCP tools' } },
+        { value: '0', label: { es: 'SDKs de MCP', en: 'MCP SDKs' } },
+        { value: '2', label: { es: 'transportes: stdio y HTTP', en: 'transports: stdio and HTTP' } },
+        { value: '5', label: { es: 'plataformas con binario', en: 'platforms with binaries' } },
+      ],
+      sections: [
+        {
+          heading: { es: 'Qué problema resuelve', en: 'The problem it solves' },
+          body: {
+            es: 'El sistema son dos programas que se hablan por el Model Context Protocol. El servidor, en Go, expone cinco herramientas sobre la base de datos de un restaurante: buscar platillos, buscar ingredientes con sus alérgenos, consultar la receta de un platillo, calcular cuántas porciones alcanzan con el inventario actual y registrar ajustes de stock. El cliente, en TypeScript, conecta un modelo de lenguaje con esos servidores y le deja decidir qué preguntar; se maneja desde una terminal o desde una interfaz web, y las dos muestran en vivo cada llamada del protocolo.',
+            en: "The system is two programs that talk to each other over the Model Context Protocol. The server, written in Go, exposes five tools over a restaurant's database: searching dishes, searching ingredients with their allergens, looking up a dish's recipe, computing how many portions the current inventory allows, and recording stock adjustments. The client, written in TypeScript, connects a language model to those servers and lets it decide what to ask; it runs from a terminal or a web interface, and both show every protocol call live.",
+          },
+        },
+        {
+          heading: { es: 'El protocolo, escrito a mano', en: 'The protocol, written by hand' },
+          body: {
+            es: 'Ninguno de los dos usa el SDK de MCP. El protocolo está implementado a mano en ambos lados: el framing de JSON-RPC 2.0, el handshake de initialize con negociación de versión, la correlación de peticiones y respuestas por id, la paginación y los códigos de error estándar. La razón de hacerlo así fue entender el protocolo en lugar de consumirlo, y el efecto secundario es saber exactamente qué pasa cuando el handshake falla o cuando llega una respuesta sin petición.',
+            en: 'Neither of them uses the MCP SDK. The protocol is implemented by hand on both sides: JSON-RPC 2.0 framing, the initialize handshake with version negotiation, request/response correlation by id, pagination and the standard error codes. The reason was to understand the protocol rather than just consume it, and the side effect is knowing exactly what happens when the handshake fails or a response arrives with no matching request.',
+          },
+        },
+        {
+          heading: { es: 'Arquitectura del cliente', en: 'Client architecture' },
+          body: {
+            es: 'Lo interesante es que no está atado a este servidor. Los servidores se declaran en un archivo de configuración y sus herramientas se fusionan en un único catálogo que se le ofrece al modelo; si dos servidores exponen una herramienta con el mismo nombre, el cliente falla de forma explícita en vez de elegir uno en silencio. Habla igual con un servidor local levantado como subproceso que con uno remoto por HTTP con token, que es como están tomadas las capturas. El proveedor del modelo también está detrás de una interfaz, así que cambiarlo no toca la lógica del protocolo, y existe un proveedor de demostración que ejercita todo el flujo sin necesidad de una API key.',
+            en: 'The interesting part is that it is not tied to this server. Servers are declared in a configuration file and their tools are merged into a single catalog offered to the model; if two servers expose a tool with the same name, the client fails explicitly instead of silently picking one. It talks the same way to a local server spawned as a subprocess and to a remote one over HTTP with a token, which is how the screenshots were taken. The model provider also sits behind an interface, so swapping it does not touch the protocol logic, and a demo provider exercises the whole flow without needing an API key.',
+          },
+        },
+        {
+          heading: { es: 'Arquitectura del servidor', en: 'Server architecture' },
+          body: {
+            es: 'La decisión de diseño es que el modelo no es la autoridad. Antes de una operación que modifica datos el cliente pide confirmación explícita al usuario, y el servidor vuelve a verificar el rol por su cuenta: los permisos se evalúan antes de ejecutar el handler y fallan cerrados. Las restricciones de inventario viven en el esquema de la base y cada ajuste lleva una clave de idempotencia para que reintentar una llamada no descuente dos veces.',
+            en: 'The design decision is that the model is not the authority. Before an operation that modifies data, the client asks the user for explicit confirmation, and the server checks the role again on its own: permissions are evaluated before the handler runs and fail closed. Inventory constraints live in the database schema, and every adjustment carries an idempotency key so that retrying a call never deducts twice.',
+          },
+        },
+        {
+          heading: { es: 'Distribución', en: 'Distribution' },
+          body: {
+            es: 'El servidor usa SQLite con un driver escrito en Go puro, así que compila sin C y se distribuye como un binario estático: el release publica binarios para Windows, macOS Intel y Apple Silicon, y Linux en amd64 y arm64, con sus checksums.',
+            en: 'The server uses SQLite with a pure-Go driver, so it builds without C and ships as a static binary: the release publishes binaries for Windows, macOS on Intel and Apple Silicon, and Linux on amd64 and arm64, with their checksums.',
+          },
+        },
+      ],
     },
   },
   {

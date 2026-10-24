@@ -63,20 +63,13 @@ const onSlideChange = (swiper: any) => {
       </div>
 
       <dl v-if="project.detail?.stats" class="stats" :aria-label="m.project.stats">
-        <div v-for="stat in project.detail.stats" :key="stat.value">
+        <div v-for="stat in project.detail.stats" :key="stat.label.es">
           <dt>{{ t(stat.label) }}</dt>
           <dd>{{ stat.value }}</dd>
         </div>
       </dl>
 
-      <div v-if="project.detail?.extendedDescription" class="extended">
-        <h3>{{ m.project.more }}</h3>
-        <p v-for="(paragraph, idx) in t(project.detail.extendedDescription).split('\n\n')" :key="idx">
-          {{ paragraph }}
-        </p>
-      </div>
-
-      <section v-for="section in project.detail?.sections" :key="section.heading.es" class="extended">
+      <section v-for="section in project.detail?.sections" :key="section.heading.es" class="detail-section">
         <h2>{{ t(section.heading) }}</h2>
         <p v-for="(paragraph, idx) in t(section.body).split('\n\n')" :key="idx">
           {{ paragraph }}
@@ -89,7 +82,7 @@ const onSlideChange = (swiper: any) => {
 
       <!-- Carrusel de galería estilo glassmorphism -->
       <div v-if="project.detail?.gallery?.length" class="gallery-section">
-        <h3 class="gallery-title">{{ m.project.gallery }}</h3>
+        <h2 class="gallery-title">{{ m.project.gallery }}</h2>
 
         <Swiper
           ref="swiperRef"
@@ -230,17 +223,16 @@ h1 {
   margin: 0 0 var(--s-2);
 }
 
-.extended {
+.detail-section {
   margin-bottom: 2rem;
 }
 
-.extended h3,
-.extended h2 {
+.detail-section h2 {
   font-size: var(--step-2);
   margin-bottom: 0.5rem;
 }
 
-.extended p {
+.detail-section p {
   max-width: 68ch;
 }
 
