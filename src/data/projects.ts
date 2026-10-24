@@ -26,6 +26,8 @@ import logisticaFormulario from '@/assets/img/02_dapa-form.png'
 import logisticaFinancial from '@/assets/img/06_dapa-financial.png'
 import invitadoEspecial from '@/assets/img/invitado-especial.webp'
 import mcpArquitectura from '@/assets/img/mcp-arquitectura.svg'
+import diskflowArquitecturaEs from '@/assets/img/diskflow-arquitectura.es.svg'
+import diskflowArquitecturaEn from '@/assets/img/diskflow-arquitectura.en.svg'
 import graficasRust from '@/assets/img/graficas-rust.webp'
 import analizadorSintactico from '@/assets/img/analizador-sintactico.webp'
 
@@ -51,7 +53,8 @@ export interface ProjectLinks {
 
 export interface MediaAsset {
   type: 'image' | 'gif' | 'video'
-  src: string
+  // Localizado solo si la imagen tiene texto (p. ej. un diagrama)
+  src: string | Localized
   alt: Localized
 }
 
@@ -75,13 +78,18 @@ export interface FeaturedProject {
   media?: MediaAsset
   // Pieza principal de la sección: se muestra grande, con su captura.
   lead?: boolean
+  // Al final de la sección, en formato reducido
+  compact?: boolean
   // Se deriva del contenido (ver withDerivedDetail): true solo si el
   // detalle tiene galería o descripción, para no enlazar a una página vacía.
   hasDetail: boolean
   detail?: {
     gallery: MediaAsset[]
     // Párrafos separados por una línea en blanco
-    extendedDescription: Localized
+    extendedDescription?: Localized
+    // Alternativa a extendedDescription cuando el texto pide títulos
+    sections?: { heading: Localized; body: Localized }[]
+    stats?: { value: string; label: Localized }[]
   }
 }
 
@@ -101,7 +109,10 @@ type FeaturedProjectData = Omit<FeaturedProject, 'hasDetail'>
 
 const withDerivedDetail = (p: FeaturedProjectData): FeaturedProject => ({
   ...p,
-  hasDetail: Boolean(p.detail && (p.detail.gallery.length > 0 || p.detail.extendedDescription.es.trim())),
+  hasDetail: Boolean(
+    p.detail &&
+      (p.detail.gallery.length > 0 || p.detail.extendedDescription?.es.trim() || p.detail.sections?.length),
+  ),
 })
 
 const featuredProjectData: FeaturedProjectData[] = [
@@ -251,7 +262,61 @@ const featuredProjectData: FeaturedProjectData[] = [
         },
       ],
     },
-    // TODO: página de detalle (arquitectura, rendimiento, prácticas, roadmap) y video del treemap
+    media: {
+      type: 'image',
+      src: { es: diskflowArquitecturaEs, en: diskflowArquitecturaEn },
+      alt: {
+        es: 'Diagrama en tres capas: el frontend en Vue habla con una interfaz Backend implementada sobre los bindings de wailsjs; los comandos bajan al adaptador internal/desktop, el único paquete que importa Wails, y los eventos de progreso suben; el adaptador llama directamente al motor en Go, donde el escáner alimenta el índice que se guarda en SQLite',
+        en: 'Three-layer diagram: the Vue frontend talks to a Backend interface implemented on top of the wailsjs bindings; commands go down to the internal/desktop adapter, the only package that imports Wails, and progress events come back up; the adapter calls the Go engine directly, where the scanner feeds the index stored in SQLite',
+      },
+    },
+    detail: {
+      gallery: [],
+      stats: [
+        { value: '~100k', label: { es: 'entradas indexadas', en: 'entries indexed' } },
+        { value: '~2.4 s', label: { es: 'por escaneo, sobre NTFS', en: 'per scan, on NTFS' } },
+        { value: '<10 MB', label: { es: 'de heap', en: 'of heap' } },
+        { value: '3', label: { es: 'ADRs documentados', en: 'documented ADRs' } },
+      ],
+      sections: [
+        {
+          heading: { es: 'Qué problema resuelve', en: 'The problem it solves' },
+          body: {
+            es: 'En un workspace de desarrollo el espacio se va en lugares que no se ven: carpetas node_modules repetidas en cada proyecto, artefactos de build y cachés de herramientas. Un explorador de disco genérico muestra que una carpeta pesa mucho, pero no ayuda a entender por qué. DiskFlow escanea una carpeta, guarda el resultado en un índice local y lo muestra como un treemap y una tabla sincronizados: al pasar el cursor por uno se resalta el elemento en el otro, y se puede entrar en cualquier carpeta.\n\nEs de solo lectura por diseño: nunca borra, mueve ni abre archivos, y no hace peticiones de red. Qué limpiar lo decide quien lo usa.',
+            en: 'In a development workspace, space goes to places you do not see: node_modules folders repeated in every project, build artifacts and tool caches. A generic disk explorer shows that a folder is heavy but does not help you understand why. DiskFlow scans a folder, stores the result in a local index and shows it as a synchronized treemap and table: hovering in one highlights the item in the other, and you can drill down into any folder.\n\nIt is read-only by design: it never deletes, moves or opens files, and it makes no network requests. What to clean up is left to the user.',
+          },
+        },
+        {
+          heading: { es: 'Arquitectura', en: 'Architecture' },
+          body: {
+            es: 'Son tres capas con fronteras explícitas. El motor de escaneo (internal/engine) es Go puro y no sabe que existe una interfaz: escanea, indexa en SQLite y responde consultas. Wails está confinado a un solo paquete adaptador (internal/desktop), el único que lo importa. Y el frontend en Vue nunca toca los bindings generados: depende de una interfaz Backend, y solo frontend/src/backend/ sabe que del otro lado está Wails.\n\nLa comunicación son comandos (StartScan, CancelScan, Children) y dos eventos: scan:progress, limitado a 10 por segundo para no saturar la interfaz, y scan:done con el resumen. Las consultas siempre van paginadas, así que la interfaz nunca recibe el índice completo.\n\nAntes de elegir Wails prototipé dos opciones con el mismo motor y la misma interfaz, cambiando solo el adaptador. Tauri 2 con el motor como proceso aparte aislaba mejor los fallos, pero necesitaba unas 350 líneas de integración con tipos escritos a mano, contra unas 100 con Wails, y compilaba en ~380 s en frío frente a ~35 s. Esa comparación quedó registrada en un ADR, igual que la decisión de usar SQLite con un driver en Go puro (sin CGO, así que no hace falta un compilador de C en Windows) y sin ORM.',
+            en: 'There are three layers with explicit boundaries. The scan engine (internal/engine) is pure Go and has no idea there is a UI: it scans, indexes into SQLite and answers queries. Wails is confined to a single adapter package (internal/desktop), the only one that imports it. And the Vue frontend never touches the generated bindings: it depends on a Backend interface, and only frontend/src/backend/ knows that Wails is on the other side.\n\nCommunication is a set of commands (StartScan, CancelScan, Children) and two events: scan:progress, capped at 10 per second so it does not flood the UI, and scan:done with the summary. Queries are always paginated, so the UI never receives the whole index.\n\nBefore choosing Wails I prototyped two options with the same engine and the same UI, changing only the adapter. Tauri 2 with the engine as a separate process isolated failures better, but it needed about 350 lines of integration code with hand-written types, against about 100 with Wails, and took ~380 s for a cold build versus ~35 s. That comparison is recorded in an ADR, as is the decision to use SQLite with a pure-Go driver (no CGO, so no C compiler is needed on Windows) and no ORM.',
+          },
+        },
+        {
+          heading: { es: 'Rendimiento', en: 'Performance' },
+          body: {
+            es: 'El motor indexó ~100k entradas en unos 2.4 s sobre NTFS con menos de 10 MB de heap. La medición se hace sin la interfaz, con diskflow-cli: un comando genera un árbol sintético con el número de entradas que se pida, otro lo escanea y reporta los tiempos, y un tercero lista los directorios más grandes del índice. Así el número se puede reproducir y comparar entre cambios.\n\nEl límite conocido es la escritura: SQLite admite un solo escritor, así que agregar workers de escaneo apenas mejora el resultado. Por eso las inserciones van en lotes dentro de transacciones, y cualquier optimización adicional tiene que venir respaldada por un perfil.',
+            en: 'The engine indexed ~100k entries in about 2.4 s on NTFS using under 10 MB of heap. It is measured without the UI, through diskflow-cli: one command generates a synthetic tree with as many entries as you ask for, another scans it and reports timings, and a third lists the largest directories in the index. That makes the number reproducible and comparable across changes.\n\nThe known limit is writing: SQLite allows a single writer, so adding scan workers barely helps. That is why inserts are batched inside transactions, and any further optimization has to be backed by a profile.',
+          },
+        },
+        {
+          heading: { es: 'Prácticas de ingeniería', en: 'Engineering practices' },
+          body: {
+            es: 'Cada cambio pasa por CI en GitHub Actions: gofmt, go vet y las pruebas del backend, también con el detector de condiciones de carrera, y del lado del frontend lint, formato, pruebas unitarias con Vitest y build con verificación de tipos. Un workflow semanal corre govulncheck y pnpm audit.\n\nLos releases se publican solos al empujar un tag: el workflow compila en Windows, genera el instalador y el ejecutable portable, y publica los checksums junto con una atestación de procedencia del build. Los tags con sufijo, como el actual v0.1.0-rc.1, salen como pre-release.',
+            en: 'Every change goes through CI on GitHub Actions: gofmt, go vet and the backend tests, also under the race detector, and on the frontend side lint, formatting, unit tests with Vitest and a type-checked build. A weekly workflow runs govulncheck and pnpm audit.\n\nReleases publish themselves when a tag is pushed: the workflow builds on Windows, produces the installer and the portable executable, and publishes the checksums along with a build provenance attestation. Tags with a suffix, like the current v0.1.0-rc.1, ship as pre-releases.',
+          },
+        },
+        {
+          heading: { es: 'Limitaciones y roadmap', en: 'Limitations and roadmap' },
+          body: {
+            es: 'Por ahora solo funciona en Windows 10/11 x64, y los tamaños son lógicos, no en disco: los archivos dispersos, comprimidos o que solo existen en la nube (OneDrive) cuentan con su tamaño completo, así que el total puede superar el uso real. Los binarios todavía no están firmados, por lo que SmartScreen muestra una advertencia la primera vez.\n\nLa v0.2 contempla tamaños en disco, carpetas guardadas, búsqueda, «Mostrar en el Explorador» y «Copiar ruta», y estados de error más claros. Más adelante: exclusiones definidas por el usuario, categorías por tipo de archivo y exportación a JSON/CSV.',
+            en: 'For now it only runs on Windows 10/11 x64, and sizes are logical, not on-disk: sparse, compressed and cloud-only (OneDrive) files count at their full size, so totals can exceed real disk usage. The binaries are not code-signed yet, so SmartScreen shows a warning on first run.\n\nv0.2 plans on-disk sizes, saved folders, search, "Show in Explorer" and "Copy path", and clearer error states. Later: user-defined exclusions, file-type categories and export to JSON/CSV.',
+          },
+        },
+      ],
+    },
+    // TODO: video del treemap y la tabla (MP4/WebM en loop) en la galería
   },
   {
     slug: 'mcp-desde-cero',
@@ -349,6 +414,7 @@ const featuredProjectData: FeaturedProjectData[] = [
   },
   {
     slug: 'recomendador-peliculas',
+    compact: true,
     title: { es: 'Recomendador de películas', en: 'Movie recommender' },
     tagline: {
       es: 'Motor de recomendación que consume la API de TMDB y aplica un modelo basado en grafos para sugerir películas personalizadas.',
@@ -383,6 +449,7 @@ const featuredProjectData: FeaturedProjectData[] = [
   },
   {
     slug: 'optimizador-rutas',
+    compact: true,
     title: { es: 'Optimizador de rutas con algoritmos genéticos', en: 'Route optimizer with genetic algorithms' },
     tagline: {
       es: 'Aplicación web que calcula el mejor recorrido entre varios destinos con un algoritmo genético y lo dibuja sobre un mapa interactivo.',

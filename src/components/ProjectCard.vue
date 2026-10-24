@@ -1,20 +1,23 @@
 <script setup lang="ts">
+import { computed } from 'vue'
 import { Link, Github, Lock } from 'lucide-vue-next'
 import TechBadge from './TechBadge.vue'
 import MediaSlot from '@/components/MediaSlot.vue'
 import type { FeaturedProject } from '@/data/projects'
 import { useLocale, projectRoute } from '@/i18n'
 
-defineProps<{
+const props = defineProps<{
   project: FeaturedProject
 }>()
 
 const { locale, m, t } = useLocale()
+
+const variant = computed(() => (props.project.lead ? 'lead' : props.project.compact ? 'compact' : 'row'))
 </script>
 
 <template>
   <!-- La pieza principal lleva captura grande; el resto son filas de texto -->
-  <article :class="['project', project.lead ? 'project--lead' : 'project--row']">
+  <article :class="['project', `project--${variant}`]">
     <div v-if="project.lead && project.media" class="project-media">
       <MediaSlot :media="project.media" aspect="4/3" focus="left top" />
     </div>
@@ -26,7 +29,7 @@ const { locale, m, t } = useLocale()
 
     <div class="project-body">
       <p class="project-tagline">{{ t(project.tagline) }}</p>
-      <p class="project-challenge">
+      <p v-if="variant !== 'compact'" class="project-challenge">
         <span class="label">{{ m.project.challenge }}</span>
         {{ t(project.challenge) }}
       </p>
@@ -35,7 +38,7 @@ const { locale, m, t } = useLocale()
         <TechBadge v-for="(tech, idx) in project.techs" :key="idx" :name="tech.name" :icon="tech.icon" />
       </div>
 
-      <p v-if="project.status" class="project-status">{{ t(project.status) }}</p>
+      <p v-if="project.status && variant !== 'compact'" class="project-status">{{ t(project.status) }}</p>
 
       <footer class="project-links">
         <RouterLink v-if="project.hasDetail" :to="projectRoute(locale, project.slug)" class="btn-primary">
@@ -168,6 +171,24 @@ h3 {
 
 .project--row h3 {
   font-size: var(--step-2);
+}
+
+/* Proyectos secundarios: sin reto técnico ni estado */
+.project--compact {
+  padding-block: var(--s-6);
+}
+
+.project--compact h3 {
+  font-size: var(--step-1);
+}
+
+.project--compact .project-tagline {
+  margin-top: var(--s-3);
+  font-size: var(--step-0);
+}
+
+.project--compact .techs {
+  margin-bottom: var(--s-4);
 }
 
 @media (max-width: 900px) {

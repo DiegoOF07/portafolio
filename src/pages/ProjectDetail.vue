@@ -11,7 +11,7 @@ import { getFeaturedProjectBySlug } from '@/data/projects'
 import { useLocale, homeRoute } from '@/i18n'
 
 const route = useRoute()
-const { locale, m, t } = useLocale()
+const { locale, m, t, src } = useLocale()
 const project = computed(() => getFeaturedProjectBySlug(route.params.slug as string))
 
 const swiperRef = ref()
@@ -25,8 +25,7 @@ const openFullscreen = (index: number) => {
   const gallery = project.value?.detail?.gallery || []
   const media = gallery[index]
   if (!media) return
-  const url = typeof media.src === 'string' ? media.src : ''
-  window.open(url, '_blank')
+  window.open(src(media.src), '_blank')
 }
 
 const onSwiperReady = (swiper: any) => {
@@ -63,13 +62,26 @@ const onSlideChange = (swiper: any) => {
         </div>
       </div>
 
-      <div v-if="project.detail?.extendedDescription.es" class="extended">
+      <dl v-if="project.detail?.stats" class="stats" :aria-label="m.project.stats">
+        <div v-for="stat in project.detail.stats" :key="stat.value">
+          <dt>{{ t(stat.label) }}</dt>
+          <dd>{{ stat.value }}</dd>
+        </div>
+      </dl>
+
+      <div v-if="project.detail?.extendedDescription" class="extended">
         <h3>{{ m.project.more }}</h3>
-        <!-- Los párrafos vienen separados por una línea en blanco en los datos -->
         <p v-for="(paragraph, idx) in t(project.detail.extendedDescription).split('\n\n')" :key="idx">
           {{ paragraph }}
         </p>
       </div>
+
+      <section v-for="section in project.detail?.sections" :key="section.heading.es" class="extended">
+        <h2>{{ t(section.heading) }}</h2>
+        <p v-for="(paragraph, idx) in t(section.body).split('\n\n')" :key="idx">
+          {{ paragraph }}
+        </p>
+      </section>
 
       <div class="techs">
         <TechBadge v-for="(tech, idx) in project.techs" :key="idx" :name="tech.name" :icon="tech.icon" />
@@ -222,9 +234,45 @@ h1 {
   margin-bottom: 2rem;
 }
 
-.extended h3 {
+.extended h3,
+.extended h2 {
   font-size: var(--step-2);
   margin-bottom: 0.5rem;
+}
+
+.extended p {
+  max-width: 68ch;
+}
+
+/* El valor va primero a la vista aunque en el DOM la etiqueta lo preceda */
+.stats {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(9rem, 1fr));
+  gap: var(--s-4);
+  margin: 0 0 2.5rem;
+  padding-block: var(--s-5);
+  border-block: 1px solid var(--line);
+}
+
+.stats div {
+  display: flex;
+  flex-direction: column-reverse;
+  gap: var(--s-1);
+}
+
+.stats dt {
+  font-size: var(--step--1);
+  color: var(--ink-dim);
+}
+
+.stats dd {
+  margin: 0;
+  font-family: var(--font-display);
+  font-size: var(--step-3);
+  font-weight: 700;
+  font-stretch: 112%;
+  letter-spacing: -0.02em;
+  font-variant-numeric: tabular-nums;
 }
 
 .techs {

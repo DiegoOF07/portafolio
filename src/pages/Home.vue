@@ -36,7 +36,8 @@ const copyEmail = async () => {
 
 // La pieza principal va grande; el resto, en una lista más ligera
 const leadProject = featuredProjects.find((p) => p.lead)
-const otherProjects = featuredProjects.filter((p) => !p.lead)
+const rowProjects = featuredProjects.filter((p) => !p.lead && !p.compact)
+const compactProjects = featuredProjects.filter((p) => p.compact)
 
 // Captura del hero (constructor del formulario dinámico) en AVIF/WebP,
 // con el PNG original como respaldo.
@@ -169,7 +170,10 @@ onBeforeUnmount(() => {
         <h2 class="section-title trace-node">{{ m.sections.projects }}</h2>
         <ProjectCard v-if="leadProject" :project="leadProject" />
         <div class="project-rows">
-          <ProjectCard v-for="p in otherProjects" :key="p.slug" :project="p" />
+          <ProjectCard v-for="p in rowProjects" :key="p.slug" :project="p" />
+        </div>
+        <div v-if="compactProjects.length" class="project-compact">
+          <ProjectCard v-for="p in compactProjects" :key="p.slug" :project="p" />
         </div>
       </section>
 
@@ -564,6 +568,16 @@ onBeforeUnmount(() => {
   border-top: 1px solid var(--line);
 }
 
+.project-compact {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  column-gap: var(--s-7);
+}
+
+.project-compact > * {
+  border-bottom: 1px solid var(--line);
+}
+
 /* Stack: una fila por grupo, etiqueta a la izquierda */
 .stack-list {
   margin: 0;
@@ -760,6 +774,10 @@ onBeforeUnmount(() => {
 }
 
 @media (max-width: 700px) {
+  .project-compact {
+    grid-template-columns: minmax(0, 1fr);
+  }
+
   .about-body {
     grid-template-columns: minmax(0, 1fr);
     gap: var(--s-5);

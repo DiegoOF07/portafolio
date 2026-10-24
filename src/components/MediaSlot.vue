@@ -18,14 +18,14 @@ withDefaults(
   { aspect: '16/9', focus: 'center', priority: false, fallbackIcons: () => [] },
 )
 
-const { t } = useLocale()
+const { t, src } = useLocale()
 </script>
 
 <template>
   <div class="media-slot" :style="{ aspectRatio: aspect }">
     <img
       v-if="media.type !== 'video' && media.src"
-      :src="media.src"
+      :src="src(media.src)"
       :alt="t(media.alt)"
       :style="{ objectPosition: focus }"
       :loading="priority ? 'eager' : 'lazy'"
@@ -35,7 +35,7 @@ const { t } = useLocale()
     />
     <video
       v-else-if="media.type === 'video' && media.src"
-      :src="media.src"
+      :src="src(media.src)"
       :aria-label="t(media.alt)"
       :style="{ objectPosition: focus }"
       class="media-content"

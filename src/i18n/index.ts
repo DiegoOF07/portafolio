@@ -38,6 +38,7 @@ export const useLocale = () => {
   const locale = computed(() => localeOf(route))
   const m = computed(() => messages[locale.value])
   const t = (text: Localized) => text[locale.value]
+  const src = (value: string | Localized) => (typeof value === 'string' ? value : t(value))
 
   // Sin hash: el router conserva el scroll (ver scrollBehavior)
   const alternate = computed<RouteLocationRaw>(() => {
@@ -46,5 +47,5 @@ export const useLocale = () => {
     return homeRoute(other)
   })
 
-  return { locale, m, t, alternate }
+  return { locale, m, t, src, alternate }
 }
