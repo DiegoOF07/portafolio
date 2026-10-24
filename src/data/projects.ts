@@ -237,7 +237,6 @@ const featuredProjectData: FeaturedProjectData[] = [
       { name: 'Vue', icon: vueLogo },
       { name: 'TypeScript', icon: tsLogo },
       { name: 'SQLite', icon: sqliteLogo },
-      { name: 'd3-hierarchy' },
     ],
     status: {
       es: 'Repositorio público con CI, pruebas en backend y frontend, releases automatizados y decisiones de arquitectura documentadas (ADRs). Pre-release para Windows.',
