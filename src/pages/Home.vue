@@ -152,7 +152,7 @@ onBeforeUnmount(() => {
         <h2 class="section-title trace-node">{{ m.about.title }}</h2>
         <div class="about-body">
           <img
-            src="@/assets/img/profile.jpg"
+            src="@/assets/img/profile.png"
             alt="Diego Flores"
             class="avatar"
             width="460"
