@@ -25,7 +25,8 @@ import logisticaFormCreacion from '@/assets/img/03_dapa-form.png'
 import logisticaFormulario from '@/assets/img/02_dapa-form.png'
 import logisticaFinancial from '@/assets/img/06_dapa-financial.png'
 import invitadoEspecial from '@/assets/img/invitado-especial.webp'
-import mcpArquitectura from '@/assets/img/mcp-arquitectura.svg'
+import mcpArquitecturaEs from '@/assets/img/mcp-arquitectura.es.svg'
+import mcpArquitecturaEn from '@/assets/img/mcp-arquitectura.en.svg'
 import diskflowArquitecturaEs from '@/assets/img/diskflow-arquitectura.es.svg'
 import diskflowArquitecturaEn from '@/assets/img/diskflow-arquitectura.en.svg'
 import graficasRust from '@/assets/img/graficas-rust.webp'
@@ -52,8 +53,9 @@ export interface ProjectLinks {
 }
 
 export interface MediaAsset {
-  type: 'image' | 'gif' | 'video'
-  // Localizado solo si la imagen tiene texto (p. ej. un diagrama)
+  // diagram: imagen con texto que en móvil se recorre en vez de encogerse
+  type: 'image' | 'gif' | 'video' | 'diagram'
+  // Localizado solo si la imagen tiene texto
   src: string | Localized
   alt: Localized
 }
@@ -289,7 +291,7 @@ const featuredProjectData: FeaturedProjectData[] = [
       ],
     },
     media: {
-      type: 'image',
+      type: 'diagram',
       src: { es: diskflowArquitecturaEs, en: diskflowArquitecturaEn },
       alt: {
         es: 'Diagrama en tres capas: el frontend en Vue habla con una interfaz Backend implementada sobre los bindings de wailsjs; los comandos bajan al adaptador internal/desktop, el único paquete que importa Wails, y los eventos de progreso suben; el adaptador llama directamente al motor en Go, donde el escáner alimenta el índice que se guarda en SQLite',
@@ -382,8 +384,8 @@ const featuredProjectData: FeaturedProjectData[] = [
       ],
     },
     media: {
-      type: 'image',
-      src: mcpArquitectura,
+      type: 'diagram',
+      src: { es: mcpArquitecturaEs, en: mcpArquitecturaEn },
       alt: {
         es: 'Diagrama: el cliente en TypeScript (interfaz de terminal o web, host con el modelo y mcp-client) habla JSON-RPC 2.0 sobre stdio o HTTP con el servidor en Go, que pasa por el control de rol antes de llegar a las herramientas y a SQLite',
         en: 'Diagram: the TypeScript client (terminal or web interface, host with the model, and mcp-client) speaks JSON-RPC 2.0 over stdio or HTTP with the Go server, which goes through the role check before reaching the tools and SQLite',

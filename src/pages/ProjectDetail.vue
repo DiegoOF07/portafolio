@@ -42,7 +42,16 @@ const onSlideChange = (swiper: any) => {
     <RouterLink :to="homeRoute(locale, 'proyectos')" class="back-link"><ArrowLeft :size="18" /> {{ m.project.back }}</RouterLink>
 
     <GlassCard variant="section" class="detail-card">
-      <MediaSlot v-if="project.media" :media="project.media" aspect="16/9" focus="left top" priority class="hero-media" />
+      <figure v-if="project.media?.type === 'diagram'" class="diagram hero-media">
+        <div class="diagram-scroll" role="region" tabindex="0" :aria-label="m.project.diagramRegion">
+          <img :src="src(project.media.src)" :alt="t(project.media.alt)" width="1200" height="675" fetchpriority="high" />
+        </div>
+        <figcaption>
+          <span class="diagram-hint">{{ m.project.diagramHint }}</span>
+          <a :href="src(project.media.src)" target="_blank" rel="noopener noreferrer">{{ m.project.diagramOpen }}</a>
+        </figcaption>
+      </figure>
+      <MediaSlot v-else-if="project.media" :media="project.media" aspect="16/9" focus="left top" priority class="hero-media" />
 
       <h1>{{ t(project.title) }}</h1>
       <p class="tagline">{{ t(project.tagline) }}</p>
@@ -187,6 +196,63 @@ const onSlideChange = (swiper: any) => {
 .hero-media {
   border-radius: 1rem;
   margin-bottom: 1.5rem;
+}
+
+.diagram {
+  margin-inline: 0;
+}
+
+.diagram-scroll {
+  overflow-x: auto;
+  border-radius: 1rem;
+  scrollbar-width: thin;
+  scrollbar-color: var(--signal-deep) transparent;
+}
+
+.diagram-scroll img {
+  display: block;
+  width: 100%;
+  height: auto;
+}
+
+.diagram figcaption {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  gap: var(--s-2) var(--s-4);
+  margin-top: var(--s-2);
+  font-size: var(--step--1);
+  color: var(--ink-dim);
+}
+
+.diagram figcaption a {
+  font-weight: 600;
+}
+
+.diagram-hint {
+  display: none;
+}
+
+/* Por debajo de ~760 px el texto del diagrama baja de 10 px: se recorre en vez de encogerse */
+@media (max-width: 760px) {
+  .diagram-scroll img {
+    width: 760px;
+    max-width: none;
+  }
+
+  .diagram-hint {
+    display: inline;
+  }
+}
+
+@media (max-width: 600px) {
+  .detail-wrapper {
+    padding: 1rem;
+  }
+
+  .detail-card {
+    padding: 1.25rem;
+  }
 }
 
 h1 {
