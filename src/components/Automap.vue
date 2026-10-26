@@ -2,6 +2,7 @@
 import { computed } from 'vue'
 import { SECTION_IDS, type SectionId } from '@/data/sections'
 import { useLocale, homeRoute } from '@/i18n'
+import { useScrollDirection } from '@/composables/useScrollDirection'
 
 type LayoutName = 'column' | 'grid'
 type Box = { x: number; y: number; w: number; h: number }
@@ -24,6 +25,7 @@ const props = defineProps<{
 const emit = defineEmits<{ navigate: [id: SectionId]; secret: [] }>()
 
 const { locale, m } = useLocale()
+const direction = useScrollDirection()
 
 // Columna: habitaciones apiladas con la etiqueta a la derecha. Rejilla: etiqueta dentro.
 const LAYOUTS: Record<LayoutName, Layout> = {
@@ -109,7 +111,7 @@ const isVisited = (id: string) => props.visited.includes(id)
       :aria-current="activeId === id ? 'location' : undefined"
       @click="emit('navigate', id)"
     >
-      <span v-if="activeId === id" class="arrow" aria-hidden="true"></span>
+      <span v-if="activeId === id" :class="['arrow', { down: direction === 'down' }]" aria-hidden="true"></span>
       <span class="label" :style="labelStyle(geo.rooms[id])">
         {{ m.nav[id] }}
       </span>
@@ -205,6 +207,18 @@ const isVisited = (id: string) => props.visited.includes(id)
   flex-shrink: 0;
   background: var(--ink);
   clip-path: polygon(50% 0, 100% 100%, 0 100%);
+  transition: transform 0.25s ease;
+}
+
+/* Apunta hacia donde va el scroll */
+.arrow.down {
+  transform: rotate(180deg);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .arrow {
+    transition: none;
+  }
 }
 
 .automap--column .label {
