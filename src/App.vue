@@ -32,7 +32,7 @@ watch([spiedId, () => route.meta.page], ([id, page]) => {
 
 <template>
   <div id="app">
-    <Navbar :active-id="activeId" />
+    <Navbar :active-id="activeId" :visited="state.sections" :secret-found="secretFound" @secret="onSecret" />
 
     <aside v-if="wide" class="automap-column">
       <Automap

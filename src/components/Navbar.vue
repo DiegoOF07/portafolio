@@ -1,57 +1,99 @@
 <script setup lang="ts">
-import { ref, computed } from 'vue'
-import { Home, User, FolderGit2, Layers, FlaskConical, Phone, Menu, X, Download } from 'lucide-vue-next'
+import { ref, computed, watch, nextTick, onUnmounted } from 'vue'
+import { useRoute } from 'vue-router'
+import { ArrowLeft, Menu, X, Download } from 'lucide-vue-next'
+import Automap from './Automap.vue'
+import StatusBar from './StatusBar.vue'
 import { useLocale, homeRoute, CV_FILES } from '@/i18n'
-import { SECTION_IDS } from '@/data/sections'
+import { useMediaQuery } from '@/composables/useMediaQuery'
 
-defineProps<{ activeId: string }>()
+defineProps<{ activeId: string; visited: readonly string[]; secretFound: boolean }>()
+const emit = defineEmits<{ secret: [] }>()
 
-const isOpen = ref(false)
+const route = useRoute()
 const { locale, m, alternate } = useLocale()
 const otherLocale = computed(() => (locale.value === 'es' ? 'en' : 'es'))
+const isDetail = computed(() => route.meta.page === 'project')
+const wide = useMediaQuery('(min-width: 1100px)')
 
-const icons = { inicio: Home, 'sobre-mi': User, proyectos: FolderGit2, stack: Layers, experimentos: FlaskConical, contacto: Phone }
-
-const toggleMenu = () => {
-  isOpen.value = !isOpen.value
-}
+const isOpen = ref(false)
+const panel = ref<HTMLElement>()
 
 const closeMenu = () => {
   isOpen.value = false
 }
+
+const onKeydown = (e: KeyboardEvent) => {
+  if (e.key === 'Escape') closeMenu()
+}
+
+// Con el panel abierto la página de atrás no se desplaza
+watch(isOpen, async (open) => {
+  document.body.style.overflow = open ? 'hidden' : ''
+  if (open) {
+    window.addEventListener('keydown', onKeydown)
+    await nextTick()
+    panel.value?.querySelector<HTMLElement>('.room')?.focus()
+  } else {
+    window.removeEventListener('keydown', onKeydown)
+  }
+})
+
+// Si la ventana crece hasta tener la columna del automapa, el panel sobra
+watch(wide, (isWide) => isWide && closeMenu())
+
+onUnmounted(() => {
+  document.body.style.overflow = ''
+  window.removeEventListener('keydown', onKeydown)
+})
 </script>
 
 <template>
-  <nav class="navbar">
-    <RouterLink :to="homeRoute(locale, 'inicio')" class="logo">Diego Flores</RouterLink>
+  <header class="navbar">
+    <div class="nav-left">
+      <RouterLink :to="homeRoute(locale, 'inicio')" class="logo">Diego Flores</RouterLink>
+      <RouterLink v-if="isDetail" :to="homeRoute(locale, 'proyectos')" class="nav-back">
+        <ArrowLeft :size="16" aria-hidden="true" /> <span class="nav-back-text">{{ m.nav.back }}</span>
+      </RouterLink>
+    </div>
 
-    <ul :class="['nav-links', { open: isOpen }]">
-      <li v-for="id in SECTION_IDS" :key="id">
-        <RouterLink
-          :to="homeRoute(locale, id)"
-          class="nav-link"
-          :class="{ active: activeId === id }"
-          @click="closeMenu"
-        >
-          <component :is="icons[id]" :size="18" />
-          <span>{{ m.nav[id] }}</span>
-        </RouterLink>
-      </li>
-    </ul>
+    <StatusBar layout="inline" class="nav-status" />
 
     <div class="nav-right">
       <RouterLink :to="alternate" class="nav-lang" :hreflang="otherLocale" :lang="otherLocale" :title="m.nav.switchAria" @click="closeMenu">
         {{ m.nav.switchLabel }}
       </RouterLink>
       <a :href="CV_FILES[locale]" download class="nav-cv" :aria-label="m.nav.downloadCv">
-        <Download :size="18" />
+        <Download :size="18" aria-hidden="true" />
         <span>CV</span>
       </a>
-      <button class="menu-btn" :aria-label="isOpen ? m.nav.closeMenu : m.nav.openMenu" @click="toggleMenu">
+      <button
+        v-if="!wide"
+        class="menu-btn"
+        :aria-label="isOpen ? m.nav.closeMenu : m.nav.openMenu"
+        :aria-expanded="isOpen"
+        aria-controls="nav-panel"
+        @click="isOpen = !isOpen"
+      >
         <component :is="isOpen ? X : Menu" :size="28" />
       </button>
     </div>
-  </nav>
+
+    <div v-if="isOpen" id="nav-panel" ref="panel" class="nav-panel">
+      <Automap
+        :active-id="activeId"
+        :visited="visited"
+        :secret-found="secretFound"
+        layout="grid"
+        @navigate="closeMenu"
+        @secret="emit('secret')"
+      />
+      <StatusBar layout="stacked" />
+      <a :href="CV_FILES[locale]" download class="panel-cv">
+        <Download :size="16" aria-hidden="true" /> {{ m.nav.downloadCv }}
+      </a>
+    </div>
+  </header>
 </template>
 
 <style scoped>
@@ -59,7 +101,9 @@ const closeMenu = () => {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  padding: 1rem 2rem;
+  gap: 1rem;
+  height: 4.5rem;
+  padding: 0 2rem;
   position: fixed;
   top: 0;
   left: 0;
@@ -67,6 +111,13 @@ const closeMenu = () => {
   z-index: 50;
   background: color-mix(in srgb, var(--bg) 93%, transparent);
   border-bottom: 1px solid var(--line);
+}
+
+.nav-left {
+  display: flex;
+  align-items: center;
+  gap: 1.25rem;
+  min-width: 0;
 }
 
 .logo {
@@ -77,22 +128,50 @@ const closeMenu = () => {
   color: var(--ink);
   letter-spacing: -0.01em;
   text-decoration: none;
+  white-space: nowrap;
 }
 
-.menu-btn {
-  display: none;
-  background: none;
-  border: none;
+.nav-back {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  color: var(--text-dim);
+  font-size: 0.9rem;
+  font-weight: 600;
+  text-decoration: none;
+  white-space: nowrap;
+}
+
+.nav-back:hover {
   color: var(--ink);
-  cursor: pointer;
-  padding: 8px;
-  border-radius: 8px;
+}
+
+.nav-status {
+  display: none;
+}
+
+@media (min-width: 900px) {
+  .nav-status {
+    display: flex;
+  }
 }
 
 .nav-right {
   display: flex;
   align-items: center;
   gap: 0.5rem;
+}
+
+/* Sin borde: el CV sigue siendo la acción principal */
+.nav-lang {
+  padding: 8px 10px;
+  border-radius: var(--r-control);
+  font-weight: 600;
+  font-size: 0.9rem;
+  letter-spacing: 0.04em;
+  color: var(--text-dim);
+  text-decoration: none;
+  transition: color 0.2s, background 0.2s;
 }
 
 .nav-cv {
@@ -106,115 +185,91 @@ const closeMenu = () => {
   font-weight: 600;
   color: var(--ink);
   border: 1px solid var(--act);
-  transition: background 0.2s, border-color 0.2s;
+  transition: background 0.2s;
 }
 
-/* Sin borde: el CV sigue siendo la acción principal */
-.nav-lang {
-  padding: 8px 10px;
-  border-radius: 8px;
-  font-weight: 600;
-  font-size: 0.9rem;
-  letter-spacing: 0.04em;
-  color: var(--text-dim);
-  text-decoration: none;
-  transition: color 0.2s, background 0.2s;
-}
-
-.nav-lang:hover {
-  color: var(--ink);
-  background: var(--surface);
-}
-
+.nav-lang:hover,
 .nav-cv:hover {
   color: var(--ink);
   background: var(--surface);
 }
 
-.nav-link:focus-visible,
+.menu-btn {
+  display: block;
+  background: none;
+  border: none;
+  color: var(--ink);
+  cursor: pointer;
+  padding: 8px;
+  border-radius: var(--r-control);
+}
+
+.nav-back:focus-visible,
 .nav-cv:focus-visible,
 .nav-lang:focus-visible,
 .menu-btn:focus-visible,
-.logo:focus-visible {
+.logo:focus-visible,
+.panel-cv:focus-visible {
   outline: 2px solid var(--label);
   outline-offset: 2px;
 }
 
-.nav-links {
+/* Bajo la navbar, a pantalla completa */
+.nav-panel {
+  position: fixed;
+  top: 4.5rem;
+  left: 0;
+  right: 0;
+  bottom: 0;
   display: flex;
-  gap: 0.5rem;
-  list-style: none;
-  margin: 0;
-  padding: 0;
-  transition: max-height 0.35s ease, padding 0.35s ease;
+  flex-direction: column;
+  align-items: center;
+  gap: 2rem;
+  padding: 2rem 1rem;
+  overflow-y: auto;
+  background: var(--bg);
 }
 
-.nav-link {
-  display: flex;
+.nav-panel .status {
+  width: 280px;
+}
+
+.panel-cv {
+  display: inline-flex;
   align-items: center;
   gap: 6px;
-  color: var(--text-dim);
+  width: 280px;
+  font-family: var(--font-pixel);
+  font-size: 10px;
+  text-transform: uppercase;
+  color: var(--ink);
   text-decoration: none;
-  padding: 10px 16px;
-  border-radius: 8px;
-  border: 1px solid transparent;
-  transition: background 0.2s, color 0.2s, border-color 0.2s;
 }
 
-.nav-link:hover {
-  background: var(--surface);
-  border-color: var(--line);
-  color: var(--ink);
-}
-
-.active {
-  border-color: var(--act);
-  color: var(--ink);
-}
-
-@media (max-width: 999px) {
-  .menu-btn {
-    display: block;
+/* En teléfono el CV vive dentro del menú para que la barra no se desborde */
+@media (max-width: 599px) {
+  .navbar {
+    padding: 0 1rem;
   }
 
-  .nav-links {
-    flex-direction: column;
+  .nav-cv {
+    display: none;
+  }
+}
+
+/* Muy angosto: solo la flecha; el texto queda para lectores de pantalla */
+@media (max-width: 399px) {
+  .nav-left {
+    gap: 0.75rem;
+  }
+
+  .nav-back-text {
     position: absolute;
-    top: 100%;
-    left: 0;
-    right: 0;
-    width: 100%;
-    max-height: 0;
+    width: 1px;
+    height: 1px;
     overflow: hidden;
-    padding: 0;
-    margin: 0;
-
-    background: var(--bg);
-    border-bottom: 1px solid var(--line);
-  }
-
-  .nav-links.open {
-    max-height: 500px;
-    padding: 0.75rem 0;
-  }
-
-  .nav-link {
-    justify-content: center;
-    padding: 0.75rem 0;
-    width: 100%;
-    border-radius: 0;
-    border: none;
-    border-bottom: 1px solid var(--line);
-  }
-
-  .nav-link:last-child {
-    border-bottom: none;
-  }
-
-  .nav-link:hover,
-  .active {
-    background: var(--surface);
-    border-color: transparent;
+    clip-path: inset(50%);
+    white-space: nowrap;
   }
 }
 </style>

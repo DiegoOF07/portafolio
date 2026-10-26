@@ -42,8 +42,6 @@ const onSlideChange = (swiper: any) => {
 
 <template>
   <section class="detail-wrapper" v-if="project">
-    <RouterLink :to="homeRoute(locale, 'proyectos')" class="back-link"><ArrowLeft :size="18" /> {{ m.project.back }}</RouterLink>
-
     <article class="detail-card">
       <figure v-if="project.media?.type === 'diagram'" class="diagram hero-media">
         <div class="diagram-scroll" role="region" tabindex="0" :aria-label="m.project.diagramRegion">
@@ -182,7 +180,6 @@ const onSlideChange = (swiper: any) => {
   gap: 6px;
   color: var(--ink);
   text-decoration: none;
-  margin-bottom: 1.5rem;
   font-weight: 600;
 }
 

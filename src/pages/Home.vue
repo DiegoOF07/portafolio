@@ -56,10 +56,6 @@ onBeforeUnmount(() => clearTimeout(copyTimer))
     <!--  HERO: bloque tipográfico + evidencia real de trabajo  -->
     <section id="inicio" class="section hero">
       <div class="hero-copy">
-        <span class="availability-badge">
-          <span class="availability-dot"></span>
-          {{ m.hero.availability }}
-        </span>
         <h1>
           Diego Flores <span class="role">{{ m.hero.role }}</span>
         </h1>
@@ -241,38 +237,6 @@ onBeforeUnmount(() => clearTimeout(copyTimer))
   max-width: 50rem;
 }
 
-.availability-badge {
-  display: inline-flex;
-  align-items: center;
-  gap: 8px;
-  padding: 6px 14px;
-  border-radius: 999px;
-  font-size: 0.85rem;
-  font-weight: 600;
-  color: var(--ok);
-  border: 1px solid var(--line);
-  margin-bottom: 1.25rem;
-}
-
-.availability-dot {
-  width: 8px;
-  height: 8px;
-  border-radius: 50%;
-  background: var(--ok);
-  animation: availability-pulse 2s ease-in-out infinite;
-}
-
-@keyframes availability-pulse {
-  0%, 100% { opacity: 1; }
-  50% { opacity: 0.4; }
-}
-
-@media (prefers-reduced-motion: reduce) {
-  .availability-dot {
-    animation: none;
-  }
-}
-
 .hero h1 {
   font-size: var(--step-5);
   line-height: 1;
@@ -368,7 +332,6 @@ onBeforeUnmount(() => clearTimeout(copyTimer))
 
 .hero-copy > :nth-child(2) { animation-delay: 90ms; }
 .hero-copy > :nth-child(3) { animation-delay: 180ms; }
-.hero-copy > :nth-child(4) { animation-delay: 260ms; }
 
 .hero-shot {
   animation-duration: 1000ms;

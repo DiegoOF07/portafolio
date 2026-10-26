@@ -16,6 +16,12 @@ const es = {
     closeMenu: 'Cerrar menú',
     switchLabel: 'EN',
     switchAria: 'Read this site in English',
+    back: 'Volver',
+  },
+  status: {
+    location: 'Guatemala',
+    tz: 'GMT-6',
+    available: 'Disponible para trabajo remoto',
   },
   automap: {
     label: 'Mapa del sitio',
@@ -23,7 +29,6 @@ const es = {
     secretRoom: 'Secreto',
   },
   hero: {
-    availability: 'Disponible para oportunidades remotas',
     role: 'Full-Stack Developer',
     lead: 'Construyo software completo, del modelo de datos a la interfaz y el despliegue, con curiosidad por entender cómo funcionan los sistemas por dentro.',
     seeProjects: 'Ver proyectos',
@@ -97,6 +102,12 @@ const en: typeof es = {
     closeMenu: 'Close menu',
     switchLabel: 'ES',
     switchAria: 'Ver el sitio en español',
+    back: 'Back',
+  },
+  status: {
+    location: 'Guatemala',
+    tz: 'GMT-6',
+    available: 'Open to remote work',
   },
   automap: {
     label: 'Site map',
@@ -104,7 +115,6 @@ const en: typeof es = {
     secretRoom: 'Secret',
   },
   hero: {
-    availability: 'Open to remote opportunities',
     role: 'Full-Stack Developer',
     lead: 'I build complete software, from the data model to the interface and deployment, with a curiosity for how systems work on the inside.',
     seeProjects: 'See projects',
