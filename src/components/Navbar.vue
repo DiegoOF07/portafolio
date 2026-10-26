@@ -2,21 +2,15 @@
 import { ref, computed } from 'vue'
 import { Home, User, FolderGit2, Layers, FlaskConical, Phone, Menu, X, Download } from 'lucide-vue-next'
 import { useLocale, homeRoute, CV_FILES } from '@/i18n'
-import { SECTION_IDS, type SectionId } from '@/data/sections'
+import { SECTION_IDS } from '@/data/sections'
 
 defineProps<{ activeId: string }>()
-const emit = defineEmits<{ navigate: [id: SectionId] }>()
 
 const isOpen = ref(false)
 const { locale, m, alternate } = useLocale()
 const otherLocale = computed(() => (locale.value === 'es' ? 'en' : 'es'))
 
 const icons = { inicio: Home, 'sobre-mi': User, proyectos: FolderGit2, stack: Layers, experimentos: FlaskConical, contacto: Phone }
-
-const handleClick = (id: SectionId) => {
-  emit('navigate', id)
-  closeMenu()
-}
 
 const toggleMenu = () => {
   isOpen.value = !isOpen.value
@@ -37,7 +31,7 @@ const closeMenu = () => {
           :to="homeRoute(locale, id)"
           class="nav-link"
           :class="{ active: activeId === id }"
-          @click="handleClick(id)"
+          @click="closeMenu"
         >
           <component :is="icons[id]" :size="18" />
           <span>{{ m.nav[id] }}</span>

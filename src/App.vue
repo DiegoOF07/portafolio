@@ -11,7 +11,7 @@ import { useMediaQuery } from '@/composables/useMediaQuery'
 
 const route = useRoute()
 const { state, secretFound, justUnlocked, markSection, unlockSecret } = useVisitProgress()
-const { activeId: spiedId, setActiveId } = useScrollSpy(SECTION_IDS)
+const { activeId: spiedId } = useScrollSpy(SECTION_IDS)
 useSecret()
 const wide = useMediaQuery('(min-width: 1100px)')
 
@@ -32,7 +32,7 @@ watch([spiedId, () => route.meta.page], ([id, page]) => {
 
 <template>
   <div id="app">
-    <Navbar :active-id="activeId" @navigate="setActiveId" />
+    <Navbar :active-id="activeId" />
 
     <aside v-if="wide" class="automap-column">
       <Automap
@@ -40,7 +40,6 @@ watch([spiedId, () => route.meta.page], ([id, page]) => {
         :visited="state.sections"
         :secret-found="secretFound"
         layout="column"
-        @navigate="setActiveId"
         @secret="onSecret"
       />
     </aside>

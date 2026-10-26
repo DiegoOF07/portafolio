@@ -43,10 +43,6 @@ export const useScrollSpy = (sectionIds: readonly string[]) => {
     })
   }
 
-  const setActiveId = (id: string) => {
-    activeId.value = id
-  }
-
   onMounted(() => {
     computeActive(resolveElements())
     window.addEventListener('scroll', onScroll, { passive: true })
@@ -58,5 +54,5 @@ export const useScrollSpy = (sectionIds: readonly string[]) => {
     window.removeEventListener('resize', onScroll)
   })
 
-  return { activeId, setActiveId }
+  return { activeId }
 }
