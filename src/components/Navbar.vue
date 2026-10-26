@@ -1,37 +1,20 @@
 <script setup lang="ts">
 import { ref, computed } from 'vue'
-import { useRoute } from 'vue-router'
 import { Home, User, FolderGit2, Layers, FlaskConical, Phone, Menu, X, Download } from 'lucide-vue-next'
-import { useScrollSpy } from '@/composables/useScrollSpy'
 import { useLocale, homeRoute, CV_FILES } from '@/i18n'
+import { SECTION_IDS, type SectionId } from '@/data/sections'
+
+defineProps<{ activeId: string }>()
+const emit = defineEmits<{ navigate: [id: SectionId] }>()
 
 const isOpen = ref(false)
-const route = useRoute()
 const { locale, m, alternate } = useLocale()
 const otherLocale = computed(() => (locale.value === 'es' ? 'en' : 'es'))
 
-// Mismos ids en ambos idiomas
-const navItems = [
-  { id: 'inicio', icon: Home },
-  { id: 'sobre-mi', icon: User },
-  { id: 'proyectos', icon: FolderGit2 },
-  { id: 'stack', icon: Layers },
-  { id: 'experimentos', icon: FlaskConical },
-  { id: 'contacto', icon: Phone },
-] as const
+const icons = { inicio: Home, 'sobre-mi': User, proyectos: FolderGit2, stack: Layers, experimentos: FlaskConical, contacto: Phone }
 
-// El scroll-spy solo tiene sentido en la home (donde viven las secciones).
-const isHome = computed(() => route.meta.page === 'home')
-const { activeId, setActiveId } = useScrollSpy(navItems.map((i) => i.id))
-
-const isItemActive = (itemId: string) => {
-  // En el detalle de un proyecto, la sección "Proyectos" se mantiene activa.
-  if (itemId === 'proyectos' && route.meta.page === 'project') return true
-  return isHome.value && activeId.value === itemId
-}
-
-const handleClick = (itemId: string) => {
-  setActiveId(itemId)
+const handleClick = (id: SectionId) => {
+  emit('navigate', id)
   closeMenu()
 }
 
@@ -49,15 +32,15 @@ const closeMenu = () => {
     <RouterLink :to="homeRoute(locale, 'inicio')" class="logo">Diego Flores</RouterLink>
 
     <ul :class="['nav-links', { open: isOpen }]">
-      <li v-for="item in navItems" :key="item.id">
+      <li v-for="id in SECTION_IDS" :key="id">
         <RouterLink
-          :to="homeRoute(locale, item.id)"
+          :to="homeRoute(locale, id)"
           class="nav-link"
-          :class="{ active: isItemActive(item.id) }"
-          @click="handleClick(item.id)"
+          :class="{ active: activeId === id }"
+          @click="handleClick(id)"
         >
-          <component :is="item.icon" :size="18" />
-          <span>{{ m.nav[item.id] }}</span>
+          <component :is="icons[id]" :size="18" />
+          <span>{{ m.nav[id] }}</span>
         </RouterLink>
       </li>
     </ul>

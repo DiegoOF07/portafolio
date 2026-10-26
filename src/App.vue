@@ -1,10 +1,29 @@
 <script setup lang="ts">
+import { computed, watch } from 'vue'
+import { useRoute } from 'vue-router'
 import Navbar from './components/Navbar.vue'
+import { SECTION_IDS } from '@/data/sections'
+import { useScrollSpy } from '@/composables/useScrollSpy'
+import { useVisitProgress } from '@/composables/useVisitProgress'
+import { useSecret } from '@/composables/useSecret'
+
+const route = useRoute()
+const { markSection } = useVisitProgress()
+const { activeId: spiedId, setActiveId } = useScrollSpy(SECTION_IDS)
+useSecret()
+
+// En el detalle de un proyecto no hay secciones: se queda en "proyectos"
+const activeId = computed(() => (route.meta.page === 'project' ? 'proyectos' : spiedId.value))
+
+// También reacciona al volver a la home, aunque la sección espiada no cambie
+watch([spiedId, () => route.meta.page], ([id, page]) => {
+  if (page === 'home') markSection(id)
+}, { immediate: true })
 </script>
 
 <template>
   <div id="app">
-    <Navbar />
+    <Navbar :active-id="activeId" @navigate="setActiveId" />
 
     <div class="router-view-content">
       <RouterView />

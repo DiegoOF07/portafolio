@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { ref, computed } from 'vue'
+import { ref, computed, watch } from 'vue'
 import { useRoute } from 'vue-router'
 import { ArrowLeft, Link, Github, Lock, Expand } from 'lucide-vue-next'
 import { Swiper, SwiperSlide } from 'swiper/vue'
@@ -8,10 +8,14 @@ import MediaSlot from '@/components/MediaSlot.vue'
 import TechBadge from '@/components/TechBadge.vue'
 import { getFeaturedProjectBySlug } from '@/data/projects'
 import { useLocale, homeRoute } from '@/i18n'
+import { useVisitProgress } from '@/composables/useVisitProgress'
 
 const route = useRoute()
 const { locale, m, t, src } = useLocale()
 const project = computed(() => getFeaturedProjectBySlug(route.params.slug as string))
+
+const { markProject } = useVisitProgress()
+watch(project, (p) => p && markProject(p.slug), { immediate: true })
 
 const swiperRef = ref()
 const activeIndex = ref(0)

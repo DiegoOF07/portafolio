@@ -1,10 +1,11 @@
 <script setup lang="ts">
-import { computed } from 'vue'
+import { computed, ref, onMounted, onUnmounted } from 'vue'
 import { Link, Github, Lock } from 'lucide-vue-next'
 import TechBadge from './TechBadge.vue'
 import MediaSlot from '@/components/MediaSlot.vue'
 import type { FeaturedProject } from '@/data/projects'
 import { useLocale, projectRoute } from '@/i18n'
+import { useVisitProgress } from '@/composables/useVisitProgress'
 
 const props = defineProps<{
   project: FeaturedProject
@@ -13,11 +14,27 @@ const props = defineProps<{
 const { locale, m, t } = useLocale()
 
 const variant = computed(() => (props.project.lead ? 'lead' : props.project.compact ? 'compact' : 'row'))
+
+// Cuenta como visto cuando la mitad de la tarjeta estuvo en pantalla
+const { markProject } = useVisitProgress()
+const root = ref<HTMLElement>()
+let observer: IntersectionObserver | undefined
+
+onMounted(() => {
+  observer = new IntersectionObserver(([entry]) => {
+    if (!entry?.isIntersecting) return
+    markProject(props.project.slug)
+    observer?.disconnect()
+  }, { threshold: 0.5 })
+  if (root.value) observer.observe(root.value)
+})
+
+onUnmounted(() => observer?.disconnect())
 </script>
 
 <template>
   <!-- La pieza principal lleva captura grande; el resto son filas de texto -->
-  <article :class="['project', `project--${variant}`]">
+  <article ref="root" :class="['project', `project--${variant}`]" :data-target="project.slug">
     <div v-if="project.lead && project.media" class="project-media">
       <MediaSlot :media="project.media" aspect="4/3" focus="left top" />
     </div>

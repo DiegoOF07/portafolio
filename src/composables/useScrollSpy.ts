@@ -1,6 +1,6 @@
 import { ref, onMounted, onUnmounted } from 'vue'
 
-export const useScrollSpy = (sectionIds: string[]) => {
+export const useScrollSpy = (sectionIds: readonly string[]) => {
   const activeId = ref<string>(sectionIds[0] ?? '')
   let ticking = false
 
