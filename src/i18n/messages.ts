@@ -17,6 +17,11 @@ const es = {
     switchLabel: 'EN',
     switchAria: 'Read this site in English',
   },
+  automap: {
+    label: 'Mapa del sitio',
+    wall: 'Una pared que suena hueca',
+    secretRoom: 'Secreto',
+  },
   hero: {
     availability: 'Disponible para oportunidades remotas',
     role: 'Full-Stack Developer',
@@ -92,6 +97,11 @@ const en: typeof es = {
     closeMenu: 'Close menu',
     switchLabel: 'ES',
     switchAria: 'Ver el sitio en español',
+  },
+  automap: {
+    label: 'Site map',
+    wall: 'A wall that sounds hollow',
+    secretRoom: 'Secret',
   },
   hero: {
     availability: 'Open to remote opportunities',
