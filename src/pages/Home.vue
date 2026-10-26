@@ -215,7 +215,7 @@ onBeforeUnmount(() => clearTimeout(copyTimer))
   max-width: 1200px;
   margin: 0 auto;
   width: 100%;
-  scroll-margin-top: 4.5rem;
+  scroll-margin-top: var(--nav-h);
 }
 
 .section-title {

@@ -64,12 +64,12 @@ watch([spiedId, () => route.meta.page], ([id, page]) => {
 :deep(.router-view-content) {
   position: relative;
   z-index: 10;
-  padding-top: 4.5rem;
+  padding-top: var(--nav-h);
 }
 
 .automap-column {
   position: fixed;
-  top: 4.5rem;
+  top: var(--nav-h);
   left: 0;
   bottom: 0;
   z-index: 20;

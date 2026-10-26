@@ -57,7 +57,7 @@ onUnmounted(() => {
       </RouterLink>
     </div>
 
-    <StatusBar layout="inline" class="nav-status" />
+    <StatusBar class="nav-status" />
 
     <div class="nav-right">
       <RouterLink :to="alternate" class="nav-lang" :hreflang="otherLocale" :lang="otherLocale" :title="m.nav.switchAria" @click="closeMenu">
@@ -88,7 +88,6 @@ onUnmounted(() => {
         @navigate="closeMenu"
         @secret="emit('secret')"
       />
-      <StatusBar layout="stacked" />
       <a :href="CV_FILES[locale]" download class="panel-cv">
         <Download :size="16" aria-hidden="true" /> {{ m.nav.downloadCv }}
       </a>
@@ -98,12 +97,14 @@ onUnmounted(() => {
 
 <style scoped>
 .navbar {
-  display: flex;
-  justify-content: space-between;
+  display: grid;
+  grid-template-columns: auto 1fr auto;
+  grid-template-areas: 'left status right';
   align-items: center;
-  gap: 1rem;
-  height: 4.5rem;
-  padding: 0 2rem;
+  column-gap: 1rem;
+  --nav-pad: 2rem;
+  height: var(--nav-h);
+  padding: 0 var(--nav-pad);
   position: fixed;
   top: 0;
   left: 0;
@@ -114,6 +115,7 @@ onUnmounted(() => {
 }
 
 .nav-left {
+  grid-area: left;
   display: flex;
   align-items: center;
   gap: 1.25rem;
@@ -147,16 +149,30 @@ onUnmounted(() => {
 }
 
 .nav-status {
-  display: none;
+  grid-area: status;
+  justify-content: center;
 }
 
-@media (min-width: 900px) {
+/* Bajo 1100px la barra de estado baja a una franja propia */
+@media (max-width: 1099px) {
+  .navbar {
+    grid-template-columns: 1fr auto;
+    grid-template-rows: 4.5rem 1fr;
+    grid-template-areas: 'left right' 'status status';
+  }
+
+  /* La franja cruza todo el ancho, por encima del padding de la navbar */
   .nav-status {
-    display: flex;
+    height: 100%;
+    margin: 0 calc(-1 * var(--nav-pad));
+    padding: 0 var(--nav-pad);
+    border-top: 1px solid var(--line);
   }
 }
 
 .nav-right {
+  grid-area: right;
+  justify-content: end;
   display: flex;
   align-items: center;
   gap: 0.5rem;
@@ -217,7 +233,7 @@ onUnmounted(() => {
 /* Bajo la navbar, a pantalla completa */
 .nav-panel {
   position: fixed;
-  top: 4.5rem;
+  top: var(--nav-h);
   left: 0;
   right: 0;
   bottom: 0;
@@ -228,10 +244,6 @@ onUnmounted(() => {
   padding: 2rem 1rem;
   overflow-y: auto;
   background: var(--bg);
-}
-
-.nav-panel .status {
-  width: 280px;
 }
 
 .panel-cv {
@@ -249,7 +261,7 @@ onUnmounted(() => {
 /* En teléfono el CV vive dentro del menú para que la barra no se desborde */
 @media (max-width: 599px) {
   .navbar {
-    padding: 0 1rem;
+    --nav-pad: 1rem;
   }
 
   .nav-cv {

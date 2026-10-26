@@ -2,6 +2,8 @@
    Tokens
    ================================================================ */
 :root {
+  /* Alto de la navbar; bajo 1100px suma la franja de estado */
+  --nav-h: 4.5rem;
   /* Color: el rojo es "puedes actuar aquí" o un dato duro; el ámbar etiqueta;
      el verde solo dice "disponible". */
   --bg:         #120E0C;
@@ -59,6 +61,19 @@
   text-rendering: optimizeLegibility;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+}
+
+@media (max-width: 1099px) {
+  :root {
+    --nav-h: 6.25rem;
+  }
+}
+
+/* En teléfono la hora y la disponibilidad van en dos líneas */
+@media (max-width: 599px) {
+  :root {
+    --nav-h: 7.25rem;
+  }
 }
 
 /* ================================================================
