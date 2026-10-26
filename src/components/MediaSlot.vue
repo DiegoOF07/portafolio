@@ -56,7 +56,7 @@ const { t, src } = useLocale()
   width: 100%;
   overflow: hidden;
   border-radius: inherit;
-  background: rgba(255, 255, 255, 0.03);
+  background: var(--surface);
 }
 
 .media-content {
@@ -73,8 +73,8 @@ const { t, src } = useLocale()
   align-items: center;
   justify-content: center;
   gap: var(--s-5);
-  background-color: var(--field-raised);
-  background-image: radial-gradient(circle, rgba(232, 237, 247, 0.1) 1px, transparent 1.5px);
+  background-color: var(--surface);
+  background-image: radial-gradient(circle, color-mix(in srgb, var(--ink) 10%, transparent) 1px, transparent 1.5px);
   background-size: 18px 18px;
 }
 

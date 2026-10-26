@@ -1,7 +1,6 @@
 <script setup lang="ts">
 import { computed } from 'vue'
 import { Link, Github, Play } from 'lucide-vue-next'
-import GlassCard from '@/components/GlassCard.vue'
 import MediaSlot from '@/components/MediaSlot.vue'
 import TechBadge from './TechBadge.vue'
 import type { ExperimentProject } from '@/data/projects'
@@ -20,7 +19,7 @@ const techIcons = computed(() =>
 </script>
 
 <template>
-  <GlassCard variant="project" class="experiment-card">
+  <article class="experiment-card">
     <MediaSlot :media="project.media" :fallback-icons="techIcons" class="experiment-media" aspect="16/10" />
     <div class="experiment-content">
       <h4>{{ t(project.title) }}</h4>
@@ -58,7 +57,7 @@ const techIcons = computed(() =>
         </a>
       </div>
     </div>
-  </GlassCard>
+  </article>
 </template>
 
 <style scoped>
@@ -67,6 +66,9 @@ const techIcons = computed(() =>
   display: flex;
   flex-direction: column;
   color: var(--ink);
+  background: var(--surface);
+  border: 1px solid var(--line);
+  border-radius: var(--r-surface);
 }
 
 .experiment-media {
@@ -87,7 +89,7 @@ h4 {
 
 .description {
   font-size: 0.85rem;
-  color: var(--ink-dim);
+  color: var(--text-dim);
   margin: 0;
 }
 

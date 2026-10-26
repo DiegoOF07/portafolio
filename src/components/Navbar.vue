@@ -88,11 +88,8 @@ const closeMenu = () => {
   left: 0;
   right: 0;
   z-index: 50;
-  background: color-mix(in srgb, var(--field-navy) 55%, transparent);
-  backdrop-filter: blur(var(--glass-blur));
-  -webkit-backdrop-filter: blur(var(--glass-blur));
-  border-bottom: 1px solid rgba(255, 255, 255, 0.07);
-  box-shadow: 0 4px 24px rgba(0, 0, 0, 0.25);
+  background: color-mix(in srgb, var(--bg) 93%, transparent);
+  border-bottom: 1px solid var(--line);
 }
 
 .logo {
@@ -126,12 +123,12 @@ const closeMenu = () => {
   align-items: center;
   gap: 6px;
   padding: 8px 14px;
-  border-radius: 8px;
+  border-radius: var(--r-control);
   text-decoration: none;
+  font-family: var(--font-mono);
   font-weight: 600;
   color: var(--ink);
-  background: var(--glass-bg);
-  border: 1px solid rgba(255, 255, 255, 0.14);
+  border: 1px solid var(--act);
   transition: background 0.2s, border-color 0.2s;
 }
 
@@ -142,19 +139,19 @@ const closeMenu = () => {
   font-weight: 600;
   font-size: 0.9rem;
   letter-spacing: 0.04em;
-  color: var(--ink-dim);
+  color: var(--text-dim);
   text-decoration: none;
   transition: color 0.2s, background 0.2s;
 }
 
 .nav-lang:hover {
   color: var(--ink);
-  background: var(--glass-bg-hover);
+  background: var(--surface);
 }
 
 .nav-cv:hover {
-  background: var(--glass-bg-hover);
-  border-color: rgba(255, 255, 255, 0.22);
+  color: var(--ink);
+  background: var(--surface);
 }
 
 .nav-link:focus-visible,
@@ -162,7 +159,7 @@ const closeMenu = () => {
 .nav-lang:focus-visible,
 .menu-btn:focus-visible,
 .logo:focus-visible {
-  outline: 2px solid var(--focus-ring);
+  outline: 2px solid var(--label);
   outline-offset: 2px;
 }
 
@@ -179,7 +176,7 @@ const closeMenu = () => {
   display: flex;
   align-items: center;
   gap: 6px;
-  color: var(--ink-dim);
+  color: var(--text-dim);
   text-decoration: none;
   padding: 10px 16px;
   border-radius: 8px;
@@ -188,14 +185,13 @@ const closeMenu = () => {
 }
 
 .nav-link:hover {
-  background: var(--glass-bg-hover);
-  border-color: rgba(255, 255, 255, 0.10);
+  background: var(--surface);
+  border-color: var(--line);
   color: var(--ink);
 }
 
 .active {
-  background: var(--glass-bg);
-  border-color: rgba(255, 255, 255, 0.12);
+  border-color: var(--act);
   color: var(--ink);
 }
 
@@ -216,10 +212,8 @@ const closeMenu = () => {
     padding: 0;
     margin: 0;
 
-    background: var(--chrome-bg-strong);
-    backdrop-filter: blur(var(--glass-blur));
-    -webkit-backdrop-filter: blur(var(--glass-blur));
-    border-bottom: 1px solid rgba(255, 255, 255, 0.07);
+    background: var(--bg);
+    border-bottom: 1px solid var(--line);
   }
 
   .nav-links.open {
@@ -233,7 +227,7 @@ const closeMenu = () => {
     width: 100%;
     border-radius: 0;
     border: none;
-    border-bottom: 1px solid rgba(255, 255, 255, 0.04);
+    border-bottom: 1px solid var(--line);
   }
 
   .nav-link:last-child {
@@ -242,7 +236,7 @@ const closeMenu = () => {
 
   .nav-link:hover,
   .active {
-    background: rgba(255, 255, 255, 0.06);
+    background: var(--surface);
     border-color: transparent;
   }
 }

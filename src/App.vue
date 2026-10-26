@@ -1,25 +1,9 @@
 <script setup lang="ts">
-import { computed } from 'vue'
-import { useRoute } from 'vue-router'
 import Navbar from './components/Navbar.vue'
-import BackgroundSystem from './components/BackgroundSystem.vue'
-
-const route = useRoute()
-
-// Determinar qué tipo de fondo mostrar basado en la ruta.
-// La home es una SPA de una sola sección de fondo; el detalle de proyecto
-// usa una variante propia.
-const backgroundType = computed(() => {
-  if (route.meta.page === 'project') return 'projects'
-  return 'home'
-})
 </script>
 
 <template>
   <div id="app">
-    <!-- Sistema de fondos dinámico basado en la ruta -->
-    <BackgroundSystem :type="backgroundType" />
-
     <Navbar />
 
     <div class="router-view-content">

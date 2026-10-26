@@ -199,8 +199,8 @@ onBeforeUnmount(() => {
       </section>
     </div>
 
-    <!--  CONTACTO: la única superficie cálida del sitio  -->
-    <div class="warm">
+    <!--  CONTACTO  -->
+    <div>
       <section id="contacto" class="section contact">
         <div class="contact-main">
           <h2 class="section-title">{{ m.contact.title }}</h2>
@@ -305,7 +305,7 @@ onBeforeUnmount(() => {
 .throughline-fill {
   display: block;
   height: 100%;
-  background: color-mix(in srgb, var(--signal) 70%, transparent);
+  background: color-mix(in srgb, var(--act) 70%, transparent);
   transform-origin: top;
 }
 
@@ -328,8 +328,8 @@ onBeforeUnmount(() => {
   width: 9px;
   height: 9px;
   border-radius: 50%;
-  border: 1.5px solid var(--signal);
-  background: var(--signal);
+  border: 1.5px solid var(--act);
+  background: var(--act);
   transform: translate(-50%, -50%);
 }
 
@@ -363,12 +363,12 @@ onBeforeUnmount(() => {
 
 @keyframes node-reach {
   from {
-    background: var(--field-navy);
-    border-color: var(--ink-dim);
+    background: var(--bg);
+    border-color: var(--text-dim);
   }
   to {
-    background: var(--signal);
-    border-color: var(--signal);
+    background: var(--act);
+    border-color: var(--act);
   }
 }
 
@@ -401,9 +401,8 @@ onBeforeUnmount(() => {
   border-radius: 999px;
   font-size: 0.85rem;
   font-weight: 600;
-  color: var(--signal);
-  background: rgba(79, 209, 232, 0.08);
-  border: 1px solid rgba(79, 209, 232, 0.28);
+  color: var(--ok);
+  border: 1px solid var(--line);
   margin-bottom: 1.25rem;
 }
 
@@ -411,8 +410,7 @@ onBeforeUnmount(() => {
   width: 8px;
   height: 8px;
   border-radius: 50%;
-  background: var(--signal);
-  box-shadow: 0 0 8px rgba(79, 209, 232, 0.7);
+  background: var(--ok);
   animation: availability-pulse 2s ease-in-out infinite;
 }
 
@@ -441,7 +439,7 @@ onBeforeUnmount(() => {
   font-stretch: 100%;
   letter-spacing: -0.01em;
   line-height: 1.2;
-  color: var(--ink-dim);
+  color: var(--text-dim);
 }
 
 .hero-lead {
@@ -469,11 +467,11 @@ onBeforeUnmount(() => {
   max-width: 62ch;
   margin-bottom: var(--s-3);
   font-size: var(--step--1);
-  color: var(--ink-dim);
+  color: var(--text-dim);
 }
 
 .hero-shot figcaption a {
-  color: var(--signal);
+  color: var(--act);
   font-weight: 600;
   white-space: nowrap;
 }
@@ -595,7 +593,7 @@ onBeforeUnmount(() => {
 
 .stack-row dt {
   font-weight: 600;
-  color: var(--ink-dim);
+  color: var(--text-dim);
 }
 
 .stack-row dd {
@@ -616,14 +614,7 @@ onBeforeUnmount(() => {
   align-items: start;
 }
 
-/* Contacto — banda cálida */
-/* El degradado deja que las esferas del fondo se fundan en la banda
-   en lugar de cortarse contra un plano. */
-.warm {
-  background: linear-gradient(to bottom, transparent, var(--warm-surface) 180px);
-  color: var(--warm-ink);
-}
-
+/* Contacto */
 .contact {
   display: grid;
   grid-template-columns: minmax(0, 1.7fr) minmax(0, 1fr);
@@ -633,7 +624,7 @@ onBeforeUnmount(() => {
 }
 
 .contact .section-title {
-  color: var(--warm-ink);
+  color: var(--ink);
 }
 
 .contact-lead {
@@ -649,7 +640,7 @@ onBeforeUnmount(() => {
   font-size: clamp(1.25rem, 0.8rem + 2.6vw, 2.5rem);
   letter-spacing: -0.02em;
   line-height: 1.15;
-  color: var(--signal);
+  color: var(--act);
   text-decoration: underline;
   text-decoration-thickness: 2px;
   text-underline-offset: 0.18em;
@@ -658,7 +649,7 @@ onBeforeUnmount(() => {
 }
 
 .contact-email:hover {
-  color: var(--warm-ink);
+  color: var(--ink);
 }
 
 .contact-email-row {
@@ -674,10 +665,10 @@ onBeforeUnmount(() => {
   align-items: center;
   gap: var(--s-2);
   padding: 6px 12px;
-  border: 1px solid var(--warm-line);
+  border: 1px solid var(--line);
   border-radius: var(--r-control);
   background: none;
-  color: var(--warm-ink-dim);
+  color: var(--text-dim);
   font-family: var(--font-body);
   font-size: var(--step--1);
   font-weight: 500;
@@ -686,8 +677,8 @@ onBeforeUnmount(() => {
 }
 
 .copy-btn:hover {
-  color: var(--warm-ink);
-  border-color: color-mix(in srgb, var(--warm-ink) 35%, transparent);
+  color: var(--ink);
+  border-color: color-mix(in srgb, var(--ink) 35%, transparent);
 }
 
 .contact-links {
@@ -703,10 +694,10 @@ onBeforeUnmount(() => {
   display: inline-flex;
   align-items: center;
   gap: var(--s-2);
-  color: var(--warm-ink);
+  color: var(--ink);
   font-weight: 600;
   text-decoration: underline;
-  text-decoration-color: var(--warm-line);
+  text-decoration-color: var(--line);
   text-underline-offset: 0.25em;
   transition: text-decoration-color 0.2s ease;
 }
@@ -720,13 +711,13 @@ onBeforeUnmount(() => {
   display: grid;
   gap: var(--s-5);
   padding-left: var(--s-6);
-  border-left: 1px solid var(--warm-line);
+  border-left: 1px solid var(--line);
 }
 
 .contact-facts dt {
   font-size: var(--step--1);
   font-weight: 600;
-  color: var(--warm-ink-dim);
+  color: var(--text-dim);
 }
 
 .contact-facts dd {
@@ -741,9 +732,9 @@ onBeforeUnmount(() => {
   flex-wrap: wrap;
   justify-content: space-between;
   gap: var(--s-4);
-  border-top: 1px solid var(--warm-line);
+  border-top: 1px solid var(--line);
   font-size: var(--step--1);
-  color: var(--warm-ink-dim);
+  color: var(--text-dim);
 }
 
 .site-footer p {
@@ -751,12 +742,12 @@ onBeforeUnmount(() => {
 }
 
 .site-footer a {
-  color: var(--warm-ink);
+  color: var(--ink);
   font-weight: 600;
 }
 
 .site-footer a:hover {
-  color: var(--signal);
+  color: var(--act);
 }
 
 /* Responsive */
@@ -769,7 +760,7 @@ onBeforeUnmount(() => {
   .contact-facts {
     padding: var(--s-5) 0 0;
     border-left: none;
-    border-top: 1px solid var(--warm-line);
+    border-top: 1px solid var(--line);
   }
 }
 

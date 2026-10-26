@@ -2,31 +2,27 @@
    Tokens
    ================================================================ */
 :root {
-  /* Color — un solo acento. El color saturado significa "puedes actuar
-     aquí" o "esto está vivo"; todo lo demás es tinta sobre el campo navy. */
-  --field-navy:   #0B1622;
-  --field-raised: #121E2E;
-  --ink:          #E8EDF7;
-  --ink-dim:      #97A3BC;
-  --line:         rgba(232, 237, 247, 0.12);
-  --signal:       #4FD1E8;
-  --signal-deep:  #0E7C8C;
-  --signal-ink:   #06222A; /* texto sobre relleno signal */
-  --focus-ring:   #4FD1E8;
-  /* Banda de contacto: carbón cálido con el mismo brillo que el navy,
-     para que el cierre cambie de temperatura sin un golpe de luz. */
-  --warm-surface: #1C1814;
-  --warm-ink:     #F0E6D2;
-  --warm-ink-dim: #B3A797;
-  --warm-line:    rgba(240, 230, 210, 0.14);
-
-  /* Cromo flotante (navbar, carrusel): el mismo navy del campo, translúcido */
-  --chrome-bg:        color-mix(in srgb, var(--field-navy) 62%, transparent);
-  --chrome-bg-strong: color-mix(in srgb, var(--field-navy) 85%, transparent);
+  /* Color: el rojo es "puedes actuar aquí" o un dato duro; el ámbar etiqueta;
+     el verde solo dice "disponible". */
+  --bg:         #120E0C;
+  --surface:    #1A1411;
+  --line:       #2A211C;
+  --ink:        #F2EAE0;
+  --text:       #D9CFC4;
+  --text-dim:   #A8988B;
+  --text-faint: #8A7A6E;
+  --act:        #D8321E;
+  --act-ink:    #FFFFFF;
+  --label:      #E0A33A;
+  --ok:         #8FA36B;
 
   /* Tipografía */
   --font-display: 'Archivo', system-ui, sans-serif;
   --font-body:    'IBM Plex Sans', system-ui, sans-serif;
+  --font-mono:    'IBM Plex Mono', ui-monospace, monospace;
+  /* Pixel: Silkscreen solo en etiquetas cortas, VT323 solo en números */
+  --font-pixel:   'Silkscreen', ui-monospace, monospace;
+  --font-hud:     'VT323', ui-monospace, monospace;
   --step--1: 0.875rem;
   --step-0:  1rem;
   --step-1:  1.125rem;
@@ -48,40 +44,16 @@
   --s-9: 6rem;
   --s-10: 8rem;
 
-  /* Radios: 0 para la traza · insignias · controles y medios · superficie mayor */
-  --r-badge:   4px;
-  --r-control: 12px;
-  --r-surface: 20px;
-
-  /* Vidrio — reservado para lo que flota. Los tokens de tarjeta y sección
-     desaparecen cuando las secciones de contenido dejan de ser tarjetas. */
-  --glass-blur: 12px;
-  --glass-bg: rgba(255, 255, 255, 0.05);
-  --glass-bg-hover: rgba(255, 255, 255, 0.09);
-
-  --glass-blur-card: blur(12px);
-  --glass-blur-badge: blur(6px);
-  --glass-blur-section: blur(16px);
-  --glass-bg-card: rgba(255, 255, 255, 0.05);
-  --glass-bg-badge: rgba(255, 255, 255, 0.06);
-  --glass-bg-section: rgba(255, 255, 255, 0.03);
-  --glass-border-card: 1px solid rgba(255, 255, 255, 0.1);
-  --glass-border-badge: 1px solid rgba(255, 255, 255, 0.12);
-  --glass-border-section: 1px solid rgba(255, 255, 255, 0.07);
-
-  --btn-glass-bg: rgba(255, 255, 255, 0.06);
-  --btn-glass-border: 1px solid rgba(255, 255, 255, 0.18);
-  --btn-glass-hover-bg: rgba(255, 255, 255, 0.12);
-  --btn-glass-shadow: 0 8px 16px rgba(0, 0, 0, 0.25);
-
-  --shadow-glass: 0 8px 16px rgba(0, 0, 0, 0.15);
+  --r-badge:   2px;
+  --r-control: 2px;
+  --r-surface: 4px;
 
   color-scheme: dark;
   font-family: var(--font-body);
   line-height: 1.6;
   font-weight: 400;
-  color: var(--ink);
-  background-color: var(--field-navy);
+  color: var(--text);
+  background-color: var(--bg);
 
   font-synthesis: none;
   text-rendering: optimizeLegibility;
@@ -101,12 +73,13 @@
 html {
   scroll-behavior: smooth;
   scrollbar-width: thin;
-  scrollbar-color: var(--signal-deep) transparent;
+  scrollbar-color: var(--line) transparent;
 }
 
 body {
   margin: 0;
   min-width: 320px;
+  background: var(--bg);
   min-height: 100vh;
   overflow-x: hidden;
 }
@@ -135,7 +108,7 @@ p {
 
 a {
   font-weight: 500;
-  color: var(--signal);
+  color: var(--act);
   text-decoration: none;
 }
 
@@ -150,13 +123,13 @@ button {
 }
 
 :focus-visible {
-  outline: 2px solid var(--focus-ring);
+  outline: 2px solid var(--label);
   outline-offset: 3px;
 }
 
 ::selection {
-  background: var(--signal);
-  color: var(--signal-ink);
+  background: var(--act);
+  color: var(--act-ink);
 }
 
 ::-webkit-scrollbar {
@@ -168,12 +141,12 @@ button {
 }
 
 ::-webkit-scrollbar-thumb {
-  background: var(--signal-deep);
+  background: var(--line);
   border-radius: 999px;
 }
 
 ::-webkit-scrollbar-thumb:hover {
-  background: var(--signal);
+  background: var(--text-faint);
 }
 
 @media (prefers-reduced-motion: reduce) {
@@ -191,15 +164,16 @@ button {
   gap: var(--s-2);
   padding: 0.8rem 1.5rem;
   border-radius: var(--r-control);
+  font-family: var(--font-mono);
   font-weight: 600;
-  color: var(--signal-ink);
-  background: var(--signal);
+  color: var(--act-ink);
+  background: var(--act);
   transition: background 0.2s ease;
 }
 
 .btn-primary:hover {
-  color: var(--signal-ink);
-  background: color-mix(in srgb, var(--signal) 80%, white);
+  color: var(--act-ink);
+  background: color-mix(in srgb, var(--act) 82%, white);
 }
 
 .link-quiet {
@@ -215,35 +189,6 @@ button {
 }
 
 .link-quiet:hover {
-  color: var(--signal);
+  color: var(--act);
   text-decoration-color: currentColor;
-}
-
-/* ================================================================
-   Vidrio
-   ================================================================ */
-.glass-card {
-  backdrop-filter: var(--glass-blur-card);
-  -webkit-backdrop-filter: var(--glass-blur-card);
-  background: var(--glass-bg-card);
-  border: var(--glass-border-card);
-  border-radius: var(--r-surface);
-  box-shadow: var(--shadow-glass);
-}
-
-.glass-badge {
-  backdrop-filter: var(--glass-blur-badge);
-  -webkit-backdrop-filter: var(--glass-blur-badge);
-  background: var(--glass-bg-badge);
-  border: var(--glass-border-badge);
-  border-radius: var(--r-badge);
-}
-
-.glass-section {
-  backdrop-filter: var(--glass-blur-section);
-  -webkit-backdrop-filter: var(--glass-blur-section);
-  background: var(--glass-bg-section);
-  border: var(--glass-border-section);
-  border-radius: var(--r-surface);
-  box-shadow: var(--shadow-glass);
 }

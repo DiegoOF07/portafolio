@@ -78,7 +78,7 @@ h3 {
 .project-context {
   margin: var(--s-2) 0 0;
   font-size: var(--step--1);
-  color: var(--ink-dim);
+  color: var(--text-dim);
 }
 
 .project-tagline {
@@ -96,7 +96,7 @@ h3 {
   margin-bottom: var(--s-1);
   font-size: var(--step--1);
   font-weight: 600;
-  color: var(--ink-dim);
+  color: var(--text-dim);
 }
 
 .techs {
@@ -109,7 +109,7 @@ h3 {
 .project-status {
   margin: 0 0 var(--s-5);
   font-size: var(--step--1);
-  color: var(--ink-dim);
+  color: var(--text-dim);
 }
 
 .project-links {
@@ -125,7 +125,7 @@ h3 {
   gap: var(--s-2);
   margin: var(--s-4) 0 0;
   font-size: var(--step--1);
-  color: var(--ink-dim);
+  color: var(--text-dim);
 }
 
 /* Pieza principal: captura a la izquierda, contenido a la derecha */

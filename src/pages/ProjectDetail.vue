@@ -4,7 +4,6 @@ import { useRoute } from 'vue-router'
 import { ArrowLeft, Link, Github, Lock, Expand } from 'lucide-vue-next'
 import { Swiper, SwiperSlide } from 'swiper/vue'
 import { Navigation, Pagination, Keyboard, A11y } from 'swiper/modules'
-import GlassCard from '@/components/GlassCard.vue'
 import MediaSlot from '@/components/MediaSlot.vue'
 import TechBadge from '@/components/TechBadge.vue'
 import { getFeaturedProjectBySlug } from '@/data/projects'
@@ -41,7 +40,7 @@ const onSlideChange = (swiper: any) => {
   <section class="detail-wrapper" v-if="project">
     <RouterLink :to="homeRoute(locale, 'proyectos')" class="back-link"><ArrowLeft :size="18" /> {{ m.project.back }}</RouterLink>
 
-    <GlassCard variant="section" class="detail-card">
+    <article class="detail-card">
       <figure v-if="project.media?.type === 'diagram'" class="diagram hero-media">
         <div class="diagram-scroll" role="region" tabindex="0" :aria-label="m.project.diagramRegion">
           <img :src="src(project.media.src)" :alt="t(project.media.alt)" width="1200" height="675" fetchpriority="high" />
@@ -89,7 +88,6 @@ const onSlideChange = (swiper: any) => {
         <TechBadge v-for="(tech, idx) in project.techs" :key="idx" :name="tech.name" :icon="tech.icon" />
       </div>
 
-      <!-- Carrusel de galería estilo glassmorphism -->
       <div v-if="project.detail?.gallery?.length" class="gallery-section">
         <h2 class="gallery-title">{{ m.project.gallery }}</h2>
 
@@ -158,7 +156,7 @@ const onSlideChange = (swiper: any) => {
           <Lock :size="16" /> {{ t(project.links.privacyNote) }}
         </span>
       </footer>
-    </GlassCard>
+    </article>
   </section>
 
   <section class="not-found" v-else>
@@ -185,12 +183,15 @@ const onSlideChange = (swiper: any) => {
 }
 
 .back-link:hover {
-  color: var(--signal);
+  color: var(--act);
 }
 
 .detail-card {
   padding: 2.5rem;
   color: var(--ink);
+  background: var(--surface);
+  border: 1px solid var(--line);
+  border-radius: var(--r-surface);
 }
 
 .hero-media {
@@ -206,7 +207,7 @@ const onSlideChange = (swiper: any) => {
   overflow-x: auto;
   border-radius: 1rem;
   scrollbar-width: thin;
-  scrollbar-color: var(--signal-deep) transparent;
+  scrollbar-color: var(--line) transparent;
 }
 
 .diagram-scroll img {
@@ -222,7 +223,7 @@ const onSlideChange = (swiper: any) => {
   gap: var(--s-2) var(--s-4);
   margin-top: var(--s-2);
   font-size: var(--step--1);
-  color: var(--ink-dim);
+  color: var(--text-dim);
 }
 
 .diagram figcaption a {
@@ -285,7 +286,7 @@ h1 {
   font-size: var(--step--1);
   font-weight: 600;
   letter-spacing: 0;
-  color: var(--ink-dim);
+  color: var(--text-dim);
   margin: 0 0 var(--s-2);
 }
 
@@ -320,7 +321,7 @@ h1 {
 
 .stats dt {
   font-size: var(--step--1);
-  color: var(--ink-dim);
+  color: var(--text-dim);
 }
 
 .stats dd {
@@ -340,7 +341,7 @@ h1 {
   margin-bottom: 2rem;
 }
 
-/* ============ GALLERY CAROUSEL GLASSMORPHISM ============ */
+/* Galería */
 
 .gallery-section {
   margin-bottom: 2rem;
@@ -354,7 +355,7 @@ h1 {
 .gallery-swiper {
   --swiper-navigation-color: var(--ink);
   --swiper-pagination-color: var(--ink);
-  --swiper-pagination-bullet-inactive-color: rgba(255,255,255,0.35);
+  --swiper-pagination-bullet-inactive-color: var(--text-faint);
   --swiper-pagination-bullet-inactive-opacity: 1;
   --swiper-pagination-bullet-opacity: 1;
   --swiper-pagination-bullet-size: 10px;
@@ -371,19 +372,16 @@ h1 {
 .gallery-swiper :deep(.swiper-button-prev) {
   /* Swiper 12: fija el tamaño del botón y su centrado vertical */
   --swiper-navigation-size: 48px;
-  background: var(--chrome-bg);
-  border: 1px solid rgba(255, 255, 255, 0.55);
+  background: color-mix(in srgb, var(--bg) 88%, transparent);
+  border: 1px solid var(--line);
   border-radius: 50%;
-  backdrop-filter: blur(8px);
-  -webkit-backdrop-filter: blur(8px);
-  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.45);
   transition: background 0.2s, border-color 0.2s;
   color: var(--ink);
 }
 
 .gallery-swiper :deep(.swiper-button-next:hover),
 .gallery-swiper :deep(.swiper-button-prev:hover) {
-  background: var(--chrome-bg-strong);
+  background: var(--surface);
   border-color: var(--ink);
 }
 
@@ -400,32 +398,28 @@ h1 {
   width: fit-content;
   padding: 6px 12px;
   border-radius: 999px;
-  background: var(--chrome-bg);
-  border: 1px solid rgba(255, 255, 255, 0.4);
-  backdrop-filter: blur(8px);
-  -webkit-backdrop-filter: blur(8px);
-  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.4);
+  background: color-mix(in srgb, var(--bg) 88%, transparent);
+  border: 1px solid var(--line);
 }
 
 .gallery-swiper :deep(.swiper-pagination-bullet) {
   width: 10px;
   height: 10px;
   border-radius: 50%;
-  background: rgba(255, 255, 255, 0.55);
-  border: 1px solid rgba(255, 255, 255, 0.5);
+  background: var(--text-faint);
+  border: 1px solid var(--text-faint);
   opacity: 1;
   transition: background 0.2s, transform 0.2s, border-color 0.2s;
 }
 
 .gallery-swiper :deep(.swiper-pagination-bullet:hover) {
-  background: rgba(255, 255, 255, 0.9);
+  background: var(--text);
 }
 
 .gallery-swiper :deep(.swiper-pagination-bullet-active) {
-  background: var(--signal);
+  background: var(--act);
   border-color: var(--ink);
   transform: scale(1.25);
-  box-shadow: 0 0 12px rgba(79, 209, 232, 0.6);
 }
 
 .slide-wrapper {
@@ -448,11 +442,8 @@ h1 {
   height: 42px;
   padding: 0 16px;
   border-radius: 999px;
-  background: var(--chrome-bg);
-  border: 1px solid rgba(255, 255, 255, 0.55);
-  backdrop-filter: blur(8px);
-  -webkit-backdrop-filter: blur(8px);
-  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.45);
+  background: color-mix(in srgb, var(--bg) 88%, transparent);
+  border: 1px solid var(--line);
   color: var(--ink);
   font-size: 0.875rem;
   font-weight: 600;
@@ -467,7 +458,7 @@ h1 {
 }
 
 .fullscreen-btn:hover {
-  background: var(--chrome-bg-strong);
+  background: var(--surface);
   border-color: var(--ink);
 }
 
@@ -485,7 +476,7 @@ h1 {
   padding: 0.25rem;
   overflow-x: auto;
   scrollbar-width: thin;
-  scrollbar-color: var(--signal-deep) transparent;
+  scrollbar-color: var(--line) transparent;
 }
 
 .thumbnails::-webkit-scrollbar {
@@ -497,7 +488,7 @@ h1 {
 }
 
 .thumbnails::-webkit-scrollbar-thumb {
-  background: var(--signal-deep);
+  background: var(--line);
   border-radius: 3px;
 }
 
@@ -514,12 +505,11 @@ h1 {
 }
 
 .thumb-btn:hover {
-  border-color: rgba(255, 255, 255, 0.25);
+  border-color: var(--text-faint);
 }
 
 .thumb-btn.active {
-  border-color: var(--signal);
-  box-shadow: 0 0 16px rgba(79, 209, 232, 0.35);
+  border-color: var(--act);
 }
 
 .thumb-media {
@@ -532,7 +522,7 @@ h1 {
 .gallery-swiper :deep(.swiper-button-prev:focus-visible),
 .gallery-swiper :deep(.swiper-pagination-bullet:focus-visible),
 .thumb-btn:focus-visible {
-  outline: 2px solid var(--focus-ring);
+  outline: 2px solid var(--label);
   outline-offset: 2px;
 }
 
@@ -549,7 +539,7 @@ h1 {
   gap: 6px;
   font-size: 0.85rem;
   font-style: italic;
-  color: var(--ink-dim);
+  color: var(--text-dim);
 }
 
 .project-btn {
@@ -558,18 +548,18 @@ h1 {
   gap: 8px;
   padding: 10px 16px;
   border-radius: var(--r-control);
-  backdrop-filter: blur(10px);
-  background: var(--btn-glass-bg);
-  border: var(--btn-glass-border);
+  border: 1px solid var(--line);
   color: var(--ink);
   text-decoration: none;
+  font-family: var(--font-mono);
   font-weight: 600;
-  transition: background 0.2s ease, box-shadow 0.2s ease;
+  transition: background 0.2s ease, border-color 0.2s ease;
 }
 
 .project-btn:hover {
-  background: var(--btn-glass-hover-bg);
-  box-shadow: var(--btn-glass-shadow);
+  color: var(--ink);
+  background: var(--surface);
+  border-color: var(--text-faint);
 }
 
 .not-found {
