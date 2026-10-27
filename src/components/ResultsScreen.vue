@@ -56,33 +56,44 @@ onUnmounted(() => {
 </script>
 
 <template>
-  <section ref="root" class="results" aria-labelledby="results-title">
-    <p class="kicker">{{ m.results.kicker }}</p>
-    <h2 id="results-title">{{ m.results.title }}</h2>
+  <!-- Ocupa todo el alto visible: centrada, Contacto queda fuera de la vista hasta seguir bajando -->
+  <section ref="root" class="results-screen" aria-labelledby="results-title">
+    <div class="results">
+      <p class="kicker">{{ m.results.kicker }}</p>
+      <h2 id="results-title">{{ m.results.title }}</h2>
 
-    <table>
-      <tbody>
-        <tr v-for="(row, i) in rows" :key="row.label" :class="{ dim: row.dim }">
-          <th scope="row">{{ row.label }}</th>
-          <td><MetricCounter :value="row.value" :play="played > i" /></td>
-        </tr>
-        <!-- El tiempo cambia cada segundo: se muestra directo, sin conteo -->
-        <tr>
-          <th scope="row">{{ m.results.time }}</th>
-          <td><span class="time">{{ elapsed }}</span></td>
-        </tr>
-      </tbody>
-    </table>
+      <table>
+        <tbody>
+          <tr v-for="(row, i) in rows" :key="row.label" :class="{ dim: row.dim }">
+            <th scope="row">{{ row.label }}</th>
+            <td><MetricCounter :value="row.value" :play="played > i" /></td>
+          </tr>
+          <!-- El tiempo cambia cada segundo: se muestra directo, sin conteo -->
+          <tr>
+            <th scope="row">{{ m.results.time }}</th>
+            <td><span class="time">{{ elapsed }}</span></td>
+          </tr>
+        </tbody>
+      </table>
 
-    <p class="note">{{ m.results.note }}</p>
-    <a href="#contacto" class="btn-primary">{{ m.results.next }}&nbsp;<span aria-hidden="true">→</span></a>
+      <p class="note">{{ m.results.note }}</p>
+      <a href="#contacto" class="btn-primary">{{ m.results.next }}&nbsp;<span aria-hidden="true">→</span></a>
+    </div>
   </section>
 </template>
 
 <style scoped>
+.results-screen {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: calc(100dvh - var(--nav-h));
+  scroll-margin-top: var(--nav-h);
+}
+
 .results {
+  width: 100%;
   max-width: 34rem;
-  margin: var(--s-8) auto;
   padding: var(--s-7) var(--s-6);
   border: 1px solid var(--line);
   border-radius: var(--r-surface);
@@ -154,8 +165,11 @@ td {
 }
 
 @media (max-width: 600px) {
+  .results-screen {
+    padding-inline: 1rem;
+  }
+
   .results {
-    margin-inline: 1rem;
     padding: var(--s-6) var(--s-4);
   }
 }
