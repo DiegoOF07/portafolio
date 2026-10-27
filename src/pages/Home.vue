@@ -4,6 +4,7 @@ import { Github, Linkedin, Download, Copy, Check } from 'lucide-vue-next'
 import ProjectCard from '@/components/ProjectCard.vue'
 import ExperimentCard from '@/components/ExperimentCard.vue'
 import TechBadge from '@/components/TechBadge.vue'
+import TargetLock from '@/components/TargetLock.vue'
 import { featuredProjects, experimentProjects } from '@/data/projects'
 import { stackGroups } from '@/data/stack'
 import { useLocale, CV_FILES } from '@/i18n'
@@ -37,6 +38,9 @@ const copyEmail = async () => {
 const leadProject = featuredProjects.find((p) => p.lead)
 const rowProjects = featuredProjects.filter((p) => !p.lead && !p.compact)
 const compactProjects = featuredProjects.filter((p) => p.compact)
+
+// La tarjeta que tiene la mira encima: su métrica cuenta desde cero
+const lockedSlug = ref<string | null>(null)
 
 // Foto con el fondo cambiado al de la paleta (generada desde profile.png)
 const portraitSrcset = {
@@ -88,13 +92,15 @@ onBeforeUnmount(() => clearTimeout(copyTimer))
     <!--  PROYECTOS DESTACADOS  -->
     <section id="proyectos" class="section">
       <h2 class="section-title">{{ m.sections.projects }}</h2>
-      <ProjectCard v-if="leadProject" :project="leadProject" />
-      <div class="project-rows">
-        <ProjectCard v-for="p in rowProjects" :key="p.slug" :project="p" />
-      </div>
-      <div v-if="compactProjects.length" class="project-compact">
-        <ProjectCard v-for="p in compactProjects" :key="p.slug" :project="p" />
-      </div>
+      <TargetLock @lock="lockedSlug = $event">
+        <ProjectCard v-if="leadProject" :project="leadProject" :locked="lockedSlug === leadProject.slug" />
+        <div class="project-rows">
+          <ProjectCard v-for="p in rowProjects" :key="p.slug" :project="p" :locked="lockedSlug === p.slug" />
+        </div>
+        <div v-if="compactProjects.length" class="project-compact">
+          <ProjectCard v-for="p in compactProjects" :key="p.slug" :project="p" :locked="lockedSlug === p.slug" />
+        </div>
+      </TargetLock>
     </section>
 
     <!--  STACK TÉCNICO  -->
