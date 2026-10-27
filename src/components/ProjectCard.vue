@@ -3,15 +3,19 @@ import { computed, ref, onMounted, onUnmounted } from 'vue'
 import { Link, Github, Lock } from 'lucide-vue-next'
 import TechBadge from './TechBadge.vue'
 import MediaSlot from '@/components/MediaSlot.vue'
-import type { FeaturedProject } from '@/data/projects'
+import MetricCounter from '@/components/MetricCounter.vue'
+import { levelOf, type FeaturedProject } from '@/data/projects'
 import { useLocale, projectRoute } from '@/i18n'
 import { useVisitProgress } from '@/composables/useVisitProgress'
 
 const props = defineProps<{
   project: FeaturedProject
+  // La mira está sobre esta tarjeta: el contador de la métrica principal arranca
+  locked?: boolean
 }>()
 
-const { locale, m, t } = useLocale()
+const { locale, m, t, src } = useLocale()
+const mainStat = computed(() => props.project.detail?.stats?.[0])
 
 const variant = computed(() => (props.project.lead ? 'lead' : props.project.compact ? 'compact' : 'row'))
 
@@ -40,8 +44,13 @@ onUnmounted(() => observer?.disconnect())
     </div>
 
     <header class="project-head">
+      <p class="project-level">{{ levelOf(project.slug) }} · {{ t(project.kind) }}</p>
       <h3>{{ t(project.title) }}</h3>
       <p class="project-context">{{ t(project.context) }}</p>
+      <p v-if="mainStat" class="project-metric">
+        <MetricCounter :value="src(mainStat.value)" :play="!!locked" />
+        <span class="project-metric-label">{{ t(mainStat.label) }}</span>
+      </p>
     </header>
 
     <div class="project-body">
@@ -90,6 +99,29 @@ onUnmounted(() => observer?.disconnect())
 
 h3 {
   margin: 0;
+}
+
+.project-level {
+  margin: 0 0 var(--s-2);
+  font-family: var(--font-pixel);
+  font-size: 10px;
+  text-transform: uppercase;
+  color: var(--label);
+}
+
+.project-metric {
+  display: flex;
+  align-items: baseline;
+  flex-wrap: wrap;
+  gap: var(--s-2);
+  margin: var(--s-4) 0 0;
+}
+
+.project-metric-label {
+  font-size: var(--step--1);
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  color: var(--text-faint);
 }
 
 .project-context {

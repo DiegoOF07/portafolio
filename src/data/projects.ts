@@ -67,6 +67,8 @@ export interface FeaturedProject {
   tagline: Localized
   // 2. contexto: académico/personal, cliente real, duración, solo/equipo
   context: Localized
+  // Versión corta de context para la etiqueta de nivel de la tarjeta
+  kind: Localized
   // 3. el reto técnico interesante
   challenge: Localized
   // 4. stack
@@ -87,7 +89,7 @@ export interface FeaturedProject {
   hasDetail: boolean
   detail?: {
     gallery: MediaAsset[]
-    stats?: { value: string; label: Localized }[]
+    stats?: { value: string | Localized; label: Localized }[]
     // Párrafos del cuerpo separados por una línea en blanco
     sections?: { heading: Localized; body: Localized }[]
   }
@@ -124,6 +126,7 @@ const featuredProjectData: FeaturedProjectData[] = [
       es: 'Proyecto académico · en equipo · cliente real (transporte) · 1 año · Scrum/Jira',
       en: 'Academic project · team · real client (transportation) · 1 year · Scrum/Jira',
     },
+    kind: { es: 'Académico · en equipo · cliente real', en: 'Academic · team · real client' },
     challenge: {
       es: 'Diseñar un subsistema de formularios dinámicos, donde el administrador agrega, edita o elimina preguntas sin que un desarrollador toque el código, y esas respuestas generan automáticamente las cotizaciones.',
       en: 'Designing a dynamic form subsystem where the administrator adds, edits or removes questions without a developer touching the code, and the answers automatically generate the price quotes.',
@@ -190,7 +193,7 @@ const featuredProjectData: FeaturedProjectData[] = [
         },
       ],
       stats: [
-        { value: '~1 año', label: { es: 'de desarrollo en equipo', en: 'of team development' } },
+        { value: { es: '~1 año', en: '~1 year' }, label: { es: 'de desarrollo en equipo', en: 'of team development' } },
         { value: '5', label: { es: 'módulos de gestión', en: 'management modules' } },
         { value: 'Scrum', label: { es: 'con sprints en Jira', en: 'with sprints in Jira' } },
       ],
@@ -237,6 +240,7 @@ const featuredProjectData: FeaturedProjectData[] = [
       es: 'Proyecto académico · en equipo · cliente real (ONG) · en curso · mi rol: backend',
       en: 'Academic project · team · real client (non-profit) · ongoing · my role: backend',
     },
+    kind: { es: 'Académico · en equipo · cliente real', en: 'Academic · team · real client' },
     challenge: {
       es: 'Diseñar el sistema completo siguiendo fases formales de ingeniería de software, manteniéndolo usable para personal no técnico de la fundación. Como resultado se logra la gestión de pacientes, donaciones, eventos y voluntarios centralizada en una sola plataforma hecha a la medida.',
       en: "Designing the whole system through formal software engineering phases while keeping it usable for the foundation's non-technical staff. The result brings patients, donations, events and volunteers together in a single platform built to measure.",
@@ -266,6 +270,7 @@ const featuredProjectData: FeaturedProjectData[] = [
       es: 'Proyecto personal · individual · 2026 · v0.1 en desarrollo',
       en: 'Personal project · solo · 2026 · v0.1 in development',
     },
+    kind: { es: 'Personal · individual', en: 'Personal · solo' },
     challenge: {
       es: 'Construir un motor de escaneo concurrente que indexa ~100k entradas en ~2.4 s usando menos de 10 MB de heap, con progreso en vivo y cancelación, y mantenerlo independiente de la interfaz para poder probarlo por separado.',
       en: 'Building a concurrent scan engine that indexes ~100k entries in ~2.4 s using under 10 MB of heap, with live progress and cancellation, and keeping it independent of the UI so it can be tested on its own.',
@@ -353,7 +358,8 @@ const featuredProjectData: FeaturedProjectData[] = [
       es: 'Asistente conversacional que responde sobre recetas, inventario y alérgenos de un restaurante con un cliente capaz de hablar con cualquier servidor MCP y un servidor propio que resuelve el dominio.',
       en: "A conversational assistant that answers questions about a restaurant's recipes, inventory and allergens, with a client that can talk to any MCP server and a server of my own that handles the domain.",
     },
-    context: { es: 'Proyecto académico · septiembre 2026', en: 'Academic project · September 2026' },
+    context: { es: 'Proyecto académico · individual · septiembre 2026', en: 'Academic project · solo · September 2026' },
+    kind: { es: 'Académico · individual', en: 'Academic · solo' },
     challenge: {
       es: 'Implementar el Model Context Protocol a mano incluyendo el framing JSON-RPC 2.0, handshake de initialize y negociación entre dos revisiones, en lugar de apoyarse en el SDK, para entender qué viaja realmente por el cable. El cliente fusiona las herramientas de varios servidores en un solo catálogo y el servidor resuelve los permisos por rol antes de ejecutar nada, de modo que el modelo nunca calcula cuántas porciones quedan ni recuerda una receta.',
       en: 'Implementing the Model Context Protocol by hand, including JSON-RPC 2.0 framing, the initialize handshake and negotiation between two revisions, instead of relying on the SDK, to understand what actually travels over the wire. The client merges the tools of several servers into a single catalog, and the server resolves role permissions before running anything, so the model never computes how many portions are left or remembers a recipe.',
@@ -488,6 +494,7 @@ const featuredProjectData: FeaturedProjectData[] = [
       en: 'A recommendation engine that consumes the TMDB API and applies a graph-based model to suggest personalized movies.',
     },
     context: { es: 'Proyecto académico · en equipo', en: 'Academic project · team' },
+    kind: { es: 'Académico · en equipo', en: 'Academic · team' },
     challenge: {
       es: 'Modelar relaciones (usuarios, películas, géneros, actores) como grafo para que las recomendaciones surjan de recorrer conexiones, en vez de reglas fijas. Resultado: recomendaciones explicables por conexiones reales entre el contenido y el usuario.',
       en: 'Modeling relationships (users, movies, genres, actors) as a graph so that recommendations come from traversing connections instead of fixed rules. The result: recommendations that can be explained by real connections between the content and the user.',
@@ -523,6 +530,7 @@ const featuredProjectData: FeaturedProjectData[] = [
       en: 'A web app that computes the best route between several destinations with a genetic algorithm and draws it on an interactive map.',
     },
     context: { es: 'Proyecto académico · en equipo', en: 'Academic project · team' },
+    kind: { es: 'Académico · en equipo', en: 'Academic · team' },
     challenge: {
       es: 'Reducir un problema de ruteo con explosión combinatoria usando un algoritmo genético sobre datos geográficos reales: hasta 15 destinos dentro de un radio de 100 km, minimizando la distancia total del recorrido. El backend en FastAPI corre en Google Cloud y el resultado se traza sobre Google Maps.',
       en: 'Taming a routing problem with combinatorial explosion using a genetic algorithm over real geographic data: up to 15 destinations within a 100 km radius, minimizing the total distance travelled. The FastAPI backend runs on Google Cloud and the result is drawn on Google Maps.',
@@ -646,6 +654,9 @@ export const experimentProjects: ExperimentProject[] = [
     },
   },
 ]
+
+// Nivel al estilo Doom según el orden en que aparecen en la home: E1M1, E1M2…
+export const levelOf = (slug: string) => `E1M${featuredProjects.findIndex((p) => p.slug === slug) + 1}`
 
 // Utilidad para la página de detalle
 export const getFeaturedProjectBySlug = (slug: string) =>

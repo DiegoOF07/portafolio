@@ -6,7 +6,8 @@ import { Swiper, SwiperSlide } from 'swiper/vue'
 import { Navigation, Pagination, Keyboard, A11y } from 'swiper/modules'
 import MediaSlot from '@/components/MediaSlot.vue'
 import TechBadge from '@/components/TechBadge.vue'
-import { getFeaturedProjectBySlug } from '@/data/projects'
+import MetricCounter from '@/components/MetricCounter.vue'
+import { getFeaturedProjectBySlug, levelOf } from '@/data/projects'
 import { useLocale, homeRoute } from '@/i18n'
 import { useVisitProgress } from '@/composables/useVisitProgress'
 
@@ -54,6 +55,7 @@ const onSlideChange = (swiper: any) => {
       </figure>
       <MediaSlot v-else-if="project.media" :media="project.media" aspect="16/9" focus="left top" priority class="hero-media" />
 
+      <p class="detail-level">{{ levelOf(project.slug) }} · {{ t(project.kind) }}</p>
       <h1>{{ t(project.title) }}</h1>
       <p class="tagline">{{ t(project.tagline) }}</p>
 
@@ -75,7 +77,7 @@ const onSlideChange = (swiper: any) => {
       <dl v-if="project.detail?.stats" class="stats" :aria-label="m.project.stats">
         <div v-for="stat in project.detail.stats" :key="stat.label.es">
           <dt>{{ t(stat.label) }}</dt>
-          <dd>{{ stat.value }}</dd>
+          <dd><MetricCounter :value="src(stat.value)" play /></dd>
         </div>
       </dl>
 
@@ -196,7 +198,7 @@ const onSlideChange = (swiper: any) => {
 }
 
 .hero-media {
-  border-radius: 1rem;
+  border-radius: var(--r-surface);
   margin-bottom: 1.5rem;
 }
 
@@ -206,7 +208,7 @@ const onSlideChange = (swiper: any) => {
 
 .diagram-scroll {
   overflow-x: auto;
-  border-radius: 1rem;
+  border-radius: var(--r-surface);
   scrollbar-width: thin;
   scrollbar-color: var(--line) transparent;
 }
@@ -257,6 +259,14 @@ const onSlideChange = (swiper: any) => {
   }
 }
 
+.detail-level {
+  margin: 0 0 var(--s-2);
+  font-family: var(--font-pixel);
+  font-size: 10px;
+  text-transform: uppercase;
+  color: var(--label);
+}
+
 h1 {
   font-size: var(--step-4);
   margin: 0 0 var(--s-2);
@@ -304,7 +314,6 @@ h1 {
   max-width: 68ch;
 }
 
-/* El valor va primero a la vista aunque en el DOM la etiqueta lo preceda */
 .stats {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(9rem, 1fr));
@@ -316,23 +325,25 @@ h1 {
 
 .stats div {
   display: flex;
-  flex-direction: column-reverse;
+  flex-direction: column;
   gap: var(--s-1);
+}
+
+/* Con order y no column-reverse: los valores quedan alineados arriba aunque una etiqueta ocupe dos líneas */
+.stats dd {
+  order: -1;
 }
 
 .stats dt {
   font-size: var(--step--1);
-  color: var(--text-dim);
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  color: var(--text-faint);
 }
 
 .stats dd {
   margin: 0;
-  font-family: var(--font-display);
-  font-size: var(--step-3);
-  font-weight: 700;
-  font-stretch: 112%;
-  letter-spacing: -0.02em;
-  font-variant-numeric: tabular-nums;
+  font-size: var(--step-2);
 }
 
 .techs {
@@ -361,7 +372,7 @@ h1 {
   --swiper-pagination-bullet-opacity: 1;
   --swiper-pagination-bullet-size: 10px;
   --swiper-pagination-bullet-horizontal-gap: 8px;
-  border-radius: 1rem;
+  border-radius: var(--r-surface);
   overflow: hidden;
 }
 
@@ -375,7 +386,7 @@ h1 {
   --swiper-navigation-size: 48px;
   background: color-mix(in srgb, var(--bg) 88%, transparent);
   border: 1px solid var(--line);
-  border-radius: 50%;
+  border-radius: var(--r-control);
   transition: background 0.2s, border-color 0.2s;
   color: var(--ink);
 }
@@ -398,7 +409,7 @@ h1 {
   transform: translateX(-50%);
   width: fit-content;
   padding: 6px 12px;
-  border-radius: 999px;
+  border-radius: var(--r-control);
   background: color-mix(in srgb, var(--bg) 88%, transparent);
   border: 1px solid var(--line);
 }
@@ -406,7 +417,7 @@ h1 {
 .gallery-swiper :deep(.swiper-pagination-bullet) {
   width: 10px;
   height: 10px;
-  border-radius: 50%;
+  border-radius: var(--r-control);
   background: var(--text-faint);
   border: 1px solid var(--text-faint);
   opacity: 1;
@@ -425,12 +436,12 @@ h1 {
 
 .slide-wrapper {
   position: relative;
-  border-radius: 1rem;
+  border-radius: var(--r-surface);
   overflow: hidden;
 }
 
 .slide-media {
-  border-radius: 1rem;
+  border-radius: var(--r-surface);
 }
 
 .fullscreen-btn {
@@ -442,7 +453,7 @@ h1 {
   gap: 8px;
   height: 42px;
   padding: 0 16px;
-  border-radius: 999px;
+  border-radius: var(--r-control);
   background: color-mix(in srgb, var(--bg) 88%, transparent);
   border: 1px solid var(--line);
   color: var(--ink);
@@ -498,7 +509,7 @@ h1 {
   width: 120px;
   padding: 0;
   border: 2px solid transparent;
-  border-radius: 0.75rem;
+  border-radius: var(--r-surface);
   background: transparent;
   cursor: pointer;
   transition: border-color 0.2s;
@@ -514,7 +525,7 @@ h1 {
 }
 
 .thumb-media {
-  border-radius: 0.5rem;
+  border-radius: var(--r-control);
   display: block;
 }
 
