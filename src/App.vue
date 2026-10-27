@@ -3,6 +3,7 @@ import { computed, watch } from 'vue'
 import { useRoute } from 'vue-router'
 import Navbar from './components/Navbar.vue'
 import Automap from './components/Automap.vue'
+import Lantern from './components/Lantern.vue'
 import { SECTION_IDS } from '@/data/sections'
 import { useScrollSpy } from '@/composables/useScrollSpy'
 import { useVisitProgress } from '@/composables/useVisitProgress'
@@ -14,6 +15,9 @@ const { state, secretFound, justUnlocked, markSection, unlockSecret } = useVisit
 const { activeId: spiedId } = useScrollSpy(SECTION_IDS)
 useSecret()
 const wide = useMediaQuery('(min-width: 1100px)')
+// La linterna sigue al ratón: sin cursor fino o con movimiento reducido no existe
+const finePointer = useMediaQuery('(pointer: fine)')
+const reducedMotion = useMediaQuery('(prefers-reduced-motion: reduce)')
 
 // Ya encontrado, volver a tocarlo solo vuelve a mostrar la nota
 const onSecret = () => {
@@ -32,6 +36,8 @@ watch([spiedId, () => route.meta.page], ([id, page]) => {
 
 <template>
   <div id="app">
+    <Lantern v-if="finePointer && !reducedMotion" :god-mode="secretFound" />
+
     <Navbar :active-id="activeId" :visited="state.sections" :secret-found="secretFound" @secret="onSecret" />
 
     <aside v-if="wide" class="automap-column">
