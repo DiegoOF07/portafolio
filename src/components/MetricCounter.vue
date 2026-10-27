@@ -28,21 +28,16 @@ const run = () => {
 watch(() => props.play, (play) => play && run(), { immediate: true })
 onUnmounted(() => cancelAnimationFrame(frame))
 
-// El número en VT323; prefijo y sufijo en mono porque VT323 dibuja raro "~" y "<"
-const number = computed(() => {
-  if (!parts.value) return ''
-  const text = metricAt(parts.value, progress.value)
-  return text.slice(parts.value.prefix.length, text.length - parts.value.suffix.length)
-})
+const text = computed(() => (parts.value ? metricAt(parts.value, progress.value) : props.value))
+
+// Todo en VT323 salvo "~", "<" y ">", que VT323 dibuja raro: esos van en mono
+const runs = computed(() => text.value.split(/([~<>]+)/).filter(Boolean).map((t) => ({ t, mono: /^[~<>]+$/.test(t) })))
 </script>
 
 <template>
   <span class="metric" :aria-label="value" role="img">
     <span aria-hidden="true">
-      <template v-if="parts">
-        <span class="affix">{{ parts.prefix }}</span><span class="number">{{ number }}</span><span class="affix">{{ parts.suffix }}</span>
-      </template>
-      <span v-else class="number">{{ value }}</span>
+      <span v-for="(run, i) in runs" :key="i" :class="run.mono ? 'affix' : 'number'">{{ run.t }}</span>
     </span>
   </span>
 </template>

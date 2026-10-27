@@ -38,9 +38,12 @@ export const markProject = (s: VisitState, slug: string): VisitState => ({ ...s,
 
 export const markSecret = (s: VisitState): VisitState => ({ ...s, secrets: 1 })
 
+const pad = (n: number) => String(n).padStart(2, '0')
+
+// mm:ss en la primera hora y h:mm:ss después, sin tope
 export const formatElapsed = (ms: number): string => {
   const seconds = Math.max(0, Math.floor(ms / 1000))
-  const minutes = Math.floor(seconds / 60)
-  if (minutes > 99) return '99:59'
-  return `${String(minutes).padStart(2, '0')}:${String(seconds % 60).padStart(2, '0')}`
+  const hours = Math.floor(seconds / 3600)
+  const mmss = `${pad(Math.floor(seconds / 60) % 60)}:${pad(seconds % 60)}`
+  return hours ? `${hours}:${mmss}` : mmss
 }

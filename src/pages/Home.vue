@@ -5,6 +5,7 @@ import ProjectCard from '@/components/ProjectCard.vue'
 import ExperimentCard from '@/components/ExperimentCard.vue'
 import TechBadge from '@/components/TechBadge.vue'
 import TargetLock from '@/components/TargetLock.vue'
+import ResultsScreen from '@/components/ResultsScreen.vue'
 import { featuredProjects, experimentProjects } from '@/data/projects'
 import { stackGroups } from '@/data/stack'
 import { useLocale, CV_FILES } from '@/i18n'
@@ -123,6 +124,9 @@ onBeforeUnmount(() => clearTimeout(copyTimer))
         <ExperimentCard v-for="p in experimentProjects" :key="p.slug" :project="p" />
       </div>
     </section>
+
+    <!-- Fuera de las secciones con id: el scroll-spy y el automapa no la cuentan -->
+    <ResultsScreen />
 
     <!--  CONTACTO  -->
     <div>

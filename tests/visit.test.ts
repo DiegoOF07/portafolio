@@ -34,9 +34,15 @@ test('las funciones no mutan su entrada', () => {
   assert.deepEqual(s, copy)
 })
 
-test('formatElapsed da mm:ss con tope', () => {
+test('formatElapsed da mm:ss en la primera hora', () => {
   assert.equal(formatElapsed(102_000), '01:42')
   assert.equal(formatElapsed(0), '00:00')
-  assert.equal(formatElapsed(10 * 3600_000), '99:59')
+  assert.equal(formatElapsed(3599_000), '59:59')
   assert.equal(formatElapsed(-5), '00:00')
+})
+
+// Un tope fijo como 99:59 deja de avanzar y parece un dato inventado
+test('formatElapsed pasa a h:mm:ss después de una hora y sigue avanzando', () => {
+  assert.equal(formatElapsed(3600_000), '1:00:00')
+  assert.equal(formatElapsed(10 * 3600_000 + 65_000), '10:01:05')
 })

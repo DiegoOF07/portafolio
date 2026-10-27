@@ -4,6 +4,7 @@ import { useRoute } from 'vue-router'
 import Navbar from './components/Navbar.vue'
 import Automap from './components/Automap.vue'
 import Lantern from './components/Lantern.vue'
+import SecretToast from './components/SecretToast.vue'
 import { SECTION_IDS } from '@/data/sections'
 import { useScrollSpy } from '@/composables/useScrollSpy'
 import { useVisitProgress } from '@/composables/useVisitProgress'
@@ -53,6 +54,8 @@ watch([spiedId, () => route.meta.page], ([id, page]) => {
     <div class="router-view-content">
       <RouterView />
     </div>
+
+    <SecretToast />
   </div>
 </template>
 

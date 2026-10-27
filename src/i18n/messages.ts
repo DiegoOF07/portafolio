@@ -23,6 +23,21 @@ const es = {
     tz: 'GMT-6',
     available: 'Disponible para trabajo remoto',
   },
+  results: {
+    kicker: 'Recorrido completado',
+    title: 'Gracias por llegar hasta aquí',
+    projects: 'Proyectos vistos',
+    sections: 'Secciones',
+    secrets: 'Secretos',
+    time: 'Tiempo',
+    note: 'calculado en tu navegador · no se guarda ni se envía a ningún lado',
+    next: 'Siguiente nivel: hablemos',
+  },
+  secret: {
+    title: 'Modo dios',
+    note: 'Si reconociste IDDQD, probablemente también creciste con Doom. Escríbeme: de eso y de trabajo se puede hablar.',
+    close: 'Cerrar',
+  },
   automap: {
     label: 'Mapa del sitio',
     wall: 'Una pared que suena hueca',
@@ -104,6 +119,21 @@ const en: typeof es = {
     location: 'Guatemala',
     tz: 'GMT-6',
     available: 'Open to remote work',
+  },
+  results: {
+    kicker: 'Run complete',
+    title: 'Thanks for making it this far',
+    projects: 'Projects seen',
+    sections: 'Sections',
+    secrets: 'Secrets',
+    time: 'Time',
+    note: 'computed in your browser · never stored or sent anywhere',
+    next: 'Next level: let’s talk',
+  },
+  secret: {
+    title: 'God mode',
+    note: 'If you recognized IDDQD, you probably grew up with Doom too. Get in touch: we can talk about that, and about work.',
+    close: 'Close',
   },
   automap: {
     label: 'Site map',
