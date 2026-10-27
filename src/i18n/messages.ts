@@ -34,11 +34,7 @@ const es = {
     seeProjects: 'Ver proyectos',
     writeMe: 'Escríbeme',
     downloadCv: 'Descargar CV',
-    caption:
-      'En pantalla: el constructor de formularios dinámicos que desarrollé en equipo para una empresa de transporte. Las preguntas se crean sin tocar código y las respuestas generan las cotizaciones.',
-    seeProject: 'Ver el proyecto',
-    shotAlt:
-      'Constructor del formulario dinámico: ventana para agregar una pregunta con su tipo, sus opciones y si es obligatoria',
+    photoAlt: 'Diego Flores',
   },
   about: {
     title: 'Sobre mí',
@@ -120,11 +116,7 @@ const en: typeof es = {
     seeProjects: 'See projects',
     writeMe: 'Get in touch',
     downloadCv: 'Download résumé',
-    caption:
-      'On screen: the dynamic form builder I developed with my team for a transportation company. Questions are created without touching code, and the answers generate the price quotes.',
-    seeProject: 'See the project',
-    shotAlt:
-      'Dynamic form builder: dialog for adding a question with its type, its options and whether it is required',
+    photoAlt: 'Diego Flores',
   },
   about: {
     title: 'About me',

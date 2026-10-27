@@ -6,12 +6,11 @@ import ExperimentCard from '@/components/ExperimentCard.vue'
 import TechBadge from '@/components/TechBadge.vue'
 import { featuredProjects, experimentProjects } from '@/data/projects'
 import { stackGroups } from '@/data/stack'
-import { useLocale, projectRoute, CV_FILES } from '@/i18n'
-import formPng from '@/assets/img/03_dapa-form.png'
-import formAvif800 from '@/assets/img/hero/hero-form-800.avif'
-import formAvif1340 from '@/assets/img/hero/hero-form-1340.avif'
-import formWebp800 from '@/assets/img/hero/hero-form-800.webp'
-import formWebp1340 from '@/assets/img/hero/hero-form-1340.webp'
+import { useLocale, CV_FILES } from '@/i18n'
+import portraitAvif320 from '@/assets/img/hero/portrait-320.avif'
+import portraitAvif640 from '@/assets/img/hero/portrait-640.avif'
+import portraitWebp320 from '@/assets/img/hero/portrait-320.webp'
+import portraitWebp640 from '@/assets/img/hero/portrait-640.webp'
 
 const year = new Date().getFullYear()
 const { locale, m, t } = useLocale()
@@ -39,22 +38,26 @@ const leadProject = featuredProjects.find((p) => p.lead)
 const rowProjects = featuredProjects.filter((p) => !p.lead && !p.compact)
 const compactProjects = featuredProjects.filter((p) => p.compact)
 
-// Captura del hero (constructor del formulario dinámico) en AVIF/WebP,
-// con el PNG original como respaldo.
-const heroSrcset = {
-  avif: `${formAvif800} 800w, ${formAvif1340} 1340w`,
-  webp: `${formWebp800} 800w, ${formWebp1340} 1340w`,
+// Foto con el fondo cambiado al de la paleta (generada desde profile.png)
+const portraitSrcset = {
+  avif: `${portraitAvif320} 320w, ${portraitAvif640} 640w`,
+  webp: `${portraitWebp320} 320w, ${portraitWebp640} 640w`,
 }
-// Ocupa el ancho de la columna de contenido (máx. 1136px)
-const HERO_SIZES = '(max-width: 600px) calc(100vw - 2rem), (max-width: 1200px) calc(100vw - 4rem), 1136px'
+const PORTRAIT_SIZES = '(max-width: 700px) 120px, 280px'
 
 onBeforeUnmount(() => clearTimeout(copyTimer))
 </script>
 
 <template>
   <div class="home">
-    <!--  HERO: bloque tipográfico + evidencia real de trabajo  -->
+    <!--  HERO: foto y bloque tipográfico  -->
     <section id="inicio" class="section hero">
+      <picture class="hero-photo">
+        <source type="image/avif" :srcset="portraitSrcset.avif" :sizes="PORTRAIT_SIZES" />
+        <source type="image/webp" :srcset="portraitSrcset.webp" :sizes="PORTRAIT_SIZES" />
+        <img :src="portraitWebp640" :alt="m.hero.photoAlt" width="640" height="640" fetchpriority="high" />
+      </picture>
+
       <div class="hero-copy">
         <h1>
           Diego Flores <span class="role">{{ m.hero.role }}</span>
@@ -72,42 +75,13 @@ onBeforeUnmount(() => clearTimeout(copyTimer))
         </div>
       </div>
 
-      <figure class="hero-shot">
-        <figcaption>
-          {{ m.hero.caption }}
-          <RouterLink :to="projectRoute(locale, 'dapa-logistica')">{{ m.hero.seeProject }}</RouterLink>
-        </figcaption>
-        <div class="hero-shot-frame">
-          <picture>
-            <source type="image/avif" :srcset="heroSrcset.avif" :sizes="HERO_SIZES" />
-            <source type="image/webp" :srcset="heroSrcset.webp" :sizes="HERO_SIZES" />
-            <img
-              :src="formPng"
-              :alt="m.hero.shotAlt"
-              width="1340"
-              height="949"
-              fetchpriority="high"
-            />
-          </picture>
-        </div>
-      </figure>
     </section>
 
     <!-- SOBRE MÍ  -->
     <section id="sobre-mi" class="section">
       <h2 class="section-title">{{ m.about.title }}</h2>
-      <div class="about-body">
-        <img
-          src="@/assets/img/profile.png"
-          alt="Diego Flores"
-          class="avatar"
-          width="460"
-          height="460"
-          loading="lazy"
-        />
-        <div class="about-text">
-          <p v-for="(paragraph, idx) in m.about.paragraphs" :key="idx">{{ paragraph }}</p>
-        </div>
+      <div class="about-text">
+        <p v-for="(paragraph, idx) in m.about.paragraphs" :key="idx">{{ paragraph }}</p>
       </div>
     </section>
 
@@ -223,14 +197,24 @@ onBeforeUnmount(() => clearTimeout(copyTimer))
   margin: 0 0 var(--s-6);
 }
 
-/* ------------------------------------------------------------------
-   Hero: bloque tipográfico arriba y captura real abajo, que se
-   desvanece hacia la siguiente sección. Un solo momento de movimiento
-   orquestado al cargar; fuera de eso, nada se mueve solo.
-   ------------------------------------------------------------------ */
+/* Hero: foto a la izquierda y texto a la derecha. Un solo momento de
+   movimiento al cargar; fuera de eso, nada se mueve solo. */
 .hero {
+  display: grid;
+  grid-template-columns: clamp(180px, 22vw, 280px) minmax(0, 1fr);
+  gap: var(--s-7);
+  align-items: center;
   padding-top: var(--s-8);
   padding-bottom: var(--s-6);
+}
+
+.hero-photo img {
+  display: block;
+  width: 100%;
+  height: auto;
+  border: 1px solid var(--line);
+  border-radius: var(--r-surface);
+  background: var(--surface);
 }
 
 .hero-copy {
@@ -269,51 +253,7 @@ onBeforeUnmount(() => clearTimeout(copyTimer))
   gap: var(--s-4) var(--s-6);
 }
 
-/* Captura: evidencia real del trabajo. Se corta con un desvanecido
-   hacia abajo para invitar a seguir bajando. */
-.hero-shot {
-  margin: var(--s-8) 0 0;
-}
-
-.hero-shot figcaption {
-  max-width: 62ch;
-  margin-bottom: var(--s-3);
-  font-size: var(--step--1);
-  color: var(--text-dim);
-}
-
-.hero-shot figcaption a {
-  color: var(--act);
-  font-weight: 600;
-  white-space: nowrap;
-}
-
-.hero-shot figcaption a:hover {
-  color: var(--ink);
-}
-
-.hero-shot-frame {
-  /* width explícito: si no, max-height encoge también el ancho por la proporción */
-  width: 100%;
-  aspect-ratio: 1340 / 949;
-  max-height: 30rem;
-  overflow: hidden;
-  border: 1px solid var(--line);
-  border-radius: var(--r-surface);
-  background: #f7f7f7; /* el fondo de la propia captura, mientras carga */
-  -webkit-mask-image: linear-gradient(to bottom, #000 62%, transparent);
-  mask-image: linear-gradient(to bottom, #000 62%, transparent);
-}
-
-.hero-shot-frame img {
-  display: block;
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
-  object-position: top left;
-}
-
-/* Secuencia de entrada: una sola vez, escalonada, y la captura al final */
+/* Secuencia de entrada: una sola vez y escalonada */
 @keyframes hero-rise {
   from {
     opacity: 0;
@@ -325,42 +265,20 @@ onBeforeUnmount(() => clearTimeout(copyTimer))
   }
 }
 
-.hero-copy > *,
-.hero-shot {
+.hero-copy > * {
   animation: hero-rise 700ms cubic-bezier(0.2, 0.7, 0.2, 1) both;
 }
 
 .hero-copy > :nth-child(2) { animation-delay: 90ms; }
 .hero-copy > :nth-child(3) { animation-delay: 180ms; }
 
-.hero-shot {
-  animation-duration: 1000ms;
-  animation-delay: 380ms;
-}
-
 @media (prefers-reduced-motion: reduce) {
-  .hero-copy > *,
-  .hero-shot {
+  .hero-copy > * {
     animation: none;
   }
 }
 
 /* Sobre mí */
-.about-body {
-  display: grid;
-  grid-template-columns: 200px minmax(0, 1fr);
-  gap: var(--s-7);
-  align-items: start;
-}
-
-.avatar {
-  width: 200px;
-  height: 200px;
-  object-fit: cover;
-  border-radius: var(--r-control);
-  border: 1px solid var(--line);
-}
-
 .about-text p {
   max-width: 62ch;
   margin: 0 0 var(--s-4);
@@ -580,14 +498,14 @@ onBeforeUnmount(() => clearTimeout(copyTimer))
     grid-template-columns: minmax(0, 1fr);
   }
 
-  .about-body {
+  /* La foto pasa arriba del texto */
+  .hero {
     grid-template-columns: minmax(0, 1fr);
     gap: var(--s-5);
   }
 
-  .avatar {
+  .hero-photo img {
     width: 120px;
-    height: 120px;
   }
 
   .stack-row {
@@ -607,15 +525,6 @@ onBeforeUnmount(() => clearTimeout(copyTimer))
 
   .hero {
     padding-top: var(--s-7);
-  }
-
-  .hero-shot {
-    margin-top: var(--s-7);
-  }
-
-  .hero-shot-frame {
-    max-height: 16rem;
-    border-radius: var(--r-control);
   }
 
   .contact {
