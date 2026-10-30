@@ -3,6 +3,7 @@ const es = {
     title: 'Diego Flores — Full-Stack Developer',
     description:
       'Portafolio de Diego Flores, desarrollador full-stack (Go, Vue, TypeScript, PostgreSQL). Proyectos en equipo con clientes reales y herramientas propias. Disponible para oportunidades remotas.',
+    imageAlt: 'Diego Flores, Full-Stack Developer en Guatemala, disponible para trabajo remoto',
   },
   nav: {
     inicio: 'Inicio',
@@ -100,6 +101,7 @@ const en: typeof es = {
     title: 'Diego Flores — Full-Stack Developer',
     description:
       'Portfolio of Diego Flores, full-stack developer (Go, Vue, TypeScript, PostgreSQL). Team projects with real clients and tools of my own. Open to remote opportunities.',
+    imageAlt: 'Diego Flores, Full-Stack Developer in Guatemala, open to remote work',
   },
   nav: {
     inicio: 'Home',
