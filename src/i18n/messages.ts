@@ -2,7 +2,7 @@ const es = {
   meta: {
     title: 'Diego Flores — Full-Stack Developer',
     description:
-      'Portafolio de Diego Flores, desarrollador full-stack (Go, Vue, TypeScript, PostgreSQL). Proyectos en equipo con clientes reales y herramientas propias. Disponible para oportunidades remotas.',
+      'Desarrollador full-stack (Go, Vue, TypeScript, PostgreSQL) con proyectos para clientes reales y herramientas propias. Disponible para trabajo remoto.',
     imageAlt: 'Diego Flores, Full-Stack Developer en Guatemala, disponible para trabajo remoto',
   },
   nav: {
@@ -36,7 +36,7 @@ const es = {
   },
   secret: {
     title: 'Modo dios',
-    note: 'Si reconociste IDDQD, probablemente también creciste con Doom. Escríbeme: de eso y de trabajo se puede hablar.',
+    note: 'Si reconociste IDDQD, ya tenemos algo en común. Escríbeme: de eso y de trabajo se puede hablar.',
     close: 'Cerrar',
   },
   automap: {
@@ -56,7 +56,7 @@ const es = {
     title: 'Sobre mí',
     paragraphs: [
       'Estudio Ingeniería en Ciencias de la Computación en la Universidad del Valle de Guatemala y soy desarrollador full-stack, principalmente con Go, Vue y bases de datos relacionales y en grafos. En la universidad trabajé en equipo con dos clientes reales, una empresa de transporte y una ONG, desde entender su problema hasta el despliegue.',
-      'Fuera de clase desarrollo herramientas propias como DiskFlow, con CI, pruebas y releases publicados. Lo complemento con curiosidad por temas menos comunes: construir un compilador básico, trabajar con sistemas operativos a bajo nivel o escribir un raytracer desde cero. Creo que entender los fundamentos, no solo los frameworks, es lo que hace la diferencia a largo plazo.',
+      'Fuera de clase desarrollo herramientas propias como DiskFlow, con CI, pruebas y releases publicados. Lo complemento con curiosidad por temas menos comunes: generar analizadores léxicos y sintácticos, montar un sistema Linux desde cero con Linux From Scratch o escribir un raytracer. Creo que entender los fundamentos, no solo los frameworks, es lo que hace la diferencia a largo plazo.',
     ],
   },
   sections: {
@@ -84,14 +84,14 @@ const es = {
   contact: {
     title: 'Contacto',
     // U+2011: guion no separable
-    lead: 'Busco oportunidades remotas como desarrollador full‑stack. Si algo de lo que viste encaja con lo que tu equipo está construyendo, escríbeme.',
+    lead: 'Estoy disponible para trabajo remoto como desarrollador full‑stack. Si algo de lo que viste encaja con lo que tu equipo está construyendo, escríbeme.',
     copy: 'Copiar',
     copied: 'Copiado',
     downloadCv: 'Descargar CV',
     otherCv: 'CV en inglés',
     location: 'Ubicación',
     education: 'Formación',
-    educationValue: 'Ingeniería en Ciencias de la Computación',
+    educationValue: 'Ingeniería en Ciencias de la Computación, Universidad del Valle de Guatemala (graduación esperada: 2027)',
     backToTop: 'Volver arriba',
   },
 }
@@ -100,7 +100,7 @@ const en: typeof es = {
   meta: {
     title: 'Diego Flores — Full-Stack Developer',
     description:
-      'Portfolio of Diego Flores, full-stack developer (Go, Vue, TypeScript, PostgreSQL). Team projects with real clients and tools of my own. Open to remote opportunities.',
+      'Full-stack developer (Go, Vue, TypeScript, PostgreSQL) with projects for real clients and tools of my own. Open to remote work.',
     imageAlt: 'Diego Flores, Full-Stack Developer in Guatemala, open to remote work',
   },
   nav: {
@@ -134,7 +134,7 @@ const en: typeof es = {
   },
   secret: {
     title: 'God mode',
-    note: 'If you recognized IDDQD, you probably grew up with Doom too. Get in touch: we can talk about that, and about work.',
+    note: 'If you recognized IDDQD, we already have something in common. Get in touch: we can talk about that, and about work.',
     close: 'Close',
   },
   automap: {
@@ -153,8 +153,8 @@ const en: typeof es = {
   about: {
     title: 'About me',
     paragraphs: [
-      'I study Computer Science at Universidad del Valle de Guatemala and work as a full-stack developer, mostly with Go, Vue, and relational and graph databases. At university I worked in teams with two real clients, a transportation company and a non-profit, from understanding their problem through to deployment.',
-      'Outside class I build my own tools, like DiskFlow, with CI, tests and published releases. I round that out with curiosity for less common topics: building a basic compiler, working with operating systems at a low level, or writing a raytracer from scratch. I believe understanding the fundamentals, not just the frameworks, is what makes the difference in the long run.',
+      "I'm a Computer Science student at Universidad del Valle de Guatemala and a full-stack developer, mostly with Go, Vue, and relational and graph databases. At university I worked in teams with two real clients, a transportation company and a non-profit, from understanding their problem through to deployment.",
+      'Outside class I build my own tools, like DiskFlow, with CI, tests and published releases. I round that out with curiosity for less common topics: generating lexers and parsers, building a Linux system from scratch with Linux From Scratch, or writing a raytracer. I believe understanding the fundamentals, not just the frameworks, is what makes the difference in the long run.',
     ],
   },
   sections: {
@@ -181,14 +181,14 @@ const en: typeof es = {
   },
   contact: {
     title: 'Contact',
-    lead: "I'm looking for remote opportunities as a full‑stack developer. If something you saw fits what your team is building, get in touch.",
+    lead: "I'm open to remote work as a full‑stack developer. If something you saw fits what your team is building, get in touch.",
     copy: 'Copy',
     copied: 'Copied',
     downloadCv: 'Download résumé',
     otherCv: 'Résumé in Spanish',
     location: 'Location',
     education: 'Education',
-    educationValue: 'B.S. in Computer Science',
+    educationValue: 'B.S. in Computer Science, Universidad del Valle de Guatemala (expected graduation: 2027)',
     backToTop: 'Back to top',
   },
 }

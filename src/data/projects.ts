@@ -138,8 +138,8 @@ const featuredProjectData: FeaturedProjectData[] = [
       { name: 'Docker', icon: dockerLogo },
     ],
     status: {
-      es: 'Desplegado en AWS (actualmente fuera de línea).',
-      en: 'Deployed on AWS (currently offline).',
+      es: 'Estuvo desplegado en AWS mientras la empresa lo usó; se dio de baja cuando dejó de usarlo.',
+      en: 'It ran on AWS while the company used it and was taken down once they stopped.',
     },
     links: {
       repos: [
@@ -242,8 +242,8 @@ const featuredProjectData: FeaturedProjectData[] = [
     },
     kind: { es: 'Académico · en equipo · cliente real', en: 'Academic · team · real client' },
     challenge: {
-      es: 'Diseñar el sistema completo siguiendo fases formales de ingeniería de software, manteniéndolo usable para personal no técnico de la fundación. Como resultado se logra la gestión de pacientes, donaciones, eventos y voluntarios centralizada en una sola plataforma hecha a la medida.',
-      en: "Designing the whole system through formal software engineering phases while keeping it usable for the foundation's non-technical staff. The result brings patients, donations, events and volunteers together in a single platform built to measure.",
+      es: 'Desarrollar en equipo el sistema completo a partir de las especificaciones de la fundación, siguiendo fases formales de ingeniería de software y con roles separados: yo me encargué del backend. El reto es centralizar pacientes, donaciones, eventos y voluntarios en una sola plataforma que el personal no técnico pueda usar sin ayuda.',
+      en: "Building the whole system as a team from the foundation's specifications, following formal software engineering phases with separate roles: I was responsible for the backend. The challenge is bringing patients, donations, events and volunteers together in a single platform that non-technical staff can use on their own.",
     },
     techs: [
       { name: 'Go', icon: goLogo },
@@ -267,8 +267,8 @@ const featuredProjectData: FeaturedProjectData[] = [
       en: 'A desktop app that shows where the space goes in a development workspace (projects, dependencies, build artifacts) through a synchronized treemap and table, without ever modifying your files.',
     },
     context: {
-      es: 'Proyecto personal · individual · 2026 · v0.1 en desarrollo',
-      en: 'Personal project · solo · 2026 · v0.1 in development',
+      es: 'Proyecto personal · individual · 2026 · en desarrollo activo',
+      en: 'Personal project · solo · 2026 · in active development',
     },
     kind: { es: 'Personal · individual', en: 'Personal · solo' },
     challenge: {
@@ -283,15 +283,15 @@ const featuredProjectData: FeaturedProjectData[] = [
       { name: 'SQLite', icon: sqliteLogo },
     ],
     status: {
-      es: 'Repositorio público con CI, pruebas en backend y frontend, releases automatizados y decisiones de arquitectura documentadas (ADRs). Pre-release para Windows.',
-      en: 'Public repository with CI, backend and frontend tests, automated releases and documented architecture decisions (ADRs). Pre-release available for Windows.',
+      es: 'Repositorio público con CI, pruebas en backend y frontend, releases automatizados y decisiones de arquitectura documentadas (ADRs). Binarios publicados para Windows.',
+      en: 'Public repository with CI, backend and frontend tests, automated releases and documented architecture decisions (ADRs). Windows builds published.',
     },
     links: {
       repos: [
         { label: { es: 'Repositorio', en: 'Repository' }, url: 'https://github.com/DiegoOF07/Diskflow' },
         {
-          label: { es: 'Pre-release v0.1.0-rc.1', en: 'Pre-release v0.1.0-rc.1' },
-          url: 'https://github.com/DiegoOF07/Diskflow/releases/tag/v0.1.0-rc.1',
+          label: { es: 'Releases', en: 'Releases' },
+          url: 'https://github.com/DiegoOF07/Diskflow/releases',
         },
       ],
     },
@@ -336,8 +336,8 @@ const featuredProjectData: FeaturedProjectData[] = [
         {
           heading: { es: 'Prácticas de ingeniería', en: 'Engineering practices' },
           body: {
-            es: 'Cada cambio pasa por CI en GitHub Actions: gofmt, go vet y las pruebas del backend, también con el detector de condiciones de carrera, y del lado del frontend lint, formato, pruebas unitarias con Vitest y build con verificación de tipos. Un workflow semanal corre govulncheck y pnpm audit.\n\nLos releases se publican solos al empujar un tag: el workflow compila en Windows, genera el instalador y el ejecutable portable, y publica los checksums junto con una atestación de procedencia del build. Los tags con sufijo, como el actual v0.1.0-rc.1, salen como pre-release.',
-            en: 'Every change goes through CI on GitHub Actions: gofmt, go vet and the backend tests, also under the race detector, and on the frontend side lint, formatting, unit tests with Vitest and a type-checked build. A weekly workflow runs govulncheck and pnpm audit.\n\nReleases publish themselves when a tag is pushed: the workflow builds on Windows, produces the installer and the portable executable, and publishes the checksums along with a build provenance attestation. Tags with a suffix, like the current v0.1.0-rc.1, ship as pre-releases.',
+            es: 'Cada cambio pasa por CI en GitHub Actions: gofmt, go vet y las pruebas del backend, también con el detector de condiciones de carrera, y del lado del frontend lint, formato, pruebas unitarias con Vitest y build con verificación de tipos. Un workflow semanal corre govulncheck y pnpm audit.\n\nLos releases se publican solos al empujar un tag: el workflow compila en Windows, genera el instalador y el ejecutable portable, y publica los checksums junto con una atestación de procedencia del build. Los tags con sufijo, como v0.1.0-rc.1, salen como pre-release.',
+            en: 'Every change goes through CI on GitHub Actions: gofmt, go vet and the backend tests, also under the race detector, and on the frontend side lint, formatting, unit tests with Vitest and a type-checked build. A weekly workflow runs govulncheck and pnpm audit.\n\nReleases publish themselves when a tag is pushed: the workflow builds on Windows, produces the installer and the portable executable, and publishes the checksums along with a build provenance attestation. Tags with a suffix, such as v0.1.0-rc.1, ship as pre-releases.',
           },
         },
         {
@@ -526,14 +526,14 @@ const featuredProjectData: FeaturedProjectData[] = [
     compact: true,
     title: { es: 'Optimizador de rutas con algoritmos genéticos', en: 'Route optimizer with genetic algorithms' },
     tagline: {
-      es: 'Aplicación web que calcula el mejor recorrido entre varios destinos con un algoritmo genético y lo dibuja sobre un mapa interactivo.',
-      en: 'A web app that computes the best route between several destinations with a genetic algorithm and draws it on an interactive map.',
+      es: 'Aplicación web que busca un recorrido corto entre varios destinos con un algoritmo genético y lo dibuja sobre un mapa interactivo.',
+      en: 'A web app that searches for a short route between several destinations with a genetic algorithm and draws it on an interactive map.',
     },
     context: { es: 'Proyecto académico · en equipo', en: 'Academic project · team' },
     kind: { es: 'Académico · en equipo', en: 'Academic · team' },
     challenge: {
-      es: 'Reducir un problema de ruteo con explosión combinatoria usando un algoritmo genético sobre datos geográficos reales: hasta 15 destinos dentro de un radio de 100 km, minimizando la distancia total del recorrido. El backend en FastAPI corre en Google Cloud y el resultado se traza sobre Google Maps.',
-      en: 'Taming a routing problem with combinatorial explosion using a genetic algorithm over real geographic data: up to 15 destinations within a 100 km radius, minimizing the total distance travelled. The FastAPI backend runs on Google Cloud and the result is drawn on Google Maps.',
+      es: 'Abordar un problema de ruteo con explosión combinatoria, donde probar todas las rutas no es viable, con un algoritmo genético sobre datos geográficos reales: hasta 15 destinos dentro de un radio de 100 km, buscando reducir la distancia total del recorrido sin garantizar el óptimo. El backend en FastAPI corre en Google Cloud y el resultado se traza sobre Google Maps.',
+      en: 'Tackling a routing problem with combinatorial explosion, where trying every route is not feasible, with a genetic algorithm over real geographic data: up to 15 destinations within a 100 km radius, working to reduce the total distance travelled without guaranteeing the optimum. The FastAPI backend runs on Google Cloud and the result is drawn on Google Maps.',
     },
     techs: [
       { name: 'Python', icon: pythonLogo },
@@ -565,7 +565,7 @@ export const featuredProjects: FeaturedProject[] = featuredProjectData.map(withD
 export const experimentProjects: ExperimentProject[] = [
   {
     slug: 'analizador-lexico-sintactico',
-    title: { es: 'Analizador léxico y sintáctico', en: 'Lexer and parser generator' },
+    title: { es: 'Generador de analizadores léxicos y sintácticos', en: 'Lexer and parser generator' },
     description: {
       es: 'Genera analizadores a partir de especificaciones .yalex y .yapar: construye el AFD directo desde las expresiones regulares, calcula FIRST y FOLLOW, arma tablas LL(1), SLR y LALR, y se recupera de errores de sintaxis en modo pánico en lugar de abortar.',
       en: 'Generates analyzers from .yalex and .yapar specifications: it builds the DFA directly from the regular expressions, computes FIRST and FOLLOW, builds LL(1), SLR and LALR tables, and recovers from syntax errors in panic mode instead of aborting.',
