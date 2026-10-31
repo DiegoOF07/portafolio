@@ -44,9 +44,7 @@ export interface TechRef {
 }
 
 export interface ProjectLinks {
-  // Lista con etiqueta propia: un proyecto puede tener uno, dos o tres
-  // repos y no siempre son "frontend" y "backend" (ver el proyecto MCP,
-  // que son servidor, cliente y release).
+  // Con etiqueta propia: no siempre son frontend y backend (MCP: servidor, cliente y release)
   repos?: { label: Localized; url: string }[]
   demo?: string           // link a demo en vivo
   privacyNote?: Localized // usar cuando el proyecto es de un cliente real
@@ -77,15 +75,13 @@ export interface FeaturedProject {
   status?: Localized
   // 6. links
   links: ProjectLinks
-  // Captura principal. Los proyectos sin capturas reales no la llevan:
-  // se muestran como fila de texto en vez de con una imagen de relleno.
+  // Sin capturas reales no lleva imagen: se muestra como fila de texto
   media?: MediaAsset
   // Pieza principal de la sección: se muestra grande, con su captura.
   lead?: boolean
   // Al final de la sección, en formato reducido
   compact?: boolean
-  // Se deriva del contenido (ver withDerivedDetail): true solo si el
-  // detalle tiene galería o descripción, para no enlazar a una página vacía.
+  // Derivado (withDerivedDetail): solo si hay galería o secciones, para no enlazar a una página vacía
   hasDetail: boolean
   detail?: {
     gallery: MediaAsset[]
@@ -102,8 +98,7 @@ export interface ExperimentProject {
   techs: TechRef[]
   media: MediaAsset
   links: ProjectLinks
-  // Para una serie de proyectos hermanos: cada pieza con su repo y su video,
-  // en vez de apilar seis links sueltos en una tarjeta compacta.
+  // Serie de proyectos hermanos: cada pieza con su repo y su video
   parts?: { name: Localized; repo: string; video?: string }[]
 }
 
@@ -558,9 +553,7 @@ const featuredProjectData: FeaturedProjectData[] = [
 
 export const featuredProjects: FeaturedProject[] = featuredProjectData.map(withDerivedDetail)
 
-// ----------------------------------------------------------------------------
-// Proyectos experimentales (sección compacta, apoyo visual fuerte, poco texto)
-// ----------------------------------------------------------------------------
+// Proyectos experimentales: sección compacta, mucha imagen y poco texto
 
 export const experimentProjects: ExperimentProject[] = [
   {
@@ -576,8 +569,7 @@ export const experimentProjects: ExperimentProject[] = [
     ],
     media: {
       type: 'image',
-      // Fotograma de la interfaz: la tabla de parseo se reconoce aún a tamaño
-      // de tarjeta, cosa que la vista de autómata (texto corrido) no logra.
+      // Fotograma de la tabla de parseo: se reconoce a tamaño de tarjeta, el autómata no
       src: analizadorSintactico,
       alt: {
         es: 'Tabla de parseo generada por la herramienta: una rejilla de estados contra tokens con las acciones de desplazamiento y reducción',

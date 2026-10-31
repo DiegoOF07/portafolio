@@ -18,8 +18,7 @@ const year = new Date().getFullYear()
 const { locale, m, t } = useLocale()
 const otherCv = computed(() => CV_FILES[locale.value === 'es' ? 'en' : 'es'])
 
-// Copiar el correo: un mailto: no hace nada si el visitante no tiene cliente
-// de correo configurado, y el contacto es el objetivo de la página.
+// Copiar el correo: un mailto no hace nada sin cliente de correo configurado
 const EMAIL = 'floresdiego041@gmail.com'
 const copied = ref(false)
 let copyTimer: ReturnType<typeof setTimeout> | undefined
@@ -70,9 +69,7 @@ onBeforeUnmount(() => clearTimeout(copyTimer))
         <p class="hero-lead">{{ m.hero.lead }}</p>
         <div class="hero-actions">
           <a href="#proyectos" class="btn-primary">{{ m.hero.seeProjects }}</a>
-          <!-- Lleva a la banda de contacto en vez de abrir mailto: si el
-               visitante no tiene cliente de correo configurado, un mailto
-               no hace nada y el botón parece roto. -->
+          <!-- A la banda de contacto y no a mailto, que sin cliente de correo parece roto -->
           <a href="#contacto" class="link-quiet">{{ m.hero.writeMe }}</a>
           <a :href="CV_FILES[locale]" download class="link-quiet">
             <Download :size="18" aria-hidden="true" /> {{ m.hero.downloadCv }}
@@ -134,8 +131,7 @@ onBeforeUnmount(() => clearTimeout(copyTimer))
         <div class="contact-main">
           <h2 class="section-title">{{ m.contact.title }}</h2>
           <p class="contact-lead">{{ m.contact.lead }}</p>
-          <!-- El mailto sigue ahí para quien tenga cliente de correo, pero
-               copiar la dirección funciona siempre. -->
+          <!-- El mailto queda para quien tenga cliente de correo; copiar funciona siempre -->
           <p class="contact-email-row">
             <a class="contact-email" :href="`mailto:${EMAIL}`">{{ EMAIL }}</a>
             <button type="button" class="copy-btn" @click="copyEmail">
@@ -207,8 +203,7 @@ onBeforeUnmount(() => clearTimeout(copyTimer))
   margin: 0 0 var(--s-6);
 }
 
-/* Hero: foto a la izquierda y texto a la derecha. Un solo momento de
-   movimiento al cargar; fuera de eso, nada se mueve solo. */
+/* Hero: foto a la izquierda y texto a la derecha; solo se mueve al cargar */
 .hero {
   display: grid;
   grid-template-columns: clamp(180px, 22vw, 280px) minmax(0, 1fr);
@@ -347,9 +342,7 @@ onBeforeUnmount(() => clearTimeout(copyTimer))
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
   gap: 1.5rem;
-  /* Cada tarjeta mide lo que su contenido: estirarlas a la más alta dejaba
-     un vacío al pie de las cortas. Las imágenes comparten proporción, así
-     que los bordes superiores siguen alineados. */
+  /* Cada tarjeta mide su contenido; las imágenes comparten proporción, así que los bordes superiores alinean */
   align-items: start;
 }
 

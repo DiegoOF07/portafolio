@@ -65,8 +65,7 @@ watch([spiedId, () => route.meta.page], ([id, page]) => {
   width: 100dvw;
   min-height: 100dvh;
   position: relative;
-  /* clip, no hidden: hidden convierte a #app en un contenedor de scroll que
-     nunca se desplaza, y rompe sticky y las animaciones ligadas al scroll. */
+  /* clip y no hidden: hidden crea un contenedor de scroll que rompe sticky */
   overflow-x: clip;
 }
 

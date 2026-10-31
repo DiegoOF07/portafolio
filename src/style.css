@@ -1,11 +1,8 @@
-/* ================================================================
-   Tokens
-   ================================================================ */
+/* Tokens */
 :root {
   /* Alto de la navbar; bajo 1100px suma la franja de estado */
   --nav-h: 4.5rem;
-  /* Color: el rojo es "puedes actuar aquí" o un dato duro; el ámbar etiqueta;
-     el verde solo dice "disponible". */
+  /* Color: rojo = acción o dato duro; ámbar = etiqueta; verde = disponible */
   --bg:         #120E0C;
   --surface:    #1A1411;
   --line:       #2A211C;
@@ -76,9 +73,7 @@
   }
 }
 
-/* ================================================================
-   Base
-   ================================================================ */
+/* Base */
 *,
 *::before,
 *::after {
@@ -170,9 +165,7 @@ button {
   }
 }
 
-/* ================================================================
-   Acciones: una sola acción sólida por bloque; el resto, enlaces discretos
-   ================================================================ */
+/* Acciones: una sola sólida por bloque; el resto, enlaces discretos */
 .btn-primary {
   display: inline-flex;
   align-items: center;

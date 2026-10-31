@@ -277,8 +277,7 @@ h1 {
   margin-bottom: 2rem;
 }
 
-/* El reto técnico siempre es el más largo de los tres campos; con columnas
-   iguales quedaba estrangulado en una tira de veinte líneas. */
+/* El reto técnico es el campo más largo: con columnas iguales quedaba en una tira angosta */
 .meta-grid {
   display: grid;
   grid-template-columns: minmax(0, 1fr) minmax(0, 2.2fr) minmax(0, 1fr);

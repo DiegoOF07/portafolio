@@ -4,15 +4,13 @@ export const useScrollSpy = (sectionIds: readonly string[]) => {
   const activeId = ref<string>(sectionIds[0] ?? '')
   let ticking = false
 
-  // Resuelve las secciones de forma perezosa: los elementos pueden montarse
-  // después que la navbar, así que se releen en cada scroll (barato: son pocos).
+  // Se releen en cada scroll porque las secciones pueden montarse después (son pocas)
   const resolveElements = (): HTMLElement[] =>
     sectionIds
       .map((id) => document.getElementById(id))
       .filter((el): el is HTMLElement => !!el)
 
-  // Marca como activa la última sección cuya parte superior haya cruzado
-  // la línea imaginaria al 40% del alto del viewport.
+  // Activa: la última sección cuyo borde superior cruzó el 40 % del alto de la ventana
   const computeActive = (els: HTMLElement[]) => {
     const marker = window.innerHeight * 0.4
     let current = sectionIds[0]
@@ -25,8 +23,7 @@ export const useScrollSpy = (sectionIds: readonly string[]) => {
       }
     }
 
-    // Por si llegamos al fondo del documento y la última sección
-    // no alcanzó la línea (borde inferior por debajo del viewport).
+    // Al fondo del documento la última sección puede no alcanzar esa línea
     if (window.innerHeight + window.scrollY >= document.documentElement.scrollHeight - 2) {
       current = els[els.length - 1]?.id ?? current
     }

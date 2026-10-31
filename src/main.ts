@@ -8,8 +8,7 @@ const app = createApp(App)
 
 app.use(router)
 
-// Esperar a que la ruta inicial esté resuelta antes de montar,
-// para que la primera pintura ya incluya el contenido (evita home vacío).
+// Monta con la ruta inicial resuelta para que la primera pintura ya tenga contenido
 router.isReady().then(() => {
   app.mount('#app')
 })
