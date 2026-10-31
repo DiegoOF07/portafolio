@@ -17,7 +17,16 @@ const isDetail = computed(() => route.meta.page === 'project')
 const wide = useMediaQuery('(min-width: 1100px)')
 
 const isOpen = ref(false)
+const header = ref<HTMLElement>()
 const panel = ref<HTMLElement>()
+const menuBtn = ref<HTMLButtonElement>()
+
+// Lo que queda detrás del panel no recibe foco ni lectura mientras está abierto
+const setPageInert = (inert: boolean) => {
+  for (const el of header.value?.parentElement?.children ?? []) {
+    if (el !== header.value) (el as HTMLElement).inert = inert
+  }
+}
 
 const closeMenu = () => {
   isOpen.value = false
@@ -30,26 +39,35 @@ const onKeydown = (e: KeyboardEvent) => {
 // Con el panel abierto la página de atrás no se desplaza
 watch(isOpen, async (open) => {
   document.body.style.overflow = open ? 'hidden' : ''
+  setPageInert(open)
   if (open) {
     window.addEventListener('keydown', onKeydown)
     await nextTick()
     panel.value?.querySelector<HTMLElement>('.room')?.focus()
   } else {
     window.removeEventListener('keydown', onKeydown)
+    // El foco estaba en el panel que desaparece: vuelve al botón en vez de caer en <body>
+    const hadFocus = !!panel.value?.contains(document.activeElement)
+    await nextTick()
+    if (hadFocus) menuBtn.value?.focus({ preventScroll: true })
   }
 })
+
+// Cualquier cambio de ruta (logo, Volver, atrás del navegador) cierra el panel
+watch(() => route.fullPath, closeMenu)
 
 // Si la ventana crece hasta tener la columna del automapa, el panel sobra
 watch(wide, (isWide) => isWide && closeMenu())
 
 onUnmounted(() => {
   document.body.style.overflow = ''
+  setPageInert(false)
   window.removeEventListener('keydown', onKeydown)
 })
 </script>
 
 <template>
-  <header class="navbar">
+  <header ref="header" class="navbar">
     <div class="nav-left">
       <RouterLink :to="homeRoute(locale, 'inicio')" class="logo">Diego Flores</RouterLink>
       <RouterLink v-if="isDetail" :to="homeRoute(locale, 'proyectos')" class="nav-back">
@@ -69,6 +87,7 @@ onUnmounted(() => {
       </a>
       <button
         v-if="!wide"
+        ref="menuBtn"
         class="menu-btn"
         :aria-label="isOpen ? m.nav.closeMenu : m.nav.openMenu"
         :aria-expanded="isOpen"

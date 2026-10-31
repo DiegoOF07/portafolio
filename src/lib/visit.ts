@@ -47,3 +47,7 @@ export const formatElapsed = (ms: number): string => {
   const mmss = `${pad(Math.floor(seconds / 60) % 60)}:${pad(seconds % 60)}`
   return hours ? `${hours}:${mmss}` : mmss
 }
+
+// Vista: la mitad de la tarjeta en pantalla, o la mitad de la pantalla ocupada por ella (tarjetas más altas que dos pantallas)
+export const isSeen = (ratio: number, visibleHeight: number, viewportHeight: number): boolean =>
+  ratio >= 0.5 || visibleHeight >= viewportHeight * 0.5

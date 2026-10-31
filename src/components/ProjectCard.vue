@@ -7,6 +7,7 @@ import MetricCounter from '@/components/MetricCounter.vue'
 import { levelOf, type FeaturedProject } from '@/data/projects'
 import { useLocale, projectRoute } from '@/i18n'
 import { useVisitProgress } from '@/composables/useVisitProgress'
+import { isSeen } from '@/lib/visit'
 
 const props = defineProps<{
   project: FeaturedProject
@@ -19,17 +20,20 @@ const mainStat = computed(() => props.project.detail?.stats?.[0])
 
 const variant = computed(() => (props.project.lead ? 'lead' : props.project.compact ? 'compact' : 'row'))
 
-// Cuenta como visto cuando la mitad de la tarjeta estuvo en pantalla
+// Cuenta como vista con la mitad de la tarjeta en pantalla, o la mitad de la pantalla si la tarjeta es muy alta
 const { markProject } = useVisitProgress()
+// Cada 5 %: el observador solo avisa al cruzar un umbral, y una tarjeta muy alta nunca llega a los grandes
+const THRESHOLDS = Array.from({ length: 21 }, (_, i) => i / 20)
 const root = ref<HTMLElement>()
 let observer: IntersectionObserver | undefined
 
 onMounted(() => {
   observer = new IntersectionObserver(([entry]) => {
     if (!entry?.isIntersecting) return
+    if (!isSeen(entry.intersectionRatio, entry.intersectionRect.height, entry.rootBounds?.height ?? window.innerHeight)) return
     markProject(props.project.slug)
     observer?.disconnect()
-  }, { threshold: 0.5 })
+  }, { threshold: THRESHOLDS })
   if (root.value) observer.observe(root.value)
 })
 

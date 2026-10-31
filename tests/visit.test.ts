@@ -1,6 +1,6 @@
 import { test } from 'node:test'
 import assert from 'node:assert/strict'
-import { newVisit, parseVisit, markSection, markProject, markSecret, formatElapsed } from '../src/lib/visit.ts'
+import { newVisit, parseVisit, markSection, markProject, markSecret, formatElapsed, isSeen } from '../src/lib/visit.ts'
 
 test('parseVisit arranca de cero sin datos o con basura', () => {
   assert.deepEqual(parseVisit(null, 1000), newVisit(1000))
@@ -45,4 +45,12 @@ test('formatElapsed da mm:ss en la primera hora', () => {
 test('formatElapsed pasa a h:mm:ss después de una hora y sigue avanzando', () => {
   assert.equal(formatElapsed(3600_000), '1:00:00')
   assert.equal(formatElapsed(10 * 3600_000 + 65_000), '10:01:05')
+})
+
+// Una tarjeta más alta que dos pantallas nunca llega al 50 % de su área visible
+test('isSeen cuenta la mitad de la tarjeta o la mitad de la pantalla', () => {
+  assert.equal(isSeen(0.5, 300, 900), true)
+  assert.equal(isSeen(0.3, 300, 900), false)
+  assert.equal(isSeen(0.25, 450, 900), true)
+  assert.equal(isSeen(0.25, 449, 900), false)
 })
