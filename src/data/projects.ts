@@ -29,6 +29,10 @@ import mcpArquitecturaEs from '@/assets/img/mcp-arquitectura.es.svg'
 import mcpArquitecturaEn from '@/assets/img/mcp-arquitectura.en.svg'
 import diskflowArquitecturaEs from '@/assets/img/diskflow-arquitectura.es.svg'
 import diskflowArquitecturaEn from '@/assets/img/diskflow-arquitectura.en.svg'
+import diskflowExplorerDark from '@/assets/img/diskflow-explorer-dark.webp'
+import diskflowExplorerLight from '@/assets/img/diskflow-explorer-light.webp'
+import diskflowHomeDark from '@/assets/img/diskflow-home-dark.webp'
+import diskflowHomeLight from '@/assets/img/diskflow-home-light.webp'
 import graficasRust from '@/assets/img/graficas-rust.webp'
 import analizadorSintactico from '@/assets/img/analizador-sintactico.webp'
 
@@ -278,8 +282,8 @@ const featuredProjectData: FeaturedProjectData[] = [
       { name: 'SQLite', icon: sqliteLogo },
     ],
     status: {
-      es: 'Repositorio público con CI, pruebas en backend y frontend, releases automatizados y decisiones de arquitectura documentadas (ADRs). Binarios publicados para Windows.',
-      en: 'Public repository with CI, backend and frontend tests, automated releases and documented architecture decisions (ADRs). Windows builds published.',
+      es: 'Repositorio público con CI, pruebas, releases automatizados y ADRs. La v0.3 para Windows estrena identidad visual, temas claro y oscuro e ícono propio.',
+      en: 'Public repository with CI, tests, automated releases and ADRs. v0.3 for Windows brings its own visual identity, light and dark themes and icon.',
     },
     links: {
       repos: [
@@ -291,15 +295,45 @@ const featuredProjectData: FeaturedProjectData[] = [
       ],
     },
     media: {
-      type: 'diagram',
-      src: { es: diskflowArquitecturaEs, en: diskflowArquitecturaEn },
+      type: 'image',
+      src: diskflowExplorerDark,
       alt: {
-        es: 'Diagrama en tres capas: el frontend en Vue habla con una interfaz Backend implementada sobre los bindings de wailsjs; los comandos bajan al adaptador internal/desktop, el único paquete que importa Wails, y los eventos de progreso suben; el adaptador llama directamente al motor en Go, donde el escáner alimenta el índice que se guarda en SQLite',
-        en: 'Three-layer diagram: the Vue frontend talks to a Backend interface implemented on top of the wailsjs bindings; commands go down to the internal/desktop adapter, the only package that imports Wails, and progress events come back up; the adapter calls the Go engine directly, where the scanner feeds the index stored in SQLite',
+        es: 'El explorador en tema oscuro: el treemap de una carpeta de proyectos, con las carpetas en verde bosque, los archivos en arena y las entradas pequeñas agrupadas en «Otros» con rayado, junto a la tabla ordenada por tamaño en disco',
+        en: 'The explorer in the dark theme: the treemap of a projects folder, with folders in forest green, files in sand and small entries grouped as hatched "Others", next to the table sorted by size on disk',
       },
     },
     detail: {
-      gallery: [],
+      gallery: [
+        {
+          type: 'image',
+          src: diskflowExplorerLight,
+          alt: {
+            es: 'El mismo explorador en tema claro; un archivo de disco virtual lleva la etiqueta «disperso» porque ocupa en disco mucho menos de lo que declara',
+            en: 'The same explorer in the light theme; a virtual disk file carries the "sparse" badge because it takes far less on disk than it declares',
+          },
+        },
+        {
+          type: 'image',
+          src: diskflowHomeDark,
+          alt: {
+            es: 'La pantalla de inicio: cuatro carpetas guardadas con su tamaño, hace cuánto se analizaron y una barra con escala que las compara; una de ellas aparece como no disponible porque su unidad está desconectada',
+            en: 'The home screen: four saved folders with their size, how long ago they were scanned and a scaled bar that compares them; one shows as unavailable because its drive is disconnected',
+          },
+        },
+        {
+          type: 'image',
+          src: diskflowHomeLight,
+          alt: { es: 'La pantalla de inicio en tema claro', en: 'The home screen in the light theme' },
+        },
+        {
+          type: 'diagram',
+          src: { es: diskflowArquitecturaEs, en: diskflowArquitecturaEn },
+          alt: {
+            es: 'Diagrama en tres capas: el frontend en Vue habla con una interfaz Backend implementada sobre los bindings de wailsjs; los comandos bajan al adaptador internal/desktop, el único paquete que importa Wails, y los eventos de progreso suben; el adaptador llama directamente al motor en Go, donde el escáner alimenta el índice que se guarda en SQLite',
+            en: 'Three-layer diagram: the Vue frontend talks to a Backend interface implemented on top of the wailsjs bindings; commands go down to the internal/desktop adapter, the only package that imports Wails, and progress events come back up; the adapter calls the Go engine directly, where the scanner feeds the index stored in SQLite',
+          },
+        },
+      ],
       stats: [
         { value: '~100k', label: { es: 'entradas indexadas', en: 'entries indexed' } },
         { value: '~2.4 s', label: { es: 'por escaneo, sobre NTFS', en: 'per scan, on NTFS' } },
@@ -310,8 +344,8 @@ const featuredProjectData: FeaturedProjectData[] = [
         {
           heading: { es: 'Qué problema resuelve', en: 'The problem it solves' },
           body: {
-            es: 'En un workspace de desarrollo el espacio se va en lugares que no se ven: carpetas node_modules repetidas en cada proyecto, artefactos de build y cachés de herramientas. Un explorador de disco genérico muestra que una carpeta pesa mucho, pero no ayuda a entender por qué. DiskFlow escanea una carpeta, guarda el resultado en un índice local y lo muestra como un treemap y una tabla sincronizados: al pasar el cursor por uno se resalta el elemento en el otro, y se puede entrar en cualquier carpeta.\n\nEs de solo lectura por diseño: nunca borra, mueve ni abre archivos, y no hace peticiones de red. Qué limpiar lo decide quien lo usa.',
-            en: 'In a development workspace, space goes to places you do not see: node_modules folders repeated in every project, build artifacts and tool caches. A generic disk explorer shows that a folder is heavy but does not help you understand why. DiskFlow scans a folder, stores the result in a local index and shows it as a synchronized treemap and table: hovering in one highlights the item in the other, and you can drill down into any folder.\n\nIt is read-only by design: it never deletes, moves or opens files, and it makes no network requests. What to clean up is left to the user.',
+            es: 'En un workspace de desarrollo el espacio se va en lugares que no se ven: carpetas node_modules repetidas en cada proyecto, artefactos de build y cachés de herramientas. Un explorador de disco genérico muestra que una carpeta pesa mucho, pero no ayuda a entender por qué. DiskFlow escanea una carpeta, guarda el resultado en un índice local y lo muestra como un treemap y una tabla sincronizados: al pasar el cursor por uno se resalta el elemento en el otro, y se puede entrar en cualquier carpeta.\n\nLos tamaños son los que los archivos ocupan en disco, no los que declaran. La primera prueba sobre C: sumó 1,2 TiB en un disco de 893 GiB, porque una imagen de disco virtual declaraba 512 GiB y ocupaba menos de 3. Desde la v0.2 los archivos dispersos, los comprimidos con NTFS y los de OneDrive que solo están en la nube cuentan por lo que ocupan de verdad. Las carpetas analizadas quedan guardadas en la pantalla de inicio, y se puede buscar por nombre en todo el índice.\n\nEs de solo lectura por diseño: nunca borra, mueve ni abre archivos, y no hace peticiones de red. Qué limpiar lo decide quien lo usa.',
+            en: 'In a development workspace, space goes to places you do not see: node_modules folders repeated in every project, build artifacts and tool caches. A generic disk explorer shows that a folder is heavy but does not help you understand why. DiskFlow scans a folder, stores the result in a local index and shows it as a synchronized treemap and table: hovering in one highlights the item in the other, and you can drill down into any folder.\n\nSizes are what files take on disk, not what they declare. The first test on C: added up to 1.2 TiB on an 893 GiB drive, because a virtual disk image declared 512 GiB and took less than 3. Since v0.2, sparse files, NTFS-compressed files and cloud-only OneDrive files count for what they really take. Scanned folders are saved on the home screen, and you can search by name across the whole index.\n\nIt is read-only by design: it never deletes, moves or opens files, and it makes no network requests. What to clean up is left to the user.',
           },
         },
         {
@@ -319,6 +353,13 @@ const featuredProjectData: FeaturedProjectData[] = [
           body: {
             es: 'Son tres capas con fronteras explícitas. El motor de escaneo (internal/engine) es Go puro y no sabe que existe una interfaz: escanea, indexa en SQLite y responde consultas. Wails está confinado a un solo paquete adaptador (internal/desktop), el único que lo importa. Y el frontend en Vue nunca toca los bindings generados: depende de una interfaz Backend, y solo frontend/src/backend/ sabe que del otro lado está Wails.\n\nLa comunicación son comandos (StartScan, CancelScan, Children) y dos eventos: scan:progress, limitado a 10 por segundo para no saturar la interfaz, y scan:done con el resumen. Las consultas siempre van paginadas, así que la interfaz nunca recibe el índice completo.\n\nAntes de elegir Wails prototipé dos opciones con el mismo motor y la misma interfaz, cambiando solo el adaptador. Tauri 2 con el motor como proceso aparte aislaba mejor los fallos, pero necesitaba unas 350 líneas de integración con tipos escritos a mano, contra unas 100 con Wails, y compilaba en ~380 s en frío frente a ~35 s. Esa comparación quedó registrada en un ADR, igual que la decisión de usar SQLite con un driver en Go puro (sin CGO, así que no hace falta un compilador de C en Windows) y sin ORM.',
             en: 'There are three layers with explicit boundaries. The scan engine (internal/engine) is pure Go and has no idea there is a UI: it scans, indexes into SQLite and answers queries. Wails is confined to a single adapter package (internal/desktop), the only one that imports it. And the Vue frontend never touches the generated bindings: it depends on a Backend interface, and only frontend/src/backend/ knows that Wails is on the other side.\n\nCommunication is a set of commands (StartScan, CancelScan, Children) and two events: scan:progress, capped at 10 per second so it does not flood the UI, and scan:done with the summary. Queries are always paginated, so the UI never receives the whole index.\n\nBefore choosing Wails I prototyped two options with the same engine and the same UI, changing only the adapter. Tauri 2 with the engine as a separate process isolated failures better, but it needed about 350 lines of integration code with hand-written types, against about 100 with Wails, and took ~380 s for a cold build versus ~35 s. That comparison is recorded in an ADR, as is the decision to use SQLite with a pure-Go driver (no CGO, so no C compiler is needed on Windows) and no ORM.',
+          },
+        },
+        {
+          heading: { es: 'Diseño', en: 'Design' },
+          body: {
+            es: 'La v0.3 le dio a DiskFlow una identidad propia a partir de una idea: el disco es un territorio y el treemap, su mapa. Las carpetas se pintan como bosque, los archivos como arena y las entradas pequeñas agrupadas en «Otros» como terreno rayado, igual que las zonas mixtas de un mapa. Esos colores de uso del suelo quedan reservados para las categorías del auditor de proyectos. El ícono son tres curvas de nivel que dibujan una D.\n\nLa tipografía es IBM Plex Sans, elegida porque distingue I, l y 1 en nombres de archivo, con su versión condensada para que quepa más de un nombre en cada celda. Los temas claro y oscuro siguen a Windows, y el diseño se adapta con container queries: la tabla oculta sus columnas secundarias según el espacio que tiene ella, no según el ancho de la ventana.\n\nLa accesibilidad se verificó midiendo: un script calcula el contraste WCAG de 30 pares de colores en cada tema (4,5:1 para texto, 3:1 para gráficos y bordes de controles), y los menús siguen el patrón de WAI-ARIA, con flechas, Inicio, Fin y retorno del foco.',
+            en: 'v0.3 gave DiskFlow its own identity, built on one idea: the disk is a territory and the treemap is its map. Folders are painted as forest, files as sand, and small entries grouped into "Others" as hatched ground, like the mixed zones on a map. Those land-use colors are reserved for the categories of the project auditor. The icon is three contour lines that draw a D.\n\nThe typeface is IBM Plex Sans, chosen because it tells I, l and 1 apart in file names, with its condensed cut so more of a name fits in each cell. The light and dark themes follow Windows, and the layout adapts with container queries: the table hides its secondary columns based on the space it has, not on the window width.\n\nAccessibility was checked by measuring: a script computes the WCAG contrast of 30 color pairs in each theme (4.5:1 for text, 3:1 for graphics and control borders), and the menus follow the WAI-ARIA pattern, with arrow keys, Home, End and focus return.',
           },
         },
         {
@@ -338,8 +379,8 @@ const featuredProjectData: FeaturedProjectData[] = [
         {
           heading: { es: 'Limitaciones y roadmap', en: 'Limitations and roadmap' },
           body: {
-            es: 'Por ahora solo funciona en Windows 10/11 x64, y los tamaños son lógicos, no en disco: los archivos dispersos, comprimidos o que solo existen en la nube (OneDrive) cuentan con su tamaño completo, así que el total puede superar el uso real. Los binarios todavía no están firmados, por lo que SmartScreen muestra una advertencia la primera vez.\n\nLa v0.2 contempla tamaños en disco, carpetas guardadas, búsqueda, «Mostrar en el Explorador» y «Copiar ruta», y estados de error más claros. Más adelante: exclusiones definidas por el usuario, categorías por tipo de archivo y exportación a JSON/CSV.',
-            en: 'For now it only runs on Windows 10/11 x64, and sizes are logical, not on-disk: sparse, compressed and cloud-only (OneDrive) files count at their full size, so totals can exceed real disk usage. The binaries are not code-signed yet, so SmartScreen shows a warning on first run.\n\nv0.2 plans on-disk sizes, saved folders, search, "Show in Explorer" and "Copy path", and clearer error states. Later: user-defined exclusions, file-type categories and export to JSON/CSV.',
+            es: 'Por ahora solo funciona en Windows 10/11 x64, y analiza una carpeta a la vez. Los hard links se cuentan una vez por enlace, así que carpetas como C:\\Windows\\WinSxS pueden parecer más grandes de lo que ocupan. Los binarios todavía no están firmados, por lo que SmartScreen muestra una advertencia la primera vez.\n\nLa v0.4 será el auditor de proyectos: detectar proyectos (Node, Go, Python, Rust…), clasificar el espacio en categorías como dependencias y artefactos de build, y editar exclusiones. Más adelante: historial de escaneos y comparaciones, exportación a JSON/CSV e instalador firmado.',
+            en: 'For now it only runs on Windows 10/11 x64, and it scans one folder at a time. Hard links are counted once per link, so folders such as C:\\Windows\\WinSxS can look bigger than they are. The binaries are not code-signed yet, so SmartScreen shows a warning on first run.\n\nv0.4 will be the project auditor: detect projects (Node, Go, Python, Rust…), classify space into categories such as dependencies and build artifacts, and edit exclusions. Later: scan history and comparisons, export to JSON/CSV and a signed installer.',
           },
         },
       ],
