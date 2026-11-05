@@ -1,7 +1,6 @@
 <script setup lang="ts">
 import { computed } from 'vue'
 import { Link, Github, Play } from 'lucide-vue-next'
-import GlassCard from '@/components/GlassCard.vue'
 import MediaSlot from '@/components/MediaSlot.vue'
 import TechBadge from './TechBadge.vue'
 import type { ExperimentProject } from '@/data/projects'
@@ -20,7 +19,7 @@ const techIcons = computed(() =>
 </script>
 
 <template>
-  <GlassCard variant="project" class="experiment-card">
+  <article class="experiment-card">
     <MediaSlot :media="project.media" :fallback-icons="techIcons" class="experiment-media" aspect="16/10" />
     <div class="experiment-content">
       <h4>{{ t(project.title) }}</h4>
@@ -28,8 +27,7 @@ const techIcons = computed(() =>
       <div class="techs">
         <TechBadge v-for="(tech, idx) in project.techs" :key="idx" :name="tech.name" :icon="tech.icon" />
       </div>
-      <!-- Serie de varios repos: una fila por pieza, para no apilar seis
-           links sueltos en una tarjeta que debe seguir siendo compacta -->
+      <!-- Serie de varios repos: una fila por pieza en vez de seis links sueltos -->
       <ul v-if="project.parts" class="parts">
         <li v-for="part in project.parts" :key="part.repo">
           <span class="part-name">{{ t(part.name) }}</span>
@@ -58,7 +56,7 @@ const techIcons = computed(() =>
         </a>
       </div>
     </div>
-  </GlassCard>
+  </article>
 </template>
 
 <style scoped>
@@ -67,6 +65,9 @@ const techIcons = computed(() =>
   display: flex;
   flex-direction: column;
   color: var(--ink);
+  background: var(--surface);
+  border: 1px solid var(--line);
+  border-radius: var(--r-surface);
 }
 
 .experiment-media {
@@ -87,7 +88,7 @@ h4 {
 
 .description {
   font-size: 0.85rem;
-  color: var(--ink-dim);
+  color: var(--text-dim);
   margin: 0;
 }
 
@@ -105,8 +106,7 @@ h4 {
   font-size: var(--step--1);
 }
 
-/* Lista de piezas de una serie. Cada fila se parte sola si la tarjeta
-   llega a su ancho mínimo (280px en la rejilla de experimentales). */
+/* Piezas de una serie: cada fila se parte sola en el ancho mínimo de la tarjeta (280px) */
 .parts {
   list-style: none;
   margin: var(--s-2) 0 0;

@@ -19,13 +19,12 @@ defineProps<{
   gap: 6px;
   padding: 6px 10px;
   border-radius: var(--r-badge);
-  backdrop-filter: var(--glass-blur-badge);
-  -webkit-backdrop-filter: var(--glass-blur-badge);
-  background: var(--glass-bg-badge);
-  border: var(--glass-border-badge);
-  color: var(--ink);
-  font-size: 0.85rem;
-  font-weight: 500;
+  background: var(--surface);
+  border: 1px solid var(--line);
+  color: var(--text);
+  font-family: var(--font-mono);
+  font-size: 0.8rem;
+  font-weight: 400;
 }
 
 .tech-badge img {

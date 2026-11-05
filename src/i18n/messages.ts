@@ -2,7 +2,8 @@ const es = {
   meta: {
     title: 'Diego Flores — Full-Stack Developer',
     description:
-      'Portafolio de Diego Flores, desarrollador full-stack (Go, Vue, TypeScript, PostgreSQL). Proyectos en equipo con clientes reales y herramientas propias. Disponible para oportunidades remotas.',
+      'Desarrollador full-stack (Go, Vue, TypeScript, PostgreSQL) con proyectos para clientes reales y herramientas propias. Disponible para trabajo remoto.',
+    imageAlt: 'Diego Flores, Full-Stack Developer en Guatemala, disponible para trabajo remoto',
   },
   nav: {
     inicio: 'Inicio',
@@ -16,25 +17,46 @@ const es = {
     closeMenu: 'Cerrar menú',
     switchLabel: 'EN',
     switchAria: 'Read this site in English',
+    back: 'Volver',
+  },
+  status: {
+    location: 'Guatemala',
+    tz: 'GMT-6',
+    available: 'Disponible para trabajo remoto',
+  },
+  results: {
+    kicker: 'Recorrido completado',
+    title: 'Gracias por llegar hasta aquí',
+    projects: 'Proyectos vistos',
+    sections: 'Secciones',
+    secrets: 'Secretos',
+    time: 'Tiempo',
+    note: 'calculado en tu navegador · no se guarda ni se envía a ningún lado',
+    next: 'Siguiente nivel: hablemos',
+  },
+  secret: {
+    title: 'Modo dios',
+    note: 'Si reconociste IDDQD, ya tenemos algo en común. Escríbeme: de eso y de trabajo se puede hablar.',
+    close: 'Cerrar',
+  },
+  automap: {
+    label: 'Mapa del sitio',
+    wall: 'Una pared que suena hueca',
+    secretRoom: 'Secreto',
   },
   hero: {
-    availability: 'Disponible para oportunidades remotas',
     role: 'Full-Stack Developer',
     lead: 'Construyo software completo, del modelo de datos a la interfaz y el despliegue, con curiosidad por entender cómo funcionan los sistemas por dentro.',
     seeProjects: 'Ver proyectos',
     writeMe: 'Escríbeme',
     downloadCv: 'Descargar CV',
-    caption:
-      'En pantalla: el constructor de formularios dinámicos que desarrollé en equipo para una empresa de transporte. Las preguntas se crean sin tocar código y las respuestas generan las cotizaciones.',
-    seeProject: 'Ver el proyecto',
-    shotAlt:
-      'Constructor del formulario dinámico: ventana para agregar una pregunta con su tipo, sus opciones y si es obligatoria',
+    photoAlt: 'Diego Flores',
   },
   about: {
     title: 'Sobre mí',
     paragraphs: [
       'Estudio Ingeniería en Ciencias de la Computación en la Universidad del Valle de Guatemala y soy desarrollador full-stack, principalmente con Go, Vue y bases de datos relacionales y en grafos. En la universidad trabajé en equipo con dos clientes reales, una empresa de transporte y una ONG, desde entender su problema hasta el despliegue.',
-      'Fuera de clase desarrollo herramientas propias como DiskFlow, con CI, pruebas y releases publicados. Lo complemento con curiosidad por temas menos comunes: construir un compilador básico, trabajar con sistemas operativos a bajo nivel o escribir un raytracer desde cero. Creo que entender los fundamentos, no solo los frameworks, es lo que hace la diferencia a largo plazo.',
+      'Fuera de clase desarrollo herramientas propias como DiskFlow, con CI, pruebas y releases publicados. Lo complemento con curiosidad por temas menos comunes: generar analizadores léxicos y sintácticos, montar un sistema Linux desde cero con Linux From Scratch o escribir un raytracer. Creo que entender los fundamentos, no solo los frameworks, es lo que hace la diferencia a largo plazo.',
     ],
   },
   sections: {
@@ -62,14 +84,14 @@ const es = {
   contact: {
     title: 'Contacto',
     // U+2011: guion no separable
-    lead: 'Busco oportunidades remotas como desarrollador full‑stack. Si algo de lo que viste encaja con lo que tu equipo está construyendo, escríbeme.',
+    lead: 'Estoy disponible para trabajo remoto como desarrollador full‑stack. Si algo de lo que viste encaja con lo que tu equipo está construyendo, escríbeme.',
     copy: 'Copiar',
     copied: 'Copiado',
     downloadCv: 'Descargar CV',
     otherCv: 'CV en inglés',
     location: 'Ubicación',
     education: 'Formación',
-    educationValue: 'Ingeniería en Ciencias de la Computación',
+    educationValue: 'Ingeniería en Ciencias de la Computación, Universidad del Valle de Guatemala (graduación esperada: 2027)',
     backToTop: 'Volver arriba',
   },
 }
@@ -78,7 +100,8 @@ const en: typeof es = {
   meta: {
     title: 'Diego Flores — Full-Stack Developer',
     description:
-      'Portfolio of Diego Flores, full-stack developer (Go, Vue, TypeScript, PostgreSQL). Team projects with real clients and tools of my own. Open to remote opportunities.',
+      'Full-stack developer (Go, Vue, TypeScript, PostgreSQL) with projects for real clients and tools of my own. Open to remote work.',
+    imageAlt: 'Diego Flores, Full-Stack Developer in Guatemala, open to remote work',
   },
   nav: {
     inicio: 'Home',
@@ -92,25 +115,46 @@ const en: typeof es = {
     closeMenu: 'Close menu',
     switchLabel: 'ES',
     switchAria: 'Ver el sitio en español',
+    back: 'Back',
+  },
+  status: {
+    location: 'Guatemala',
+    tz: 'GMT-6',
+    available: 'Open to remote work',
+  },
+  results: {
+    kicker: 'Run complete',
+    title: 'Thanks for making it this far',
+    projects: 'Projects seen',
+    sections: 'Sections',
+    secrets: 'Secrets',
+    time: 'Time',
+    note: 'computed in your browser · never stored or sent anywhere',
+    next: 'Next level: let’s talk',
+  },
+  secret: {
+    title: 'God mode',
+    note: 'If you recognized IDDQD, we already have something in common. Get in touch: we can talk about that, and about work.',
+    close: 'Close',
+  },
+  automap: {
+    label: 'Site map',
+    wall: 'A wall that sounds hollow',
+    secretRoom: 'Secret',
   },
   hero: {
-    availability: 'Open to remote opportunities',
     role: 'Full-Stack Developer',
     lead: 'I build complete software, from the data model to the interface and deployment, with a curiosity for how systems work on the inside.',
     seeProjects: 'See projects',
     writeMe: 'Get in touch',
     downloadCv: 'Download résumé',
-    caption:
-      'On screen: the dynamic form builder I developed with my team for a transportation company. Questions are created without touching code, and the answers generate the price quotes.',
-    seeProject: 'See the project',
-    shotAlt:
-      'Dynamic form builder: dialog for adding a question with its type, its options and whether it is required',
+    photoAlt: 'Diego Flores',
   },
   about: {
     title: 'About me',
     paragraphs: [
-      'I study Computer Science at Universidad del Valle de Guatemala and work as a full-stack developer, mostly with Go, Vue, and relational and graph databases. At university I worked in teams with two real clients, a transportation company and a non-profit, from understanding their problem through to deployment.',
-      'Outside class I build my own tools, like DiskFlow, with CI, tests and published releases. I round that out with curiosity for less common topics: building a basic compiler, working with operating systems at a low level, or writing a raytracer from scratch. I believe understanding the fundamentals, not just the frameworks, is what makes the difference in the long run.',
+      "I'm a Computer Science student at Universidad del Valle de Guatemala and a full-stack developer, mostly with Go, Vue, and relational and graph databases. At university I worked in teams with two real clients, a transportation company and a non-profit, from understanding their problem through to deployment.",
+      'Outside class I build my own tools, like DiskFlow, with CI, tests and published releases. I round that out with curiosity for less common topics: generating lexers and parsers, building a Linux system from scratch with Linux From Scratch, or writing a raytracer. I believe understanding the fundamentals, not just the frameworks, is what makes the difference in the long run.',
     ],
   },
   sections: {
@@ -137,14 +181,14 @@ const en: typeof es = {
   },
   contact: {
     title: 'Contact',
-    lead: "I'm looking for remote opportunities as a full‑stack developer. If something you saw fits what your team is building, get in touch.",
+    lead: "I'm open to remote work as a full‑stack developer. If something you saw fits what your team is building, get in touch.",
     copy: 'Copy',
     copied: 'Copied',
     downloadCv: 'Download résumé',
     otherCv: 'Résumé in Spanish',
     location: 'Location',
     education: 'Education',
-    educationValue: 'B.S. in Computer Science',
+    educationValue: 'B.S. in Computer Science, Universidad del Valle de Guatemala (expected graduation: 2027)',
     backToTop: 'Back to top',
   },
 }

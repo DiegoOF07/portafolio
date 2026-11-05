@@ -29,6 +29,10 @@ import mcpArquitecturaEs from '@/assets/img/mcp-arquitectura.es.svg'
 import mcpArquitecturaEn from '@/assets/img/mcp-arquitectura.en.svg'
 import diskflowArquitecturaEs from '@/assets/img/diskflow-arquitectura.es.svg'
 import diskflowArquitecturaEn from '@/assets/img/diskflow-arquitectura.en.svg'
+import diskflowExplorerDark from '@/assets/img/diskflow-explorer-dark.webp'
+import diskflowExplorerLight from '@/assets/img/diskflow-explorer-light.webp'
+import diskflowHomeDark from '@/assets/img/diskflow-home-dark.webp'
+import diskflowHomeLight from '@/assets/img/diskflow-home-light.webp'
 import graficasRust from '@/assets/img/graficas-rust.webp'
 import analizadorSintactico from '@/assets/img/analizador-sintactico.webp'
 
@@ -44,9 +48,7 @@ export interface TechRef {
 }
 
 export interface ProjectLinks {
-  // Lista con etiqueta propia: un proyecto puede tener uno, dos o tres
-  // repos y no siempre son "frontend" y "backend" (ver el proyecto MCP,
-  // que son servidor, cliente y release).
+  // Con etiqueta propia: no siempre son frontend y backend (MCP: servidor, cliente y release)
   repos?: { label: Localized; url: string }[]
   demo?: string           // link a demo en vivo
   privacyNote?: Localized // usar cuando el proyecto es de un cliente real
@@ -67,6 +69,8 @@ export interface FeaturedProject {
   tagline: Localized
   // 2. contexto: académico/personal, cliente real, duración, solo/equipo
   context: Localized
+  // Versión corta de context para la etiqueta de nivel de la tarjeta
+  kind: Localized
   // 3. el reto técnico interesante
   challenge: Localized
   // 4. stack
@@ -75,19 +79,17 @@ export interface FeaturedProject {
   status?: Localized
   // 6. links
   links: ProjectLinks
-  // Captura principal. Los proyectos sin capturas reales no la llevan:
-  // se muestran como fila de texto en vez de con una imagen de relleno.
+  // Sin capturas reales no lleva imagen: se muestra como fila de texto
   media?: MediaAsset
   // Pieza principal de la sección: se muestra grande, con su captura.
   lead?: boolean
   // Al final de la sección, en formato reducido
   compact?: boolean
-  // Se deriva del contenido (ver withDerivedDetail): true solo si el
-  // detalle tiene galería o descripción, para no enlazar a una página vacía.
+  // Derivado (withDerivedDetail): solo si hay galería o secciones, para no enlazar a una página vacía
   hasDetail: boolean
   detail?: {
     gallery: MediaAsset[]
-    stats?: { value: string; label: Localized }[]
+    stats?: { value: string | Localized; label: Localized }[]
     // Párrafos del cuerpo separados por una línea en blanco
     sections?: { heading: Localized; body: Localized }[]
   }
@@ -100,8 +102,7 @@ export interface ExperimentProject {
   techs: TechRef[]
   media: MediaAsset
   links: ProjectLinks
-  // Para una serie de proyectos hermanos: cada pieza con su repo y su video,
-  // en vez de apilar seis links sueltos en una tarjeta compacta.
+  // Serie de proyectos hermanos: cada pieza con su repo y su video
   parts?: { name: Localized; repo: string; video?: string }[]
 }
 
@@ -124,6 +125,7 @@ const featuredProjectData: FeaturedProjectData[] = [
       es: 'Proyecto académico · en equipo · cliente real (transporte) · 1 año · Scrum/Jira',
       en: 'Academic project · team · real client (transportation) · 1 year · Scrum/Jira',
     },
+    kind: { es: 'Académico · en equipo · cliente real', en: 'Academic · team · real client' },
     challenge: {
       es: 'Diseñar un subsistema de formularios dinámicos, donde el administrador agrega, edita o elimina preguntas sin que un desarrollador toque el código, y esas respuestas generan automáticamente las cotizaciones.',
       en: 'Designing a dynamic form subsystem where the administrator adds, edits or removes questions without a developer touching the code, and the answers automatically generate the price quotes.',
@@ -135,8 +137,8 @@ const featuredProjectData: FeaturedProjectData[] = [
       { name: 'Docker', icon: dockerLogo },
     ],
     status: {
-      es: 'Desplegado en AWS (actualmente fuera de línea).',
-      en: 'Deployed on AWS (currently offline).',
+      es: 'Estuvo desplegado en AWS mientras la empresa lo usó; se dio de baja cuando dejó de usarlo.',
+      en: 'It ran on AWS while the company used it and was taken down once they stopped.',
     },
     links: {
       repos: [
@@ -190,7 +192,7 @@ const featuredProjectData: FeaturedProjectData[] = [
         },
       ],
       stats: [
-        { value: '~1 año', label: { es: 'de desarrollo en equipo', en: 'of team development' } },
+        { value: { es: '~1 año', en: '~1 year' }, label: { es: 'de desarrollo en equipo', en: 'of team development' } },
         { value: '5', label: { es: 'módulos de gestión', en: 'management modules' } },
         { value: 'Scrum', label: { es: 'con sprints en Jira', en: 'with sprints in Jira' } },
       ],
@@ -237,9 +239,10 @@ const featuredProjectData: FeaturedProjectData[] = [
       es: 'Proyecto académico · en equipo · cliente real (ONG) · en curso · mi rol: backend',
       en: 'Academic project · team · real client (non-profit) · ongoing · my role: backend',
     },
+    kind: { es: 'Académico · en equipo · cliente real', en: 'Academic · team · real client' },
     challenge: {
-      es: 'Diseñar el sistema completo siguiendo fases formales de ingeniería de software, manteniéndolo usable para personal no técnico de la fundación. Como resultado se logra la gestión de pacientes, donaciones, eventos y voluntarios centralizada en una sola plataforma hecha a la medida.',
-      en: "Designing the whole system through formal software engineering phases while keeping it usable for the foundation's non-technical staff. The result brings patients, donations, events and volunteers together in a single platform built to measure.",
+      es: 'Desarrollar en equipo el sistema completo a partir de las especificaciones de la fundación, siguiendo fases formales de ingeniería de software y con roles separados: yo me encargué del backend. El reto es centralizar pacientes, donaciones, eventos y voluntarios en una sola plataforma que el personal no técnico pueda usar sin ayuda.',
+      en: "Building the whole system as a team from the foundation's specifications, following formal software engineering phases with separate roles: I was responsible for the backend. The challenge is bringing patients, donations, events and volunteers together in a single platform that non-technical staff can use on their own.",
     },
     techs: [
       { name: 'Go', icon: goLogo },
@@ -263,9 +266,10 @@ const featuredProjectData: FeaturedProjectData[] = [
       en: 'A desktop app that shows where the space goes in a development workspace (projects, dependencies, build artifacts) through a synchronized treemap and table, without ever modifying your files.',
     },
     context: {
-      es: 'Proyecto personal · individual · 2026 · v0.1 en desarrollo',
-      en: 'Personal project · solo · 2026 · v0.1 in development',
+      es: 'Proyecto personal · individual · 2026 · en desarrollo activo',
+      en: 'Personal project · solo · 2026 · in active development',
     },
+    kind: { es: 'Personal · individual', en: 'Personal · solo' },
     challenge: {
       es: 'Construir un motor de escaneo concurrente que indexa ~100k entradas en ~2.4 s usando menos de 10 MB de heap, con progreso en vivo y cancelación, y mantenerlo independiente de la interfaz para poder probarlo por separado.',
       en: 'Building a concurrent scan engine that indexes ~100k entries in ~2.4 s using under 10 MB of heap, with live progress and cancellation, and keeping it independent of the UI so it can be tested on its own.',
@@ -278,28 +282,58 @@ const featuredProjectData: FeaturedProjectData[] = [
       { name: 'SQLite', icon: sqliteLogo },
     ],
     status: {
-      es: 'Repositorio público con CI, pruebas en backend y frontend, releases automatizados y decisiones de arquitectura documentadas (ADRs). Pre-release para Windows.',
-      en: 'Public repository with CI, backend and frontend tests, automated releases and documented architecture decisions (ADRs). Pre-release available for Windows.',
+      es: 'Repositorio público con CI, pruebas, releases automatizados y ADRs. La v0.3 para Windows estrena identidad visual, temas claro y oscuro e ícono propio.',
+      en: 'Public repository with CI, tests, automated releases and ADRs. v0.3 for Windows brings its own visual identity, light and dark themes and icon.',
     },
     links: {
       repos: [
         { label: { es: 'Repositorio', en: 'Repository' }, url: 'https://github.com/DiegoOF07/Diskflow' },
         {
-          label: { es: 'Pre-release v0.1.0-rc.1', en: 'Pre-release v0.1.0-rc.1' },
-          url: 'https://github.com/DiegoOF07/Diskflow/releases/tag/v0.1.0-rc.1',
+          label: { es: 'Releases', en: 'Releases' },
+          url: 'https://github.com/DiegoOF07/Diskflow/releases',
         },
       ],
     },
     media: {
-      type: 'diagram',
-      src: { es: diskflowArquitecturaEs, en: diskflowArquitecturaEn },
+      type: 'image',
+      src: diskflowExplorerDark,
       alt: {
-        es: 'Diagrama en tres capas: el frontend en Vue habla con una interfaz Backend implementada sobre los bindings de wailsjs; los comandos bajan al adaptador internal/desktop, el único paquete que importa Wails, y los eventos de progreso suben; el adaptador llama directamente al motor en Go, donde el escáner alimenta el índice que se guarda en SQLite',
-        en: 'Three-layer diagram: the Vue frontend talks to a Backend interface implemented on top of the wailsjs bindings; commands go down to the internal/desktop adapter, the only package that imports Wails, and progress events come back up; the adapter calls the Go engine directly, where the scanner feeds the index stored in SQLite',
+        es: 'El explorador en tema oscuro: el treemap de una carpeta de proyectos, con las carpetas en verde bosque, los archivos en arena y las entradas pequeñas agrupadas en «Otros» con rayado, junto a la tabla ordenada por tamaño en disco',
+        en: 'The explorer in the dark theme: the treemap of a projects folder, with folders in forest green, files in sand and small entries grouped as hatched "Others", next to the table sorted by size on disk',
       },
     },
     detail: {
-      gallery: [],
+      gallery: [
+        {
+          type: 'image',
+          src: diskflowExplorerLight,
+          alt: {
+            es: 'El mismo explorador en tema claro; un archivo de disco virtual lleva la etiqueta «disperso» porque ocupa en disco mucho menos de lo que declara',
+            en: 'The same explorer in the light theme; a virtual disk file carries the "sparse" badge because it takes far less on disk than it declares',
+          },
+        },
+        {
+          type: 'image',
+          src: diskflowHomeDark,
+          alt: {
+            es: 'La pantalla de inicio: cuatro carpetas guardadas con su tamaño, hace cuánto se analizaron y una barra con escala que las compara; una de ellas aparece como no disponible porque su unidad está desconectada',
+            en: 'The home screen: four saved folders with their size, how long ago they were scanned and a scaled bar that compares them; one shows as unavailable because its drive is disconnected',
+          },
+        },
+        {
+          type: 'image',
+          src: diskflowHomeLight,
+          alt: { es: 'La pantalla de inicio en tema claro', en: 'The home screen in the light theme' },
+        },
+        {
+          type: 'diagram',
+          src: { es: diskflowArquitecturaEs, en: diskflowArquitecturaEn },
+          alt: {
+            es: 'Diagrama en tres capas: el frontend en Vue habla con una interfaz Backend implementada sobre los bindings de wailsjs; los comandos bajan al adaptador internal/desktop, el único paquete que importa Wails, y los eventos de progreso suben; el adaptador llama directamente al motor en Go, donde el escáner alimenta el índice que se guarda en SQLite',
+            en: 'Three-layer diagram: the Vue frontend talks to a Backend interface implemented on top of the wailsjs bindings; commands go down to the internal/desktop adapter, the only package that imports Wails, and progress events come back up; the adapter calls the Go engine directly, where the scanner feeds the index stored in SQLite',
+          },
+        },
+      ],
       stats: [
         { value: '~100k', label: { es: 'entradas indexadas', en: 'entries indexed' } },
         { value: '~2.4 s', label: { es: 'por escaneo, sobre NTFS', en: 'per scan, on NTFS' } },
@@ -310,8 +344,8 @@ const featuredProjectData: FeaturedProjectData[] = [
         {
           heading: { es: 'Qué problema resuelve', en: 'The problem it solves' },
           body: {
-            es: 'En un workspace de desarrollo el espacio se va en lugares que no se ven: carpetas node_modules repetidas en cada proyecto, artefactos de build y cachés de herramientas. Un explorador de disco genérico muestra que una carpeta pesa mucho, pero no ayuda a entender por qué. DiskFlow escanea una carpeta, guarda el resultado en un índice local y lo muestra como un treemap y una tabla sincronizados: al pasar el cursor por uno se resalta el elemento en el otro, y se puede entrar en cualquier carpeta.\n\nEs de solo lectura por diseño: nunca borra, mueve ni abre archivos, y no hace peticiones de red. Qué limpiar lo decide quien lo usa.',
-            en: 'In a development workspace, space goes to places you do not see: node_modules folders repeated in every project, build artifacts and tool caches. A generic disk explorer shows that a folder is heavy but does not help you understand why. DiskFlow scans a folder, stores the result in a local index and shows it as a synchronized treemap and table: hovering in one highlights the item in the other, and you can drill down into any folder.\n\nIt is read-only by design: it never deletes, moves or opens files, and it makes no network requests. What to clean up is left to the user.',
+            es: 'En un workspace de desarrollo el espacio se va en lugares que no se ven: carpetas node_modules repetidas en cada proyecto, artefactos de build y cachés de herramientas. Un explorador de disco genérico muestra que una carpeta pesa mucho, pero no ayuda a entender por qué. DiskFlow escanea una carpeta, guarda el resultado en un índice local y lo muestra como un treemap y una tabla sincronizados: al pasar el cursor por uno se resalta el elemento en el otro, y se puede entrar en cualquier carpeta.\n\nLos tamaños son los que los archivos ocupan en disco, no los que declaran. La primera prueba sobre C: sumó 1,2 TiB en un disco de 893 GiB, porque una imagen de disco virtual declaraba 512 GiB y ocupaba menos de 3. Desde la v0.2 los archivos dispersos, los comprimidos con NTFS y los de OneDrive que solo están en la nube cuentan por lo que ocupan de verdad. Las carpetas analizadas quedan guardadas en la pantalla de inicio, y se puede buscar por nombre en todo el índice.\n\nEs de solo lectura por diseño: nunca borra, mueve ni abre archivos, y no hace peticiones de red. Qué limpiar lo decide quien lo usa.',
+            en: 'In a development workspace, space goes to places you do not see: node_modules folders repeated in every project, build artifacts and tool caches. A generic disk explorer shows that a folder is heavy but does not help you understand why. DiskFlow scans a folder, stores the result in a local index and shows it as a synchronized treemap and table: hovering in one highlights the item in the other, and you can drill down into any folder.\n\nSizes are what files take on disk, not what they declare. The first test on C: added up to 1.2 TiB on an 893 GiB drive, because a virtual disk image declared 512 GiB and took less than 3. Since v0.2, sparse files, NTFS-compressed files and cloud-only OneDrive files count for what they really take. Scanned folders are saved on the home screen, and you can search by name across the whole index.\n\nIt is read-only by design: it never deletes, moves or opens files, and it makes no network requests. What to clean up is left to the user.',
           },
         },
         {
@@ -319,6 +353,13 @@ const featuredProjectData: FeaturedProjectData[] = [
           body: {
             es: 'Son tres capas con fronteras explícitas. El motor de escaneo (internal/engine) es Go puro y no sabe que existe una interfaz: escanea, indexa en SQLite y responde consultas. Wails está confinado a un solo paquete adaptador (internal/desktop), el único que lo importa. Y el frontend en Vue nunca toca los bindings generados: depende de una interfaz Backend, y solo frontend/src/backend/ sabe que del otro lado está Wails.\n\nLa comunicación son comandos (StartScan, CancelScan, Children) y dos eventos: scan:progress, limitado a 10 por segundo para no saturar la interfaz, y scan:done con el resumen. Las consultas siempre van paginadas, así que la interfaz nunca recibe el índice completo.\n\nAntes de elegir Wails prototipé dos opciones con el mismo motor y la misma interfaz, cambiando solo el adaptador. Tauri 2 con el motor como proceso aparte aislaba mejor los fallos, pero necesitaba unas 350 líneas de integración con tipos escritos a mano, contra unas 100 con Wails, y compilaba en ~380 s en frío frente a ~35 s. Esa comparación quedó registrada en un ADR, igual que la decisión de usar SQLite con un driver en Go puro (sin CGO, así que no hace falta un compilador de C en Windows) y sin ORM.',
             en: 'There are three layers with explicit boundaries. The scan engine (internal/engine) is pure Go and has no idea there is a UI: it scans, indexes into SQLite and answers queries. Wails is confined to a single adapter package (internal/desktop), the only one that imports it. And the Vue frontend never touches the generated bindings: it depends on a Backend interface, and only frontend/src/backend/ knows that Wails is on the other side.\n\nCommunication is a set of commands (StartScan, CancelScan, Children) and two events: scan:progress, capped at 10 per second so it does not flood the UI, and scan:done with the summary. Queries are always paginated, so the UI never receives the whole index.\n\nBefore choosing Wails I prototyped two options with the same engine and the same UI, changing only the adapter. Tauri 2 with the engine as a separate process isolated failures better, but it needed about 350 lines of integration code with hand-written types, against about 100 with Wails, and took ~380 s for a cold build versus ~35 s. That comparison is recorded in an ADR, as is the decision to use SQLite with a pure-Go driver (no CGO, so no C compiler is needed on Windows) and no ORM.',
+          },
+        },
+        {
+          heading: { es: 'Diseño', en: 'Design' },
+          body: {
+            es: 'La v0.3 le dio a DiskFlow una identidad propia a partir de una idea: el disco es un territorio y el treemap, su mapa. Las carpetas se pintan como bosque, los archivos como arena y las entradas pequeñas agrupadas en «Otros» como terreno rayado, igual que las zonas mixtas de un mapa. Esos colores de uso del suelo quedan reservados para las categorías del auditor de proyectos. El ícono son tres curvas de nivel que dibujan una D.\n\nLa tipografía es IBM Plex Sans, elegida porque distingue I, l y 1 en nombres de archivo, con su versión condensada para que quepa más de un nombre en cada celda. Los temas claro y oscuro siguen a Windows, y el diseño se adapta con container queries: la tabla oculta sus columnas secundarias según el espacio que tiene ella, no según el ancho de la ventana.\n\nLa accesibilidad se verificó midiendo: un script calcula el contraste WCAG de 30 pares de colores en cada tema (4,5:1 para texto, 3:1 para gráficos y bordes de controles), y los menús siguen el patrón de WAI-ARIA, con flechas, Inicio, Fin y retorno del foco.',
+            en: 'v0.3 gave DiskFlow its own identity, built on one idea: the disk is a territory and the treemap is its map. Folders are painted as forest, files as sand, and small entries grouped into "Others" as hatched ground, like the mixed zones on a map. Those land-use colors are reserved for the categories of the project auditor. The icon is three contour lines that draw a D.\n\nThe typeface is IBM Plex Sans, chosen because it tells I, l and 1 apart in file names, with its condensed cut so more of a name fits in each cell. The light and dark themes follow Windows, and the layout adapts with container queries: the table hides its secondary columns based on the space it has, not on the window width.\n\nAccessibility was checked by measuring: a script computes the WCAG contrast of 30 color pairs in each theme (4.5:1 for text, 3:1 for graphics and control borders), and the menus follow the WAI-ARIA pattern, with arrow keys, Home, End and focus return.',
           },
         },
         {
@@ -331,15 +372,15 @@ const featuredProjectData: FeaturedProjectData[] = [
         {
           heading: { es: 'Prácticas de ingeniería', en: 'Engineering practices' },
           body: {
-            es: 'Cada cambio pasa por CI en GitHub Actions: gofmt, go vet y las pruebas del backend, también con el detector de condiciones de carrera, y del lado del frontend lint, formato, pruebas unitarias con Vitest y build con verificación de tipos. Un workflow semanal corre govulncheck y pnpm audit.\n\nLos releases se publican solos al empujar un tag: el workflow compila en Windows, genera el instalador y el ejecutable portable, y publica los checksums junto con una atestación de procedencia del build. Los tags con sufijo, como el actual v0.1.0-rc.1, salen como pre-release.',
-            en: 'Every change goes through CI on GitHub Actions: gofmt, go vet and the backend tests, also under the race detector, and on the frontend side lint, formatting, unit tests with Vitest and a type-checked build. A weekly workflow runs govulncheck and pnpm audit.\n\nReleases publish themselves when a tag is pushed: the workflow builds on Windows, produces the installer and the portable executable, and publishes the checksums along with a build provenance attestation. Tags with a suffix, like the current v0.1.0-rc.1, ship as pre-releases.',
+            es: 'Cada cambio pasa por CI en GitHub Actions: gofmt, go vet y las pruebas del backend, también con el detector de condiciones de carrera, y del lado del frontend lint, formato, pruebas unitarias con Vitest y build con verificación de tipos. Un workflow semanal corre govulncheck y pnpm audit.\n\nLos releases se publican solos al empujar un tag: el workflow compila en Windows, genera el instalador y el ejecutable portable, y publica los checksums junto con una atestación de procedencia del build. Los tags con sufijo, como v0.1.0-rc.1, salen como pre-release.',
+            en: 'Every change goes through CI on GitHub Actions: gofmt, go vet and the backend tests, also under the race detector, and on the frontend side lint, formatting, unit tests with Vitest and a type-checked build. A weekly workflow runs govulncheck and pnpm audit.\n\nReleases publish themselves when a tag is pushed: the workflow builds on Windows, produces the installer and the portable executable, and publishes the checksums along with a build provenance attestation. Tags with a suffix, such as v0.1.0-rc.1, ship as pre-releases.',
           },
         },
         {
           heading: { es: 'Limitaciones y roadmap', en: 'Limitations and roadmap' },
           body: {
-            es: 'Por ahora solo funciona en Windows 10/11 x64, y los tamaños son lógicos, no en disco: los archivos dispersos, comprimidos o que solo existen en la nube (OneDrive) cuentan con su tamaño completo, así que el total puede superar el uso real. Los binarios todavía no están firmados, por lo que SmartScreen muestra una advertencia la primera vez.\n\nLa v0.2 contempla tamaños en disco, carpetas guardadas, búsqueda, «Mostrar en el Explorador» y «Copiar ruta», y estados de error más claros. Más adelante: exclusiones definidas por el usuario, categorías por tipo de archivo y exportación a JSON/CSV.',
-            en: 'For now it only runs on Windows 10/11 x64, and sizes are logical, not on-disk: sparse, compressed and cloud-only (OneDrive) files count at their full size, so totals can exceed real disk usage. The binaries are not code-signed yet, so SmartScreen shows a warning on first run.\n\nv0.2 plans on-disk sizes, saved folders, search, "Show in Explorer" and "Copy path", and clearer error states. Later: user-defined exclusions, file-type categories and export to JSON/CSV.',
+            es: 'Por ahora solo funciona en Windows 10/11 x64, y analiza una carpeta a la vez. Los hard links se cuentan una vez por enlace, así que carpetas como C:\\Windows\\WinSxS pueden parecer más grandes de lo que ocupan. Los binarios todavía no están firmados, por lo que SmartScreen muestra una advertencia la primera vez.\n\nLa v0.4 será el auditor de proyectos: detectar proyectos (Node, Go, Python, Rust…), clasificar el espacio en categorías como dependencias y artefactos de build, y editar exclusiones. Más adelante: historial de escaneos y comparaciones, exportación a JSON/CSV e instalador firmado.',
+            en: 'For now it only runs on Windows 10/11 x64, and it scans one folder at a time. Hard links are counted once per link, so folders such as C:\\Windows\\WinSxS can look bigger than they are. The binaries are not code-signed yet, so SmartScreen shows a warning on first run.\n\nv0.4 will be the project auditor: detect projects (Node, Go, Python, Rust…), classify space into categories such as dependencies and build artifacts, and edit exclusions. Later: scan history and comparisons, export to JSON/CSV and a signed installer.',
           },
         },
       ],
@@ -353,7 +394,8 @@ const featuredProjectData: FeaturedProjectData[] = [
       es: 'Asistente conversacional que responde sobre recetas, inventario y alérgenos de un restaurante con un cliente capaz de hablar con cualquier servidor MCP y un servidor propio que resuelve el dominio.',
       en: "A conversational assistant that answers questions about a restaurant's recipes, inventory and allergens, with a client that can talk to any MCP server and a server of my own that handles the domain.",
     },
-    context: { es: 'Proyecto académico · septiembre 2026', en: 'Academic project · September 2026' },
+    context: { es: 'Proyecto académico · individual · septiembre 2026', en: 'Academic project · solo · September 2026' },
+    kind: { es: 'Académico · individual', en: 'Academic · solo' },
     challenge: {
       es: 'Implementar el Model Context Protocol a mano incluyendo el framing JSON-RPC 2.0, handshake de initialize y negociación entre dos revisiones, en lugar de apoyarse en el SDK, para entender qué viaja realmente por el cable. El cliente fusiona las herramientas de varios servidores en un solo catálogo y el servidor resuelve los permisos por rol antes de ejecutar nada, de modo que el modelo nunca calcula cuántas porciones quedan ni recuerda una receta.',
       en: 'Implementing the Model Context Protocol by hand, including JSON-RPC 2.0 framing, the initialize handshake and negotiation between two revisions, instead of relying on the SDK, to understand what actually travels over the wire. The client merges the tools of several servers into a single catalog, and the server resolves role permissions before running anything, so the model never computes how many portions are left or remembers a recipe.',
@@ -488,6 +530,7 @@ const featuredProjectData: FeaturedProjectData[] = [
       en: 'A recommendation engine that consumes the TMDB API and applies a graph-based model to suggest personalized movies.',
     },
     context: { es: 'Proyecto académico · en equipo', en: 'Academic project · team' },
+    kind: { es: 'Académico · en equipo', en: 'Academic · team' },
     challenge: {
       es: 'Modelar relaciones (usuarios, películas, géneros, actores) como grafo para que las recomendaciones surjan de recorrer conexiones, en vez de reglas fijas. Resultado: recomendaciones explicables por conexiones reales entre el contenido y el usuario.',
       en: 'Modeling relationships (users, movies, genres, actors) as a graph so that recommendations come from traversing connections instead of fixed rules. The result: recommendations that can be explained by real connections between the content and the user.',
@@ -519,13 +562,14 @@ const featuredProjectData: FeaturedProjectData[] = [
     compact: true,
     title: { es: 'Optimizador de rutas con algoritmos genéticos', en: 'Route optimizer with genetic algorithms' },
     tagline: {
-      es: 'Aplicación web que calcula el mejor recorrido entre varios destinos con un algoritmo genético y lo dibuja sobre un mapa interactivo.',
-      en: 'A web app that computes the best route between several destinations with a genetic algorithm and draws it on an interactive map.',
+      es: 'Aplicación web que busca un recorrido corto entre varios destinos con un algoritmo genético y lo dibuja sobre un mapa interactivo.',
+      en: 'A web app that searches for a short route between several destinations with a genetic algorithm and draws it on an interactive map.',
     },
     context: { es: 'Proyecto académico · en equipo', en: 'Academic project · team' },
+    kind: { es: 'Académico · en equipo', en: 'Academic · team' },
     challenge: {
-      es: 'Reducir un problema de ruteo con explosión combinatoria usando un algoritmo genético sobre datos geográficos reales: hasta 15 destinos dentro de un radio de 100 km, minimizando la distancia total del recorrido. El backend en FastAPI corre en Google Cloud y el resultado se traza sobre Google Maps.',
-      en: 'Taming a routing problem with combinatorial explosion using a genetic algorithm over real geographic data: up to 15 destinations within a 100 km radius, minimizing the total distance travelled. The FastAPI backend runs on Google Cloud and the result is drawn on Google Maps.',
+      es: 'Abordar un problema de ruteo con explosión combinatoria, donde probar todas las rutas no es viable, con un algoritmo genético sobre datos geográficos reales: hasta 15 destinos dentro de un radio de 100 km, buscando reducir la distancia total del recorrido sin garantizar el óptimo. El backend en FastAPI corre en Google Cloud y el resultado se traza sobre Google Maps.',
+      en: 'Tackling a routing problem with combinatorial explosion, where trying every route is not feasible, with a genetic algorithm over real geographic data: up to 15 destinations within a 100 km radius, working to reduce the total distance travelled without guaranteeing the optimum. The FastAPI backend runs on Google Cloud and the result is drawn on Google Maps.',
     },
     techs: [
       { name: 'Python', icon: pythonLogo },
@@ -550,14 +594,12 @@ const featuredProjectData: FeaturedProjectData[] = [
 
 export const featuredProjects: FeaturedProject[] = featuredProjectData.map(withDerivedDetail)
 
-// ----------------------------------------------------------------------------
-// Proyectos experimentales (sección compacta, apoyo visual fuerte, poco texto)
-// ----------------------------------------------------------------------------
+// Proyectos experimentales: sección compacta, mucha imagen y poco texto
 
 export const experimentProjects: ExperimentProject[] = [
   {
     slug: 'analizador-lexico-sintactico',
-    title: { es: 'Analizador léxico y sintáctico', en: 'Lexer and parser generator' },
+    title: { es: 'Generador de analizadores léxicos y sintácticos', en: 'Lexer and parser generator' },
     description: {
       es: 'Genera analizadores a partir de especificaciones .yalex y .yapar: construye el AFD directo desde las expresiones regulares, calcula FIRST y FOLLOW, arma tablas LL(1), SLR y LALR, y se recupera de errores de sintaxis en modo pánico en lugar de abortar.',
       en: 'Generates analyzers from .yalex and .yapar specifications: it builds the DFA directly from the regular expressions, computes FIRST and FOLLOW, builds LL(1), SLR and LALR tables, and recovers from syntax errors in panic mode instead of aborting.',
@@ -568,8 +610,7 @@ export const experimentProjects: ExperimentProject[] = [
     ],
     media: {
       type: 'image',
-      // Fotograma de la interfaz: la tabla de parseo se reconoce aún a tamaño
-      // de tarjeta, cosa que la vista de autómata (texto corrido) no logra.
+      // Fotograma de la tabla de parseo: se reconoce a tamaño de tarjeta, el autómata no
       src: analizadorSintactico,
       alt: {
         es: 'Tabla de parseo generada por la herramienta: una rejilla de estados contra tokens con las acciones de desplazamiento y reducción',
@@ -646,6 +687,9 @@ export const experimentProjects: ExperimentProject[] = [
     },
   },
 ]
+
+// Nivel al estilo Doom según el orden en que aparecen en la home: E1M1, E1M2…
+export const levelOf = (slug: string) => `E1M${featuredProjects.findIndex((p) => p.slug === slug) + 1}`
 
 // Utilidad para la página de detalle
 export const getFeaturedProjectBySlug = (slug: string) =>

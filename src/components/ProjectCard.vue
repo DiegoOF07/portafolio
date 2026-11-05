@@ -1,30 +1,60 @@
 <script setup lang="ts">
-import { computed } from 'vue'
+import { computed, ref, onMounted, onUnmounted } from 'vue'
 import { Link, Github, Lock } from 'lucide-vue-next'
 import TechBadge from './TechBadge.vue'
 import MediaSlot from '@/components/MediaSlot.vue'
-import type { FeaturedProject } from '@/data/projects'
+import MetricCounter from '@/components/MetricCounter.vue'
+import { levelOf, type FeaturedProject } from '@/data/projects'
 import { useLocale, projectRoute } from '@/i18n'
+import { useVisitProgress } from '@/composables/useVisitProgress'
+import { isSeen } from '@/lib/visit'
 
 const props = defineProps<{
   project: FeaturedProject
+  // La mira está sobre esta tarjeta: el contador de la métrica principal arranca
+  locked?: boolean
 }>()
 
-const { locale, m, t } = useLocale()
+const { locale, m, t, src } = useLocale()
+const mainStat = computed(() => props.project.detail?.stats?.[0])
 
 const variant = computed(() => (props.project.lead ? 'lead' : props.project.compact ? 'compact' : 'row'))
+
+// Cuenta como vista con la mitad de la tarjeta en pantalla, o la mitad de la pantalla si la tarjeta es muy alta
+const { markProject } = useVisitProgress()
+// Cada 5 %: el observador solo avisa al cruzar un umbral, y una tarjeta muy alta nunca llega a los grandes
+const THRESHOLDS = Array.from({ length: 21 }, (_, i) => i / 20)
+const root = ref<HTMLElement>()
+let observer: IntersectionObserver | undefined
+
+onMounted(() => {
+  observer = new IntersectionObserver(([entry]) => {
+    if (!entry?.isIntersecting) return
+    if (!isSeen(entry.intersectionRatio, entry.intersectionRect.height, entry.rootBounds?.height ?? window.innerHeight)) return
+    markProject(props.project.slug)
+    observer?.disconnect()
+  }, { threshold: THRESHOLDS })
+  if (root.value) observer.observe(root.value)
+})
+
+onUnmounted(() => observer?.disconnect())
 </script>
 
 <template>
   <!-- La pieza principal lleva captura grande; el resto son filas de texto -->
-  <article :class="['project', `project--${variant}`]">
+  <article ref="root" :class="['project', `project--${variant}`]" :data-target="project.slug">
     <div v-if="project.lead && project.media" class="project-media">
       <MediaSlot :media="project.media" aspect="4/3" focus="left top" />
     </div>
 
     <header class="project-head">
+      <p class="project-level">{{ levelOf(project.slug) }} · {{ t(project.kind) }}</p>
       <h3>{{ t(project.title) }}</h3>
       <p class="project-context">{{ t(project.context) }}</p>
+      <p v-if="mainStat" class="project-metric">
+        <MetricCounter :value="src(mainStat.value)" :play="!!locked" />
+        <span class="project-metric-label">{{ t(mainStat.label) }}</span>
+      </p>
     </header>
 
     <div class="project-body">
@@ -75,10 +105,33 @@ h3 {
   margin: 0;
 }
 
+.project-level {
+  margin: 0 0 var(--s-2);
+  font-family: var(--font-pixel);
+  font-size: 10px;
+  text-transform: uppercase;
+  color: var(--label);
+}
+
+.project-metric {
+  display: flex;
+  align-items: baseline;
+  flex-wrap: wrap;
+  gap: var(--s-2);
+  margin: var(--s-4) 0 0;
+}
+
+.project-metric-label {
+  font-size: var(--step--1);
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  color: var(--text-faint);
+}
+
 .project-context {
   margin: var(--s-2) 0 0;
   font-size: var(--step--1);
-  color: var(--ink-dim);
+  color: var(--text-dim);
 }
 
 .project-tagline {
@@ -96,7 +149,7 @@ h3 {
   margin-bottom: var(--s-1);
   font-size: var(--step--1);
   font-weight: 600;
-  color: var(--ink-dim);
+  color: var(--text-dim);
 }
 
 .techs {
@@ -109,7 +162,7 @@ h3 {
 .project-status {
   margin: 0 0 var(--s-5);
   font-size: var(--step--1);
-  color: var(--ink-dim);
+  color: var(--text-dim);
 }
 
 .project-links {
@@ -125,7 +178,7 @@ h3 {
   gap: var(--s-2);
   margin: var(--s-4) 0 0;
   font-size: var(--step--1);
-  color: var(--ink-dim);
+  color: var(--text-dim);
 }
 
 /* Pieza principal: captura a la izquierda, contenido a la derecha */

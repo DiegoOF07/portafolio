@@ -6,11 +6,9 @@ withDefaults(
   defineProps<{
     media: MediaAsset
     aspect?: string // ej. '16/9', '4/3'
-    // Punto de anclaje al recortar (object-position). Las capturas de
-    // interfaz se leen mejor ancladas arriba a la izquierda.
+    // Anclaje al recortar: las capturas de interfaz se leen mejor desde arriba a la izquierda
     focus?: string
-    // true solo para imágenes de la primera pantalla: se cargan de
-    // inmediato y con prioridad alta. El resto se carga al acercarse.
+    // Solo para la primera pantalla: carga inmediata y con prioridad alta
     priority?: boolean
     // Logos que se muestran mientras no haya captura
     fallbackIcons?: string[]
@@ -56,7 +54,7 @@ const { t, src } = useLocale()
   width: 100%;
   overflow: hidden;
   border-radius: inherit;
-  background: rgba(255, 255, 255, 0.03);
+  background: var(--surface);
 }
 
 .media-content {
@@ -73,8 +71,8 @@ const { t, src } = useLocale()
   align-items: center;
   justify-content: center;
   gap: var(--s-5);
-  background-color: var(--field-raised);
-  background-image: radial-gradient(circle, rgba(232, 237, 247, 0.1) 1px, transparent 1.5px);
+  background-color: var(--surface);
+  background-image: radial-gradient(circle, color-mix(in srgb, var(--ink) 10%, transparent) 1px, transparent 1.5px);
   background-size: 18px 18px;
 }
 

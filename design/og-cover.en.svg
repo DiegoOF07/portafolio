@@ -1,0 +1,33 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="630" viewBox="0 0 1200 630">
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Archivo:wdth,wght@112,800&amp;family=IBM+Plex+Mono:wght@400;600&amp;family=Silkscreen&amp;display=block');
+    .name { font-family: Archivo; font-weight: 800; font-stretch: 112%; font-size: 112px; fill: #F2EAE0; letter-spacing: -1.5px; }
+    .role { font-family: Archivo; font-weight: 800; font-size: 46px; fill: #A8988B; }
+    .mono { font-family: 'IBM Plex Mono'; font-size: 28px; fill: #D9CFC4; }
+    .px { font-family: Silkscreen; font-size: 22px; }
+    .url { font-family: 'IBM Plex Mono'; font-size: 22px; fill: #968477; }
+  </style>
+  <rect width="1200" height="630" fill="#120E0C"/>
+  <text x="80" y="150" class="px" fill="#E0A33A">GUATEMALA · GMT-6</text>
+  <text x="74" y="275" class="name">Diego Flores</text>
+  <text x="80" y="345" class="role">Full-Stack Developer</text>
+  <text x="80" y="420" class="mono">Go · Vue · TypeScript · PostgreSQL</text>
+  <text x="80" y="478" class="px" fill="#D9CFC4"><tspan fill="#8FA36B">●</tspan> OPEN TO REMOTE WORK</text>
+  <text x="80" y="560" class="url">diego-o-flores-portfolio.netlify.app/en</text>
+  <!-- El automapa del sitio, sin etiquetas: tres habitaciones recorridas y la flecha en "proyectos" -->
+  <g fill="none" stroke-width="3" shape-rendering="crispEdges">
+    <path d="M982 140V159" stroke="#E0A33A"/>
+    <path d="M982 210V229" stroke="#E0A33A"/>
+    <path d="M982 313V333" stroke="#7A5A4A"/>
+    <path d="M982 383V403" stroke="#7A5A4A"/>
+    <path d="M982 453V473" stroke="#7A5A4A"/>
+    <rect x="947" y="89" width="70" height="50" stroke="#D8321E"/>
+    <rect x="947" y="159" width="70" height="50" stroke="#D8321E"/>
+    <rect x="938" y="229" width="87" height="84" stroke="#D8321E"/>
+    <rect x="947" y="333" width="70" height="50" stroke="#7A5A4A"/>
+    <rect x="947" y="403" width="70" height="50" stroke="#7A5A4A"/>
+    <rect x="947" y="473" width="70" height="50" stroke="#7A5A4A"/>
+    <path d="M982 523V548" stroke="#7A5A4A" stroke-dasharray="4 4"/>
+  </g>
+  <path d="M982 262l9 16h-18z" fill="#F2EAE0"/>
+</svg>
